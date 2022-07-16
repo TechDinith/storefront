@@ -8,8 +8,9 @@ import Slider from "../slider/slider";
 import sImage1 from "../slider/images/simage1.jpg";
 import sImage2 from "../slider/images/simage2.jpg";
 import sImage4 from "../slider/images/simage4.jpg";
+import sImg1 from "../slider/images/square1.jpg";
 import { Image } from "antd";
-import { Typography } from "@mui/material";
+import { Typography, Zoom } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -30,6 +31,13 @@ const sliderItems = {
   items: sliderImages,
   isButton: true,
   btnText: "Check it Out",
+};
+const sliderItems1 = {
+  items: [
+    <Image src={sImg1} alt="2" preview={false} width="100%" />,
+    <Image src={sImg1} alt="2" preview={false} width="100%" />,
+    <Image src={sImg1} alt="2" preview={false} width="100%" />,
+  ],
 };
 
 const Layout = () => {
@@ -72,21 +80,65 @@ const Layout = () => {
           <Grid item xs={10} m="1%">
             <Slider {...sliderItems} />
           </Grid>
-          <Grid item xs={5}>
-            <Item>xs=4</Item>
+          <Grid item xs={5} justifyContent={"center"}>
+            <Box
+              py="20%"
+              color={"white"}
+              component="div"
+              justifyContent={"center"}
+              alignContent="center"
+              display="flex"
+              sx={{ flexDirection: "column" }}
+            >
+              <Typography variant="h2" color="inherit" textAlign={"center"}>
+                Lorem ipsum dolor sit amet
+              </Typography>
+              <Button
+                variant="outlined"
+                color="inherit"
+                size="large"
+                sx={{ marginLeft: "auto", marginRight: "auto" }}
+              >
+                Lorem ipsum
+              </Button>
+            </Box>
           </Grid>
           <Grid item xs={5}>
-            <Item>xs=8</Item>
+            <Slider {...sliderItems1} />
           </Grid>
 
-          <Grid item xs={3}>
-            <Item>xs=8</Item>
-          </Grid>
-          <Grid item xs={3}>
-            <Item>xs=8</Item>
-          </Grid>
-          <Grid item xs={3}>
-            <Item>xs=8</Item>
+          <Grid item xs={9}>
+            <Box display={"flex"}>
+              <Box className="image-group" width={"33%"}>
+                <Typography variant="h6" color="white">
+                  MEN
+                </Typography>
+              </Box>
+              <Box className="image-group" width={"33%"}>
+                <Typography variant="h6" color="white">
+                  WOMEN
+                </Typography>
+              </Box>
+              <Box className="image-group" width={"33%"}>
+                <Typography variant="h6" color="white">
+                  ACCESSORIES
+                </Typography>
+              </Box>
+            </Box>
+
+            <Image.PreviewGroup>
+              <Box display={"flex"}>
+                <Box className="image-group" width={"33%"}>
+                  <Image src={sImg1} alt="1" preview={false} />
+                </Box>
+                <Box className="image-group" width={"33%"}>
+                  <Image src={sImg1} alt="3" preview={false} />
+                </Box>
+                <Box className="image-group" width={"33%"}>
+                  <Image src={sImg1} alt="4" preview={false} />
+                </Box>
+              </Box>
+            </Image.PreviewGroup>
           </Grid>
           <Grid item xs={10}>
             <Item>xs=8</Item>

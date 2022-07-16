@@ -25,11 +25,8 @@ const Slider = ({ items, isButton, btnText }: any) => {
           <Box key={i} position="relative" overflow="hidden">
             {isButton && (
               <Button
-                variant="outlined"
+                variant="contained"
                 sx={{
-                  color: "white",
-                  borderColor: "white",
-                  borderWidth: "4px",
                   marginTop: "35%",
                   marginLeft: "4%",
                   position: "absolute",

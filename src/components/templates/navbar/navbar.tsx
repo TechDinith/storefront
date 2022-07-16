@@ -29,7 +29,7 @@ const navItems = ["Home", "About", "Contact"];
 const Navbar = (props: Props) => {
   //   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [auth, setAuth] = React.useState(true);
+  const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -205,7 +205,7 @@ const Navbar = (props: Props) => {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { xs: "true", sm: "true", md: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
