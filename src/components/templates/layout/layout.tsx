@@ -8,16 +8,22 @@ import Slider from "../slider/slider";
 import sImage1 from "../slider/images/simage1.jpg";
 import sImage2 from "../slider/images/simage2.jpg";
 import sImage4 from "../slider/images/simage4.jpg";
-import { Link } from "react-router-dom";
+import { Image } from "antd";
+import { Typography } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
+import Button from "@mui/material/Button";
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
 const sliderImages = [
-  <img src={sImage1} alt="1" />,
-  <img src={sImage2} alt="2" />,
-  <img src={sImage4} alt="3" />,
+  <Image src={sImage1} alt="1" preview={false} />,
+  <Image src={sImage2} alt="2" preview={false} />,
+  <Image src={sImage4} alt="3" preview={false} />,
 ];
 
 const sliderItems = {
@@ -28,13 +34,42 @@ const sliderItems = {
 
 const Layout = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box component="main">
+      <Box
+        sx={{
+          display: { xs: "none", sm: "none", md: "flex" },
+          width: "100%",
+          p: "1%",
+          mb: "1%",
+          background: "black",
+        }}
+      >
+        <Typography color={"white"} p="auto" m="auto">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        </Typography>
+
+        <TextField
+          id="outlined-search"
+          label="Search field"
+          type="search"
+          sx={{ color: "white", marginLeft: "50%" }}
+          size="small"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Button>
+          <ShoppingCartSharpIcon color="secondary" />
+        </Button>
+      </Box>
       <Grid container spacing={2} justifyContent="center">
-        <Grid container spacing={2} justifyContent="center" m="auto">
-          <Grid item xs={10}>
-            <Navbar />
-          </Grid>
-          <Grid item xs={10} mt="4%">
+        <Navbar />
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={10} m="1%">
             <Slider {...sliderItems} />
           </Grid>
           <Grid item xs={5}>

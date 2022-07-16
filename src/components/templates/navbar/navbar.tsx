@@ -12,6 +12,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { AccountCircle } from "@mui/icons-material";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 
 interface Props {
   //
@@ -22,6 +29,20 @@ const navItems = ["Home", "About", "Contact"];
 const Navbar = (props: Props) => {
   //   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [auth, setAuth] = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAuth(event.target.checked);
+  };
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -48,15 +69,19 @@ const Navbar = (props: Props) => {
   //   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed">
+    <>
+      <AppBar
+        position="sticky"
+        sx={{ width: "90%", background: "#333333", mt: "0" }}
+        elevation={0}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, display: { xs: "true", sm: "true", md: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -67,16 +92,107 @@ const Navbar = (props: Props) => {
           >
             Pedros
           </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box sx={{ display: { sm: "none", xs: "none", md: "block" } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: "#fff" }}>
                 {item}
               </Button>
             ))}
-
-            <Button color="primary">Login</Button>
-            <Button color="secondary">SignUp</Button>
           </Box>
+          {auth ? (
+            <Box
+              sx={{
+                display: "flex",
+                paddingLeft: { sm: 0 },
+                flexGrow: 0,
+              }}
+            >
+              <Box
+                sx={{
+                  display: { xs: "true", sm: "true", md: "none" },
+                  margin: "auto",
+
+                  width: "100%",
+                }}
+              >
+                <TextField
+                  id="outlined-search"
+                  label="Search field"
+                  type="search"
+                  size="small"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+              </Menu>
+              <Button sx={{ display: { xs: "true", sm: "true", md: "none" } }}>
+                <ShoppingCartSharpIcon color="secondary" />
+              </Button>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                paddingLeft: { sm: 0 },
+                flexGrow: 0,
+              }}
+            >
+              <Box
+                sx={{
+                  display: { xs: "true", sm: "true", md: "none" },
+                  width: "100%",
+                }}
+              >
+                <TextField
+                  id="outlined-search"
+                  label="Search field"
+                  type="search"
+                  size="small"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+              <Button color="primary">Login</Button>
+              <Button color="secondary">SignUp</Button>
+            </Box>
+          )}
         </Toolbar>
       </AppBar>
       <Box component="nav">
@@ -99,7 +215,7 @@ const Navbar = (props: Props) => {
           {drawer}
         </Drawer>
       </Box>
-    </Box>
+    </>
   );
 };
 
