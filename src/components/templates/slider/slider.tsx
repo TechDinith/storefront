@@ -11,7 +11,7 @@ const textStyle: React.CSSProperties = {
   background: "#364d79",
 };
 
-const Slider = ({ items, isButton, btnText }: any) => {
+const Slider = ({ items, isButton, btnText, slidesToShow, draggable }: any) => {
   return !items ? (
     <Carousel autoplay>
       <div>
@@ -19,7 +19,11 @@ const Slider = ({ items, isButton, btnText }: any) => {
       </div>
     </Carousel>
   ) : (
-    <Carousel autoplay>
+    <Carousel
+      autoplay
+      slidesToShow={slidesToShow ? slidesToShow : null}
+      draggable={draggable ? draggable : false}
+    >
       {items.map((item: any, i: number) => {
         return (
           <Box key={i} position="relative" overflow="hidden">

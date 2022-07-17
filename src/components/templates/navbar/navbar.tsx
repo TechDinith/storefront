@@ -19,6 +19,7 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 
 interface Props {
   //
@@ -51,7 +52,7 @@ const Navbar = (props: Props) => {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2, color: "white" }}>
-        Pedros
+        <AlternateEmailIcon /> Logo
       </Typography>
       <Divider />
       <List>
@@ -90,7 +91,7 @@ const Navbar = (props: Props) => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Pedros
+            <AlternateEmailIcon /> Logo
           </Typography>
           <Box sx={{ display: { sm: "none", xs: "none", md: "block" } }}>
             {navItems.map((item) => (

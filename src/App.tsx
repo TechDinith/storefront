@@ -1,14 +1,20 @@
 import React from "react";
 import Layout from "./components/templates/layout/layout";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import {
+  ThemeProvider,
+  createTheme,
+  responsiveFontSizes,
+} from "@mui/material/styles";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SandBox from "./components/templates/sandbox/sandbox";
 
-const darkTheme = createTheme({
+let theme = createTheme({
   palette: {
     mode: "dark",
   },
 });
+
+const darkTheme = responsiveFontSizes(theme);
 
 function App() {
   return (
