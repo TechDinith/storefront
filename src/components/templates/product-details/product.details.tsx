@@ -1,13 +1,11 @@
 import { Button, IconButton, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Image } from "antd";
-import sImg1 from "../slider/images/square1.jpg";
 import CircleIcon from "@mui/icons-material/Circle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const ProDetails = ({ item }: any) => {
   return (
     <Box justifyContent="center" textAlign={"center"} color="white">
-      <Image src={sImg1} alt="2" preview={false} />
+      {item}
       <Typography variant="h6" color="inherit" textTransform="uppercase">
         Sample Item
       </Typography>

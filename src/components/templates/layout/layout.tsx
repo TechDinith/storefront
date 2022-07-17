@@ -17,6 +17,12 @@ import mode3 from "../slider/images/mode3.jpg";
 import wm from "../slider/images/wm.jpg";
 import wm1 from "../slider/images/wm1.jpg";
 import mode4 from "../slider/images/mode4.jpg";
+import prod1 from "../slider/images/prod1.jpg";
+import prod2 from "../slider/images/prod2.jpg";
+import prod3 from "../slider/images/prod3.jpg";
+import prod4 from "../slider/images/prod4.jpg";
+import prod5 from "../slider/images/prod5.jpg";
+import prod6 from "../slider/images/prod6.jpg";
 import acc from "../slider/images/acc.jpg";
 import swideimg from "../slider/images/swideimg.jpg";
 import { Image } from "antd";
@@ -68,6 +74,16 @@ const sliderItems2 = {
   ],
   slidesToShow: 3,
   draggable: true,
+};
+const prodImages = {
+  item: [
+    <Image src={prod1} alt="2" preview={false} />,
+    <Image src={prod2} alt="2" preview={false} />,
+    <Image src={prod3} alt="2" preview={false} />,
+    <Image src={prod4} alt="2" preview={false} />,
+    <Image src={prod5} alt="2" preview={false} />,
+    <Image src={prod6} alt="2" preview={false} />,
+  ],
 };
 
 const Layout = () => {
@@ -306,15 +322,14 @@ const Layout = () => {
                   </Grid>
                 </Grid>
               </Grid>
-
               <Grid item xs={3}>
-                <ProDetails />
+                <ProDetails item={prodImages.item[0]} />
               </Grid>
               <Grid item xs={3}>
-                <ProDetails />
+                <ProDetails item={prodImages.item[1]} />
               </Grid>
               <Grid item xs={3}>
-                <ProDetails />
+                <ProDetails item={prodImages.item[2]} />
               </Grid>
             </Grid>
 
@@ -326,13 +341,13 @@ const Layout = () => {
               sx={{ display: { xs: "none", sm: "flex" } }}
             >
               <Grid item xs={3}>
-                <ProDetails />
+                <ProDetails item={prodImages.item[3]} />
               </Grid>
               <Grid item xs={3}>
-                <ProDetails />
+                <ProDetails item={prodImages.item[4]} />
               </Grid>
               <Grid item xs={3}>
-                <ProDetails />
+                <ProDetails item={prodImages.item[5]} />
               </Grid>
             </Grid>
           </Grid>
