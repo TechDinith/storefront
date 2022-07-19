@@ -2,6 +2,8 @@ import { Carousel } from "antd";
 import React from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { ArrowBackIosNewOutlined, ArrowForwardIos } from "@mui/icons-material";
+import "./slider.scss";
 
 const textStyle: React.CSSProperties = {
   height: "160px",
@@ -11,7 +13,16 @@ const textStyle: React.CSSProperties = {
   background: "#364d79",
 };
 
-const Slider = ({ items, isButton, btnText, slidesToShow, draggable }: any) => {
+const Slider = ({
+  items,
+  isButton,
+  btnText,
+  slidesToShow,
+  draggable,
+  isArrows,
+  speed,
+  effect,
+}: any) => {
   return !items ? (
     <Carousel autoplay>
       <div>
@@ -23,6 +34,12 @@ const Slider = ({ items, isButton, btnText, slidesToShow, draggable }: any) => {
       autoplay
       slidesToShow={slidesToShow ? slidesToShow : null}
       draggable={draggable ? draggable : false}
+      arrows={isArrows}
+      prevArrow={<ArrowBackIosNewOutlined />}
+      nextArrow={<ArrowForwardIos />}
+      effect={effect}
+      speed={speed}
+      autoplaySpeed={5000}
     >
       {items.map((item: any, i: number) => {
         return (

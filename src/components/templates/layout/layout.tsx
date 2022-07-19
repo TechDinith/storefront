@@ -54,6 +54,8 @@ const sliderItems = {
   btnText: "Check it Out",
   slidesToShow: 1,
   draggable: true,
+  speed: 2000,
+  isArrows: true,
 };
 const sliderItems1 = {
   items: [
@@ -63,6 +65,9 @@ const sliderItems1 = {
   ],
   slidesToShow: 1,
   draggable: true,
+  speed: 2000,
+  isArrows: false,
+  effect: "fade",
 };
 
 const sliderItems2 = {
@@ -74,6 +79,8 @@ const sliderItems2 = {
   ],
   slidesToShow: 3,
   draggable: true,
+  speed: 1000,
+  isArrows: true,
 };
 const prodImages = {
   item: [
