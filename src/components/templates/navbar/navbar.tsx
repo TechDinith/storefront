@@ -20,18 +20,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import { Link } from "react-router-dom";
 
 interface Props {
   //
 }
 
-const drawerWidth = "25%";
-const navItems = ["Home", "About", "Contact"];
+const drawerWidth = "35%";
+const navItems = ["Home", "Categories", "About", "Contact"];
+const categories = ["Men", "Women", "Accessories"];
 const Navbar = (props: Props) => {
   //   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [auth, setAuth] = React.useState(true);
+  const [categ, setCateg] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorElCateg, setAnchorElCateg] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAuth(event.target.checked);
@@ -40,9 +46,13 @@ const Navbar = (props: Props) => {
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleCategoriesMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElCateg(event.currentTarget);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
+    setAnchorElCateg(null);
   };
 
   const handleDrawerToggle = () => {
@@ -50,19 +60,74 @@ const Navbar = (props: Props) => {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2, color: "white" }}>
         <AlternateEmailIcon /> Logo
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {navItems.map((item: string) => {
+          return String(item.toLowerCase()) === String("home") ? (
+            <ListItem key={item} disablePadding>
+              <ListItemButton
+                sx={{ textAlign: "center" }}
+                onClick={handleDrawerToggle}
+              >
+                <Link
+                  to="/"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <ListItemText primary={item} />
+                </Link>
+              </ListItemButton>
+            </ListItem>
+          ) : String(item.toLowerCase()) === String("categories") ? (
+            <>
+              <ListItem key={item} disablePadding>
+                <ListItemButton
+                  sx={{ textAlign: "left" }}
+                  onClick={() => (categ ? setCateg(false) : setCateg(true))}
+                >
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
+
+              {categ ? (
+                <>
+                  <Divider />
+                  {categories.map((item: string) => (
+                    <ListItem key={item} disablePadding sx={{ pl: "10%" }}>
+                      <ListItemButton sx={{ textAlign: "left" }}>
+                        <Link
+                          to={"/" + item.toLowerCase()}
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          <ListItemText primary={item} />
+                        </Link>
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+
+                  <Divider />
+                </>
+              ) : null}
+            </>
+          ) : (
+            <ListItem key={item} disablePadding>
+              <ListItemButton
+                sx={{ textAlign: "center" }}
+                onClick={handleDrawerToggle}
+              >
+                <Link
+                  to={"/" + item.toLowerCase()}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <ListItemText primary={item} />
+                </Link>
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
     </Box>
   );
@@ -94,11 +159,55 @@ const Navbar = (props: Props) => {
             <AlternateEmailIcon /> Logo
           </Typography>
           <Box sx={{ display: { sm: "none", xs: "none", md: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
-              </Button>
-            ))}
+            {navItems.map((item: string) => {
+              let path = String("/" + item.toLowerCase());
+
+              return String(path) === String("/home") ? (
+                <Button key={item} sx={{ color: "#fff" }}>
+                  <Link
+                    to="/"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {item}
+                  </Link>
+                </Button>
+              ) : String(path) === String("/categories") ? (
+                <Button
+                  key={item}
+                  sx={{ color: "#fff" }}
+                  onClick={handleCategoriesMenu}
+                >
+                  {item}
+                </Button>
+              ) : (
+                <Button key={item} sx={{ color: "#fff" }}>
+                  <Link
+                    to={path}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {item}
+                  </Link>
+                </Button>
+              );
+            })}
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElCateg}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              open={Boolean(anchorElCateg)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>Sign Out</MenuItem>
+            </Menu>
           </Box>
           {auth ? (
             <Box
