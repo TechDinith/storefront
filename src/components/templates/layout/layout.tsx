@@ -26,7 +26,7 @@ import prod6 from "../slider/images/prod6.jpg";
 import acc from "../slider/images/acc.jpg";
 import swideimg from "../slider/images/swideimg.jpg";
 import { Image } from "antd";
-import { Typography, Zoom } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
