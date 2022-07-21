@@ -431,8 +431,20 @@ const Layout = () => {
               direction="row"
               justifyContent="flex-end"
             >
-              <Typography variant="subtitle2" color="cyan">
-                Developed by iTrans
+              <Typography
+                variant="subtitle2"
+                color="orange"
+                fontStyle="oblique"
+                my="auto"
+                py="0"
+              >
+                by{" "}
+                <Link
+                  to="#"
+                  style={{ textDecoration: "none", color: "#00FFC9" }}
+                >
+                  iTrans
+                </Link>
               </Typography>
             </Grid>
           </Grid>

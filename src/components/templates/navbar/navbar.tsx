@@ -30,7 +30,7 @@ const navItems = ["Home", "About", "Contact"];
 const Navbar = (props: Props) => {
   //   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [auth, setAuth] = React.useState(false);
+  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,7 +156,7 @@ const Navbar = (props: Props) => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Sign Out</MenuItem>
               </Menu>
               <Button sx={{ display: { xs: "true", sm: "true", md: "none" } }}>
                 <ShoppingCartSharpIcon color="secondary" />
