@@ -5,7 +5,7 @@ import {
   createTheme,
   responsiveFontSizes,
 } from "@mui/material/styles";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import SandBox from "./components/templates/sandbox/sandbox";
 
 let theme = createTheme({
@@ -20,12 +20,10 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}></Route>
-            <Route path="/sand" element={<SandBox />}></Route>
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />} />
+          <Route path="/sand" element={<SandBox />} />
+        </Routes>
       </div>
     </ThemeProvider>
   );
