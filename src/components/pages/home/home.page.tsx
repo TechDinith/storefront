@@ -78,7 +78,9 @@ const Home = () => {
         <Slider {...sliderItems2} />
       </Grid>
 
-      <Latest />
+      <Grid item xs={10} mt="5%">
+        <Latest />
+      </Grid>
     </>
   );
 };

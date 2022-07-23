@@ -8,6 +8,8 @@ import { Route, Routes } from "react-router-dom";
 import Header from "../header/header";
 import Home from "../../pages/home/home.page";
 import Footer from "../footer/footer.template";
+import About from "../../pages/about/about.page";
+import Contact from "../../pages/contact/contact.page";
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -18,11 +20,13 @@ const Layout = () => {
     <>
       <Header />
       <Box component="main">
-        <Grid container spacing={2} justifyContent="center">
+        <Grid container justifyContent="center">
           <Navbar />
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container justifyContent="center">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
             </Routes>
           </Grid>
         </Grid>

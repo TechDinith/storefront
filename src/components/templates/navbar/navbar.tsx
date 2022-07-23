@@ -20,7 +20,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 interface Props {
   //
@@ -29,10 +29,11 @@ interface Props {
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
 const categories = ["Men", "Women", "Accessories"];
+
 const Navbar = (props: Props) => {
   //   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [auth, setAuth] = React.useState(true);
+  const [auth, setAuth] = React.useState(false);
   const [categ, setCateg] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorElCateg, setAnchorElCateg] = React.useState<null | HTMLElement>(
@@ -59,6 +60,10 @@ const Navbar = (props: Props) => {
     setMobileOpen(!mobileOpen);
   };
 
+  const math = Math;
+
+  const location = useLocation();
+
   const drawer = (
     <Box sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2, color: "white" }}>
@@ -66,44 +71,67 @@ const Navbar = (props: Props) => {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item: string) => {
+        {navItems.map((item: string, i: number) => {
           return String(item.toLowerCase()) === String("home") ? (
-            <ListItem key={item} disablePadding>
+            <ListItem key={math.random()} disablePadding>
               <ListItemButton
-                sx={{ textAlign: "center" }}
+                sx={{
+                  "&:hover": {
+                    color: "white",
+                  },
+                  textAlign: "left",
+                }}
                 onClick={handleDrawerToggle}
+                key={math.random()}
+                component={NavLink}
+                to="/"
+                selected={String("/") === location.pathname}
               >
-                <Link
-                  to="/"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <ListItemText primary={item} />
-                </Link>
+                <ListItemText primary={item} key={math.random()} />
               </ListItemButton>
             </ListItem>
           ) : String(item.toLowerCase()) === String("categories") ? (
             <>
-              <ListItem key={item} disablePadding>
+              <ListItem key={math.random()} disablePadding>
                 <ListItemButton
-                  sx={{ textAlign: "left" }}
+                  sx={{
+                    "&:hover": {
+                      color: "white",
+                    },
+                    textAlign: "left",
+                  }}
                   onClick={() => (categ ? setCateg(false) : setCateg(true))}
+                  key={math.random()}
                 >
-                  <ListItemText primary={item} />
+                  <ListItemText primary={item} key={math.random()} />
                 </ListItemButton>
               </ListItem>
 
               {categ ? (
                 <>
                   <Divider />
-                  {categories.map((item: string) => (
-                    <ListItem key={item} disablePadding sx={{ pl: "10%" }}>
-                      <ListItemButton sx={{ textAlign: "left" }}>
-                        <Link
-                          to={"/" + item.toLowerCase()}
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <ListItemText primary={item} />
-                        </Link>
+                  {categories.map((item: string, i: number) => (
+                    <ListItem
+                      key={math.random()}
+                      disablePadding
+                      sx={{ pl: "10%" }}
+                    >
+                      <ListItemButton
+                        sx={{
+                          "&:hover": {
+                            color: "white",
+                          },
+                          textAlign: "left",
+                        }}
+                        key={math.random()}
+                        component={NavLink}
+                        to={"/" + item.toLowerCase()}
+                        selected={
+                          String("/" + item.toLowerCase()) === location.pathname
+                        }
+                        onClick={handleDrawerToggle}
+                      >
+                        <ListItemText primary={item} key={math.random()} />
                       </ListItemButton>
                     </ListItem>
                   ))}
@@ -113,17 +141,23 @@ const Navbar = (props: Props) => {
               ) : null}
             </>
           ) : (
-            <ListItem key={item} disablePadding>
+            <ListItem key={math.random()} disablePadding>
               <ListItemButton
-                sx={{ textAlign: "center" }}
+                sx={{
+                  "&:hover": {
+                    color: "white",
+                  },
+                  textAlign: "left",
+                }}
                 onClick={handleDrawerToggle}
+                key={math.random()}
+                component={NavLink}
+                to={"/" + item.toLowerCase()}
+                selected={
+                  String("/" + item.toLowerCase()) === location.pathname
+                }
               >
-                <Link
-                  to={"/" + item.toLowerCase()}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <ListItemText primary={item} />
-                </Link>
+                <ListItemText primary={item} key={math.random()} />
               </ListItemButton>
             </ListItem>
           );
@@ -159,34 +193,54 @@ const Navbar = (props: Props) => {
             <AlternateEmailIcon /> Logo
           </Typography>
           <Box sx={{ display: { sm: "none", xs: "none", md: "block" } }}>
-            {navItems.map((item: string) => {
+            {navItems.map((item: string, i: number) => {
               let path = String("/" + item.toLowerCase());
 
               return String(path) === String("/home") ? (
-                <Button key={item} sx={{ color: "#fff" }}>
-                  <Link
-                    to="/"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    {item}
-                  </Link>
+                <Button
+                  key={i}
+                  sx={{
+                    "&:hover": {
+                      color: "white",
+                    },
+
+                    color: "white",
+                    background:
+                      String("/") === location.pathname
+                        ? "rgba(0, 0, 0, 0.30)"
+                        : "transparent",
+                  }}
+                  component={NavLink}
+                  to="/"
+                >
+                  {item}
                 </Button>
               ) : String(path) === String("/categories") ? (
                 <Button
-                  key={item}
+                  key={i}
                   sx={{ color: "#fff" }}
                   onClick={handleCategoriesMenu}
                 >
                   {item}
                 </Button>
               ) : (
-                <Button key={item} sx={{ color: "#fff" }}>
-                  <Link
-                    to={path}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    {item}
-                  </Link>
+                <Button
+                  key={i}
+                  to={path}
+                  sx={{
+                    "&:hover": {
+                      color: "white",
+                    },
+
+                    color: "white",
+                    background:
+                      String(path) === location.pathname
+                        ? "rgba(0, 0, 0, 0.30)"
+                        : "transparent",
+                  }}
+                  component={NavLink}
+                >
+                  {item}
                 </Button>
               );
             })}
@@ -205,8 +259,29 @@ const Navbar = (props: Props) => {
               open={Boolean(anchorElCateg)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>Sign Out</MenuItem>
+              {categories.map((item, i) => {
+                return (
+                  <MenuItem
+                    onClick={handleClose}
+                    key={i}
+                    component={NavLink}
+                    to={"/" + item.toLowerCase()}
+                    sx={{
+                      "&:hover": {
+                        color: "white",
+                      },
+
+                      color: "white",
+                      background:
+                        String("/" + item.toLowerCase()) === location.pathname
+                          ? "rgba(0, 0, 0, 0.30)"
+                          : "transparent",
+                    }}
+                  >
+                    {item}
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
           {auth ? (
@@ -264,7 +339,14 @@ const Navbar = (props: Props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    to="/profile"
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    Profile
+                  </Link>
+                </MenuItem>
                 <MenuItem onClick={handleClose}>Sign Out</MenuItem>
               </Menu>
               <Button sx={{ display: { xs: "true", sm: "true", md: "none" } }}>
@@ -301,6 +383,9 @@ const Navbar = (props: Props) => {
               </Box>
               <Button color="primary">Login</Button>
               <Button color="secondary">SignUp</Button>
+              <Button sx={{ display: { xs: "true", sm: "true", md: "none" } }}>
+                <ShoppingCartSharpIcon color="secondary" />
+              </Button>
             </Box>
           )}
         </Toolbar>

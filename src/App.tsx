@@ -21,7 +21,7 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Layout />} />
+          <Route path="*" element={<Layout />} />
           <Route path="/sand" element={<SandBox />} />
         </Routes>
       </div>

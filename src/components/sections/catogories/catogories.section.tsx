@@ -5,75 +5,60 @@ import { Image } from "antd";
 import men from "../../../images/men.jpg";
 import women from "../../../images/women.jpg";
 import acc from "../../../images/acc.jpg";
+import { Link } from "react-router-dom";
+
+const group = [
+  { name: "Men", image: men },
+  { name: "Women", image: women },
+  { name: "Accessories", image: acc },
+];
 
 const Catogories = () => {
   return (
     <>
       <Grid item xs={10} mt="5%" sx={{ display: { xs: "block", sm: "none" } }}>
-        <Box className="image-group-vertical" mb="2%">
-          <Typography
-            variant="h4"
-            color="white"
-            sx={{ position: "absolute", p: "37%" }}
-          >
-            MEN
-          </Typography>
-          <Image src={men} alt="1" preview={false} />
-        </Box>
-
-        <Box className="image-group-vertical" mb="2%">
-          <Typography
-            variant="h4"
-            color="white"
-            sx={{ position: "absolute", py: "40%", px: "30%" }}
-          >
-            WOMEN
-          </Typography>
-          <Image src={women} alt="3" preview={false} />
-        </Box>
-
-        <Box className="image-group-vertical" mb="2%">
-          <Typography
-            variant="h4"
-            color="white"
-            sx={{ position: "absolute", py: "40%", px: "25%" }}
-          >
-            ACCESSORIES
-          </Typography>
-          <Image src={acc} alt="4" preview={false} />
-        </Box>
+        {group.map((item, i) => (
+          <Link to={"/" + item.name.toLowerCase()} key={i}>
+            <Box className="image-group-vertical" mb="2%" key={i++}>
+              <Typography
+                variant="h4"
+                color="white"
+                sx={{
+                  width: "85%",
+                  height: "57%",
+                  position: "absolute",
+                  py: "40%",
+                  textAlign: "center",
+                }}
+              >
+                {item.name}
+              </Typography>
+              <Image src={item.image} alt={item.name} preview={false} />
+            </Box>
+          </Link>
+        ))}
       </Grid>
 
       <Grid item xs={10} mt="5%" sx={{ display: { xs: "none", sm: "block" } }}>
         <Box display={"flex"}>
-          <Box className="image-group" width={"34%"}>
-            <Typography variant="h6" color="white">
-              MEN
-            </Typography>
-          </Box>
-          <Box className="image-group" width={"34%"}>
-            <Typography variant="h6" color="white">
-              WOMEN
-            </Typography>
-          </Box>
-          <Box className="image-group" width={"34%"}>
-            <Typography variant="h6" color="white">
-              ACCESSORIES
-            </Typography>
-          </Box>
+          {group.map((item, i) => (
+            <Box width={"34%"} key={i * 2}>
+              <Typography variant="h6" color="white">
+                {item.name.toUpperCase()}
+              </Typography>
+            </Box>
+          ))}
         </Box>
 
         <Image.PreviewGroup>
           <Box display={"flex"}>
-            <Box className="image-group" width={"34%"}>
-              <Image src={men} alt="1" preview={false} />
-            </Box>
-            <Box className="image-group" width={"34%"}>
-              <Image src={women} alt="3" preview={false} />
-            </Box>
-            <Box className="image-group" width={"34%"}>
-              <Image src={acc} alt="4" preview={false} />
-            </Box>
+            {group.map((item, i) => (
+              <Box className="image-group" width={"34%"} key={i * 3}>
+                <Link to={"/" + item.name.toLowerCase()}>
+                  <Image src={item.image} alt={item.name} preview={false} />
+                </Link>
+              </Box>
+            ))}
           </Box>
         </Image.PreviewGroup>
       </Grid>
