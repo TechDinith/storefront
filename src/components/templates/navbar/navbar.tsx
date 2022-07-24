@@ -302,7 +302,7 @@ const Navbar = (props: Props) => {
               >
                 <TextField
                   id="outlined-search"
-                  label="Search field"
+                  label="Search"
                   type="search"
                   size="small"
                   InputProps={{
@@ -369,7 +369,7 @@ const Navbar = (props: Props) => {
               >
                 <TextField
                   id="outlined-search"
-                  label="Search field"
+                  label="Search"
                   type="search"
                   size="small"
                   InputProps={{

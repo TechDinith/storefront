@@ -1,29 +1,28 @@
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 interface IFormInput {
   email: string;
   name: string;
-  message: string;
+  info: string;
 }
 
 const ContactForm = () => {
-  const { control, handleSubmit } = useForm<IFormInput>();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-    >
+    <Grid container alignItems="center" justifyContent="center">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="email"
@@ -36,9 +35,17 @@ const ContactForm = () => {
               {...field}
               label="Email"
               margin="dense"
+              type="email"
+              error={Boolean(errors.email)}
             />
           )}
+          rules={{ required: { value: true, message: "Email is Required" } }}
         />
+        {errors.email && (
+          <Typography color="red" variant="caption">
+            {errors.email.message}
+          </Typography>
+        )}
         <Controller
           name="name"
           control={control}
@@ -50,11 +57,18 @@ const ContactForm = () => {
               label="Name"
               fullWidth
               margin="dense"
+              error={Boolean(errors.name)}
             />
           )}
+          rules={{ required: { value: true, message: "Name is Required" } }}
         />
+        {errors.name && (
+          <Typography color="red" variant="caption">
+            {errors.name.message}
+          </Typography>
+        )}
         <Controller
-          name="message"
+          name="info"
           control={control}
           defaultValue=""
           render={({ field }) => (
@@ -66,9 +80,16 @@ const ContactForm = () => {
               margin="dense"
               multiline
               rows={4}
+              error={Boolean(errors.info)}
             />
           )}
+          rules={{ required: { value: true, message: "Message is Required" } }}
         />
+        {errors.name && (
+          <Typography color="red" variant="caption">
+            {errors.info?.message}
+          </Typography>
+        )}
         <Grid
           container
           direction="column"

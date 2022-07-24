@@ -29,10 +29,9 @@ const Layout = () => {
               <Route path="/contact" element={<Contact />} />
             </Routes>
           </Grid>
-        </Grid>
-
-        <Grid item xs={12} mt="5%" color="white">
-          <Footer />
+          <Grid item xs={12} mt="5%" color="white">
+            <Footer />
+          </Grid>
         </Grid>
       </Box>
     </>

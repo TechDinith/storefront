@@ -1,11 +1,11 @@
 import Grid from "@mui/material/Grid";
-import { Image } from "antd";
 import wideabout from "../../../images/wideabout.jpg";
-import simg2 from "../../../images/simg2.jpg";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import ContactForm from "../../sections/contact-form/contactForm.section";
+import MailIcon from "@mui/icons-material/Mail";
+import CallIcon from "@mui/icons-material/Call";
 
 const Contact = () => {
   return (
@@ -39,38 +39,25 @@ const Contact = () => {
         </Typography>
       </Grid>
 
-      <Grid container spacing={2} m="auto" justifyContent="center">
-        <Grid item xs={5} mr="1%" mb="1%">
+      <Grid container justifyContent="center" alignItems="center" spacing={2}>
+        <Grid item xs={10} mr="1%" mb="1%" px="2%">
           <ContactForm />
         </Grid>
-        <Grid item xs={10} sm={10} md={5} component={Paper} elevation={2}>
-          <Typography variant="body1" m="1%">
-            <b>Lorem</b> ipsum, dolor sit amet consectetur adipisicing elit.
-            Magnam nostrum animi laboriosam expedita dicta a, quod modi
-            accusamus odit, eaque id fugit eligendi. Laborum, voluptas est?
-            Asperiores porro accusantium ex! dolor sit amet consectetur
-            adipisicing elit. Magnam nostrum animi laboriosam expedita dicta a,
-            quod modi accusamus odit, eaque id fugit eligendi. Laborum, voluptas
-            est? Asperiores porro accusantium ex!
-          </Typography>
-          <Typography variant="body1" m="1%">
-            <b>Lorem</b> ipsum, dolor sit amet consectetur adipisicing elit.
-            Magnam nostrum animi laboriosam expedita dicta a, quod modi
-            accusamus odit, eaque id fugit eligendi. Laborum, voluptas est?
-            Asperiores porro accusantium ex! dolor sit amet consectetur
-            adipisicing elit. Magnam nostrum animi laboriosam expedita dicta a,
-            quod modi accusamus odit, eaque id fugit eligendi. Laborum, voluptas
-            est? Asperiores porro accusantium ex!
-          </Typography>
-          <Typography variant="body1" m="1%">
-            <b>Lorem</b> ipsum, dolor sit amet consectetur adipisicing elit.
-            Magnam nostrum animi laboriosam expedita dicta a, quod modi
-            accusamus odit, eaque id fugit eligendi. Laborum, voluptas est?
-            Asperiores porro accusantium ex! dolor sit amet consectetur
-            adipisicing elit. Magnam nostrum animi laboriosam expedita dicta a,
-            quod modi accusamus odit, eaque id fugit eligendi. Laborum, voluptas
-            est? Asperiores porro accusantium ex!
-          </Typography>
+        <Grid item xs={10} mr="1%" mb="1%" px="2%">
+          <Box>
+            <Box display="flex">
+              <MailIcon color="info" />
+              <Typography variant="body1" ml="2%" color="white">
+                sample@sample.com
+              </Typography>
+            </Box>
+            <Box display="flex">
+              <CallIcon color="success" />
+              <Typography variant="body1" ml="2%" color="white">
+                +94323232
+              </Typography>
+            </Box>
+          </Box>
         </Grid>
       </Grid>
     </>

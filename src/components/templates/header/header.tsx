@@ -32,7 +32,7 @@ const Header = () => {
       <Grid item xs={6} container direction="row" justifyContent="flex-end">
         <TextField
           id="outlined-search"
-          label="Search field"
+          label="Search"
           type="search"
           sx={{ color: "white" }}
           size="small"
