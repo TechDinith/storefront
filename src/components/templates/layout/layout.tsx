@@ -12,10 +12,13 @@ import About from "../../pages/about/about.page";
 import Contact from "../../pages/contact/contact.page";
 import SignInSide from "../../pages/signin/signin.page";
 import SignUpSide from "../../pages/signup/signup.page";
+import Category from "../../pages/category/category.page";
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
 }));
+
+const categories = ["men", "women", "accessories"];
 
 const Layout = () => {
   return (
@@ -31,6 +34,14 @@ const Layout = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<SignInSide />} />
               <Route path="/signup" element={<SignUpSide />} />
+              {categories.map((path) => {
+                return (
+                  <Route
+                    path={"/" + path.toLowerCase()}
+                    element={<Category />}
+                  />
+                );
+              })}
             </Routes>
           </Grid>
           <Grid item xs={12} mt="5%" color="white">
