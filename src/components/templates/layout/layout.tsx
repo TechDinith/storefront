@@ -10,6 +10,8 @@ import Home from "../../pages/home/home.page";
 import Footer from "../footer/footer.template";
 import About from "../../pages/about/about.page";
 import Contact from "../../pages/contact/contact.page";
+import SignInSide from "../../pages/signin/signin.page";
+import SignUpSide from "../../pages/signup/signup.page";
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -27,6 +29,8 @@ const Layout = () => {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<SignInSide />} />
+              <Route path="/signup" element={<SignUpSide />} />
             </Routes>
           </Grid>
           <Grid item xs={12} mt="5%" color="white">

@@ -369,20 +369,47 @@ const Navbar = (props: Props) => {
               >
                 <TextField
                   id="outlined-search"
-                  label="Search"
+                  label={<SearchIcon />}
                   type="search"
                   size="small"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
                 />
               </Box>
-              <Button color="primary">Login</Button>
-              <Button color="secondary">SignUp</Button>
+
+              <Button
+                to="/login"
+                sx={{
+                  "&:hover": {
+                    color: "white",
+                  },
+
+                  background:
+                    String("/login") === location.pathname
+                      ? "rgba(0, 0, 0, 0.30)"
+                      : "transparent",
+                }}
+                component={NavLink}
+                color="primary"
+              >
+                SignIn
+              </Button>
+              <Button
+                to="/signup"
+                sx={{
+                  "&:hover": {
+                    color: "white",
+                  },
+
+                  background:
+                    String("/signup") === location.pathname
+                      ? "rgba(0, 0, 0, 0.30)"
+                      : "transparent",
+                }}
+                component={NavLink}
+                color="secondary"
+              >
+                SignUp
+              </Button>
+
               <Button sx={{ display: { xs: "true", sm: "true", md: "none" } }}>
                 <ShoppingCartSharpIcon color="secondary" />
               </Button>
