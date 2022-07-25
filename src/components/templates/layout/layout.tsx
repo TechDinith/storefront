@@ -13,6 +13,7 @@ import Contact from "../../pages/contact/contact.page";
 import SignInSide from "../../pages/signin/signin.page";
 import SignUpSide from "../../pages/signup/signup.page";
 import Category from "../../pages/category/category.page";
+import { useState } from "react";
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -21,12 +22,13 @@ const Item = styled(Paper)(({ theme }) => ({
 const categories = ["men", "women", "accessories"];
 
 const Layout = () => {
+  const [count, setCount] = useState(0);
   return (
     <>
-      <Header />
+      <Header count={count} />
       <Box component="main">
         <Grid container justifyContent="center">
-          <Navbar />
+          <Navbar count={count} />
           <Grid container justifyContent="center">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -38,7 +40,7 @@ const Layout = () => {
                 return (
                   <Route
                     path={"/" + path.toLowerCase()}
-                    element={<Category />}
+                    element={<Category setCount={setCount} />}
                   />
                 );
               })}

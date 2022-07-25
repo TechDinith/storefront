@@ -1,39 +1,57 @@
 import Grid from "@mui/material/Grid";
 import ProDetails from "../../templates/product-details/product.details";
-import { Image } from "antd";
 import prod1 from "../../../images/prod1.jpg";
 import prod2 from "../../../images/prod2.jpg";
 import prod3 from "../../../images/prod3.jpg";
 import prod4 from "../../../images/prod4.jpg";
-import prod5 from "../../../images/prod5.jpg";
+import prod5black from "../../../images/prod5-black.jpg";
+import prod5red from "../../../images/prod5-red.jpg";
+import prod5white from "../../../images/prod5-white.jpg";
 import prod6 from "../../../images/prod6.jpg";
 import SubSlogan from "../subSlogan/subSlogan.section";
 
 const Latest = () => {
   const prodImages = [
     {
-      image: <Image src={prod1} alt={prod1} preview={false} />,
-      colors: ["red", "green", "blue"],
+      image: prod1,
+      name: "Sample Item",
+      price: "Rs.1500",
+      category: "men",
     },
     {
-      image: <Image src={prod2} alt={prod2} preview={false} />,
-      colors: ["red", "green", "blue"],
+      image: prod2,
+      name: "Sample Item",
+      price: "Rs.1500",
+      category: "men",
     },
     {
-      image: <Image src={prod3} alt={prod3} preview={false} />,
-      colors: ["red", "green", "blue"],
+      image: prod3,
+      name: "Sample Item",
+      price: "Rs.1500",
+      category: "women",
     },
     {
-      image: <Image src={prod4} alt={prod4} preview={false} />,
-      colors: ["red", "green", "blue"],
+      image: prod4,
+      name: "Sample Item",
+      price: "Rs.1500",
+      category: "women",
     },
     {
-      image: <Image src={prod5} alt={prod5} preview={false} />,
-      colors: ["red", "green", "blue"],
+      image: null,
+      name: "Sample Item",
+      price: "Rs.1500",
+      colors: [
+        { image: prod5black, color: "black" },
+        { image: prod5red, color: "red" },
+        { image: prod5white, color: "white" },
+      ],
+      category: "accessories",
     },
     {
-      image: <Image src={prod6} alt={prod6} preview={false} />,
-      colors: ["red", "green", "blue"],
+      image: prod6,
+      category: "accessories",
+      name: "Sample Item",
+      price: "Rs.1500",
     },
   ];
   return (
@@ -59,6 +77,10 @@ const Latest = () => {
         {prodImages.map((item, i) => (
           <Grid item xs={4} key={i}>
             <ProDetails
+              category={item.category}
+              name={item.name}
+              price={item.price}
+              preview={false}
               isColor={false}
               colors={item.colors}
               item={item.image}

@@ -5,8 +5,10 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
 
-const Header = () => {
+const Header = ({ count }: any) => {
   return (
     <Grid
       container
@@ -44,9 +46,22 @@ const Header = () => {
             ),
           }}
         />
-        <Button>
-          <ShoppingCartSharpIcon color="secondary" />
-        </Button>
+        <Badge
+          badgeContent={count}
+          color="primary"
+          sx={{
+            mx: "1%",
+            "& .MuiBadge-badge": {
+              right: 8,
+              top: 8,
+              padding: "4px 4px",
+            },
+          }}
+        >
+          <IconButton>
+            <ShoppingCartSharpIcon color="secondary" />
+          </IconButton>
+        </Badge>
       </Grid>
     </Grid>
   );

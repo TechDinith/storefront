@@ -21,9 +21,10 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import Badge from "@mui/material/Badge";
 
 interface Props {
-  //
+  count: number;
 }
 
 const drawerWidth = "35%";
@@ -33,7 +34,7 @@ const categories = ["Men", "Women", "Accessories"];
 const Navbar = (props: Props) => {
   //   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [auth, setAuth] = React.useState(false);
+  const [auth, setAuth] = React.useState(true);
   const [categ, setCateg] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorElCateg, setAnchorElCateg] = React.useState<null | HTMLElement>(
@@ -349,9 +350,24 @@ const Navbar = (props: Props) => {
                 </MenuItem>
                 <MenuItem onClick={handleClose}>Sign Out</MenuItem>
               </Menu>
-              <Button sx={{ display: { xs: "true", sm: "true", md: "none" } }}>
-                <ShoppingCartSharpIcon color="secondary" />
-              </Button>
+
+              <Badge
+                badgeContent={props.count}
+                color="primary"
+                sx={{
+                  mx: "1%",
+                  display: { xs: "true", sm: "true", md: "none" },
+                  "& .MuiBadge-badge": {
+                    right: 8,
+                    top: 8,
+                    padding: "4px 4px",
+                  },
+                }}
+              >
+                <IconButton>
+                  <ShoppingCartSharpIcon color="secondary" />
+                </IconButton>
+              </Badge>
             </Box>
           ) : (
             <Box
@@ -409,10 +425,23 @@ const Navbar = (props: Props) => {
               >
                 SignUp
               </Button>
-
-              <Button sx={{ display: { xs: "true", sm: "true", md: "none" } }}>
-                <ShoppingCartSharpIcon color="secondary" />
-              </Button>
+              <Badge
+                badgeContent={4}
+                color="primary"
+                sx={{
+                  mx: "1%",
+                  display: { xs: "true", sm: "true", md: "none" },
+                  "& .MuiBadge-badge": {
+                    right: 8,
+                    top: 8,
+                    padding: "4px 4px",
+                  },
+                }}
+              >
+                <IconButton>
+                  <ShoppingCartSharpIcon color="secondary" />
+                </IconButton>
+              </Badge>
             </Box>
           )}
         </Toolbar>
