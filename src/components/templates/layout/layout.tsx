@@ -14,6 +14,7 @@ import SignInSide from "../../pages/signin/signin.page";
 import SignUpSide from "../../pages/signup/signup.page";
 import Category from "../../pages/category/category.page";
 import { useState } from "react";
+import Cart from "../../pages/cart/cart.page";
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -22,13 +23,13 @@ const Item = styled(Paper)(({ theme }) => ({
 const categories = ["men", "women", "accessories"];
 
 const Layout = () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState([]);
   return (
     <>
-      <Header count={count} />
+      <Header setCount={null} count={count} />
       <Box component="main">
         <Grid container justifyContent="center">
-          <Navbar count={count} />
+          <Navbar setCount={null} count={count} />
           <Grid container justifyContent="center">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -36,11 +37,12 @@ const Layout = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<SignInSide />} />
               <Route path="/signup" element={<SignUpSide />} />
+              <Route path="/cart" element={<Cart />} />
               {categories.map((path) => {
                 return (
                   <Route
                     path={"/" + path.toLowerCase()}
-                    element={<Category setCount={setCount} />}
+                    element={<Category setCount={setCount} count={count} />}
                   />
                 );
               })}

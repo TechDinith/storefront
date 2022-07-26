@@ -14,8 +14,9 @@ import prod5red from "../../../images/prod5-red.jpg";
 import prod5white from "../../../images/prod5-white.jpg";
 import prod6 from "../../../images/prod6.jpg";
 import ProDetails from "../../templates/product-details/product.details";
+import { iCount } from "../interface.page";
 
-const Category = ({ setCount }: any) => {
+const Category = ({ setCount, count }: iCount) => {
   const location = useLocation();
   const category = location.pathname.substring(1);
 
@@ -123,7 +124,7 @@ const Category = ({ setCount }: any) => {
               item.category === category ? (
                 <Grid item xs={4} key={i}>
                   <ProDetails
-                    setCount={setCount}
+                    countProps={{ setCount, count }}
                     name={item.name}
                     price={item.price}
                     preview={true}
@@ -145,7 +146,7 @@ const Category = ({ setCount }: any) => {
               item.category === category ? (
                 <Grid item xs={10} key={i}>
                   <ProDetails
-                    setCount={setCount}
+                    countProps={{ setCount, count }}
                     name={item.name}
                     price={item.price}
                     preview={true}

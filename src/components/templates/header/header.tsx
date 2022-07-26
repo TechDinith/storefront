@@ -7,8 +7,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
+import { NavLink } from "react-router-dom";
+import { iCount } from "../../pages/interface.page";
 
-const Header = ({ count }: any) => {
+const Header = ({ count }: iCount) => {
   return (
     <Grid
       container
@@ -47,7 +49,7 @@ const Header = ({ count }: any) => {
           }}
         />
         <Badge
-          badgeContent={count}
+          badgeContent={count.length ? count.length : 0}
           color="primary"
           sx={{
             mx: "1%",
@@ -58,8 +60,17 @@ const Header = ({ count }: any) => {
             },
           }}
         >
-          <IconButton>
-            <ShoppingCartSharpIcon color="secondary" />
+          <IconButton
+            sx={{
+              "&:hover": {
+                color: "white",
+              },
+            }}
+            color="secondary"
+            component={NavLink}
+            to="/cart"
+          >
+            <ShoppingCartSharpIcon />
           </IconButton>
         </Badge>
       </Grid>

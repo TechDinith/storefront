@@ -22,16 +22,13 @@ import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Badge from "@mui/material/Badge";
-
-interface Props {
-  count: number;
-}
+import { iCount } from "../../pages/interface.page";
 
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
 const categories = ["Men", "Women", "Accessories"];
 
-const Navbar = (props: Props) => {
+const Navbar = ({ count }: iCount) => {
   //   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [auth, setAuth] = React.useState(true);
@@ -352,7 +349,7 @@ const Navbar = (props: Props) => {
               </Menu>
 
               <Badge
-                badgeContent={props.count}
+                badgeContent={count.length ? count.length : 0}
                 color="primary"
                 sx={{
                   mx: "1%",
