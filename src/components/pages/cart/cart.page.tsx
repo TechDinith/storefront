@@ -147,6 +147,7 @@ const Cart = () => {
                   )}
                   <ProDetails
                     orderedOn={item.orderedOn}
+                    addedOn={item.addedOn}
                     isCart={true}
                     name={item.name}
                     price={item.price}
@@ -184,6 +185,7 @@ const Cart = () => {
                   )}
                   <ProDetails
                     orderedOn={item.orderedOn}
+                    addedOn={item.addedOn}
                     isCart={true}
                     name={item.name}
                     price={item.price}

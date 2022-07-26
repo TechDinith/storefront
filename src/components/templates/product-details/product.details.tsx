@@ -13,6 +13,7 @@ import { iCount } from "../../pages/interface.page";
 const ProDetails = (items: {
   countProps?: iCount;
   orderedOn?: string | null;
+  addedOn?: string | null;
   isCart?: boolean;
   item: any;
   isColor: boolean | false | undefined;
@@ -27,6 +28,7 @@ const ProDetails = (items: {
   );
 
   const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleClick = () => {
     setOpen(true);
@@ -44,8 +46,47 @@ const ProDetails = (items: {
   };
 
   const handleAddToCart = () => {
-    items.countProps!.setCount([...items.countProps!.count, { test: "test" }]);
-    handleClick();
+    let id = 1;
+
+    let testCartItem = {
+      id: id,
+      image: items.item,
+      category: items.category,
+      isColor: items.isCart,
+      name: items.name,
+      price: items.price,
+      orderedOn: items.orderedOn,
+    };
+
+    let localCart = localStorage.getItem("cart");
+    let jsonCart = localCart
+      ? JSON.parse(typeof localCart === "string" ? localCart : "")
+      : null;
+
+    let isMatch = jsonCart
+      ? jsonCart.map((item: any) => {
+          if (item.id === testCartItem.id) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      : false;
+
+    console.log(isMatch[0]);
+
+    if (jsonCart !== null && !isMatch[0]) {
+      setMessage("Item Already Added!");
+      handleClick();
+    } else {
+      items.countProps!.setCount([...items.countProps!.count, testCartItem]);
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([...items.countProps!.count, testCartItem])
+      );
+      setMessage("Item Added!");
+      handleClick();
+    }
   };
 
   return (
@@ -123,7 +164,7 @@ const ProDetails = (items: {
           <FavoriteBorderIcon sx={{ mr: "4%" }} /> Lorem ipsum
         </Button>
       )}
-      <Notify handleClose={handleClose} open={open} message={"Item Added"} />
+      <Notify handleClose={handleClose} open={open} message={message} />
     </Box>
   );
 };
