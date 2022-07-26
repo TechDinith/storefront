@@ -28,7 +28,7 @@ const ProDetails = (items: {
   );
 
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ message: "", severity: "" });
 
   const handleClick = () => {
     setOpen(true);
@@ -73,10 +73,8 @@ const ProDetails = (items: {
         })
       : false;
 
-    console.log(isMatch[0]);
-
-    if (jsonCart !== null && !isMatch[0]) {
-      setMessage("Item Already Added!");
+    if (jsonCart !== null && isMatch[0]) {
+      setMessage({ message: "Item Already Added!", severity: "info" });
       handleClick();
     } else {
       items.countProps!.setCount([...items.countProps!.count, testCartItem]);
@@ -84,7 +82,7 @@ const ProDetails = (items: {
         "cart",
         JSON.stringify([...items.countProps!.count, testCartItem])
       );
-      setMessage("Item Added!");
+      setMessage({ message: "Item Added!", severity: "success" });
       handleClick();
     }
   };
@@ -164,7 +162,12 @@ const ProDetails = (items: {
           <FavoriteBorderIcon sx={{ mr: "4%" }} /> Lorem ipsum
         </Button>
       )}
-      <Notify handleClose={handleClose} open={open} message={message} />
+      <Notify
+        handleClose={handleClose}
+        open={open}
+        message={message.message}
+        severity={message.severity}
+      />
     </Box>
   );
 };
