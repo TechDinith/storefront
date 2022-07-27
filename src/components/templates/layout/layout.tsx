@@ -1,7 +1,5 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Navbar from "../navbar/navbar";
 import { Route, Routes } from "react-router-dom";
@@ -15,10 +13,6 @@ import SignUpSide from "../../pages/signup/signup.page";
 import Category from "../../pages/category/category.page";
 import { useEffect, useState } from "react";
 import Cart from "../../pages/cart/cart.page";
-
-const Item = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(1),
-}));
 
 const categories = ["men", "women", "accessories"];
 
@@ -45,7 +39,10 @@ const Layout = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<SignInSide />} />
               <Route path="/signup" element={<SignUpSide />} />
-              <Route path="/cart" element={<Cart />} />
+              <Route
+                path="/cart"
+                element={<Cart setCount={setCount} count={count} />}
+              />
               {categories.map((path) => {
                 return (
                   <Route

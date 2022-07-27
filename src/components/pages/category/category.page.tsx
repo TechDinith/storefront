@@ -18,13 +18,14 @@ import { iCategory, iCount } from "../../interface.page";
 import { useEffect, useState } from "react";
 
 const Category = ({ setCount, count }: iCount) => {
-  const [cart, setCart] = useState<iCategory[]>([]);
+  const [categories, setCategories] = useState<iCategory[]>([]);
   const location = useLocation();
   const category = location.pathname.substring(1);
 
   useEffect(() => {
-    setCart([
+    setCategories([
       {
+        id: "1",
         image: prod1,
         isColor: false,
         name: "Sample Item",
@@ -32,6 +33,7 @@ const Category = ({ setCount, count }: iCount) => {
         category: "men",
       },
       {
+        id: "2",
         image: prod2,
         isColor: false,
         name: "Sample Item",
@@ -39,6 +41,7 @@ const Category = ({ setCount, count }: iCount) => {
         category: "men",
       },
       {
+        id: "3",
         image: prod3,
         isColor: false,
         name: "Sample Item",
@@ -46,6 +49,7 @@ const Category = ({ setCount, count }: iCount) => {
         category: "women",
       },
       {
+        id: "4",
         image: prod4,
         isColor: false,
         name: "Sample Item",
@@ -53,6 +57,7 @@ const Category = ({ setCount, count }: iCount) => {
         category: "women",
       },
       {
+        id: "5",
         image: null,
         isColor: true,
         name: "Sample Item",
@@ -65,6 +70,7 @@ const Category = ({ setCount, count }: iCount) => {
         category: "accessories",
       },
       {
+        id: "6",
         image: prod6,
         category: "accessories",
         isColor: false,
@@ -124,7 +130,7 @@ const Category = ({ setCount, count }: iCount) => {
             direction="row"
             sx={{ display: { xs: "none", sm: "flex", md: "flex" } }}
           >
-            {cart.map((item, i) =>
+            {categories.map((item, i) =>
               item.category === category ? (
                 <Grid item xs={4} key={i}>
                   <ProDetails
@@ -142,7 +148,7 @@ const Category = ({ setCount, count }: iCount) => {
             direction="row"
             sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
           >
-            {cart.map((item, i) =>
+            {categories.map((item, i) =>
               item.category === category ? (
                 <Grid item xs={10} key={i}>
                   <ProDetails

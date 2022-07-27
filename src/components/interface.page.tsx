@@ -4,6 +4,7 @@ export interface iCount {
 }
 
 export interface iCart {
+  id: string;
   orderedOn: string;
   addedOn: string;
   image: any;
@@ -15,6 +16,7 @@ export interface iCart {
 }
 
 export interface iCategory {
+  id: string;
   image: any;
   isColor: boolean;
   colors?: { [x: string]: any } | undefined;
@@ -26,6 +28,7 @@ export interface iCategory {
 }
 
 export interface iLatest {
+  id: string;
   image: any;
   isColor: boolean;
   colors?: { [x: string]: any } | undefined;

@@ -18,6 +18,7 @@ const Latest = () => {
   useEffect(() => {
     setLatest([
       {
+        id: "1",
         image: prod1,
         name: "Sample Item",
         price: "Rs.1500",
@@ -25,6 +26,7 @@ const Latest = () => {
         isColor: false,
       },
       {
+        id: "2",
         image: prod2,
         name: "Sample Item",
         price: "Rs.1500",
@@ -32,6 +34,7 @@ const Latest = () => {
         isColor: false,
       },
       {
+        id: "3",
         image: prod3,
         name: "Sample Item",
         price: "Rs.1500",
@@ -39,6 +42,7 @@ const Latest = () => {
         isColor: false,
       },
       {
+        id: "4",
         image: prod4,
         name: "Sample Item",
         price: "Rs.1500",
@@ -46,6 +50,7 @@ const Latest = () => {
         isColor: false,
       },
       {
+        id: "5",
         image: null,
         name: "Sample Item",
         price: "Rs.1500",
@@ -58,6 +63,7 @@ const Latest = () => {
         isColor: false,
       },
       {
+        id: "6",
         image: prod6,
         category: "accessories",
         name: "Sample Item",

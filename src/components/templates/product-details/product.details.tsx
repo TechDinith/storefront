@@ -4,15 +4,17 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CircleIcon from "@mui/icons-material/Circle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Notify from "../notify/notify.template";
 import { iProdDetails } from "../../interface.page";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StartIcon from "@mui/icons-material/Start";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 const ProDetails = (items: iProdDetails) => {
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState({
     image: items.cart.image
       ? items.cart.image
@@ -24,6 +26,10 @@ const ProDetails = (items: iProdDetails) => {
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState({ message: "", severity: "" });
+
+  // useEffect(() => {
+  //   //
+  // }, [items.countProps?.count]);
 
   const handleClick = () => {
     setOpen(true);
@@ -41,10 +47,8 @@ const ProDetails = (items: iProdDetails) => {
   };
 
   const handleAddToCart = () => {
-    let id = 1;
-
-    let testCartItem = {
-      id: id,
+    let cartItem = {
+      id: items.cart.id,
       image: selectedProduct.image,
       category: items.cart.category,
       isColor: items.cart.isColor,
@@ -54,30 +58,28 @@ const ProDetails = (items: iProdDetails) => {
       colors: [{ imgae: selectedProduct.image, color: selectedProduct.color }],
       orderedOn: items.cart.orderedOn,
     };
-
     let isMatch: any =
       items.countProps?.count !== null
         ? items.countProps?.count.map((item: any) => {
-            if (item.id === testCartItem.id) {
+            if (item.id === cartItem.id) {
               return true;
-            } else {
-              return false;
             }
           })
         : false;
+    console.log(items.cart.id, items.countProps?.count, isMatch);
 
-    if (items.countProps?.count !== null && isMatch[0]) {
+    if (items.countProps?.count !== null && isMatch.includes(true)) {
       setMessage({ message: "Item Already Added!", severity: "info" });
       handleClick();
     } else {
       if (items.countProps?.count === null) {
-        items.countProps!.setCount([testCartItem]);
-        localStorage.setItem("cart", JSON.stringify([testCartItem]));
+        items.countProps!.setCount([cartItem]);
+        localStorage.setItem("cart", JSON.stringify([cartItem]));
       } else {
-        items.countProps!.setCount([...items.countProps!.count, testCartItem]);
+        items.countProps!.setCount([...items.countProps!.count, cartItem]);
         localStorage.setItem(
           "cart",
-          JSON.stringify([...items.countProps!.count, testCartItem])
+          JSON.stringify([...items.countProps!.count, cartItem])
         );
       }
       setMessage({ message: "Item Added!", severity: "success" });
@@ -85,13 +87,47 @@ const ProDetails = (items: iProdDetails) => {
     }
   };
 
+  const handleRemove = () => {
+    let localCart = localStorage.getItem("cart");
+    let jsonCart = JSON.parse(typeof localCart === "string" ? localCart : "");
+
+    let cartItems = jsonCart.filter(
+      (product: any) =>
+        String(product.id).trim() !== String(items.cart.id).trim()
+    );
+    if (cartItems.length) {
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      items.countProps!.setCount(cartItems);
+    } else {
+      items.countProps!.setCount(null);
+      localStorage.removeItem("cart");
+      setMessage({ message: "Cart is Empty!", severity: "error" });
+      handleClick();
+      navigate(-1);
+    }
+  };
+
   return (
     <Box justifyContent="center" textAlign={"center"} color="white">
-      <Image
-        src={selectedProduct.image}
-        alt={selectedProduct.color}
-        preview={items.preview}
-      />
+      {items.isCart ? (
+        <Box>
+          <IconButton onClick={handleRemove}>
+            <RemoveCircleOutlineIcon fontSize="large" color="error" />
+          </IconButton>
+          <Image
+            src={selectedProduct.image}
+            alt={selectedProduct.color}
+            preview={items.preview}
+          />
+        </Box>
+      ) : (
+        <Image
+          src={selectedProduct.image}
+          alt={selectedProduct.color}
+          preview={items.preview}
+        />
+      )}
+
       <Typography variant="h6" color="inherit" textTransform="uppercase">
         {items.cart.name && items.cart.name}
       </Typography>
@@ -104,7 +140,7 @@ const ProDetails = (items: iProdDetails) => {
           <Box display="flex" justifyContent={"center"}>
             {items.cart.colors &&
               items.cart.colors.map((item: any, i: number) => (
-                <CircleIcon sx={{ color: item.color }} />
+                <CircleIcon key={i} sx={{ color: item.color }} />
               ))}
           </Box>
         ) : (

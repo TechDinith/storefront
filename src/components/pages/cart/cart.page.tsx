@@ -5,9 +5,11 @@ import Box from "@mui/material/Box";
 import ProDetails from "../../templates/product-details/product.details";
 import { useEffect, useState } from "react";
 import { iCart, iCount } from "../../interface.page";
+import { useNavigate } from "react-router-dom";
 
-const Cart = () => {
+const Cart = ({ count, setCount }: iCount) => {
   const [cart, setCart] = useState<iCart[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
@@ -16,7 +18,10 @@ const Cart = () => {
         ? JSON.parse(typeof localCart === "string" ? localCart : "")
         : null
     );
-  }, []);
+    if (!localCart?.length) {
+      navigate(-1);
+    }
+  }, [count]);
 
   // const cartItems = [
   //   {
@@ -150,7 +155,12 @@ const Cart = () => {
                       </Typography>
                     </>
                   )}
-                  <ProDetails isCart={true} preview={true} cart={item} />
+                  <ProDetails
+                    isCart={true}
+                    preview={true}
+                    cart={item}
+                    countProps={{ count, setCount }}
+                  />
                 </Grid>
               ))}
           </Grid>
@@ -178,7 +188,12 @@ const Cart = () => {
                       }).format(new Date(item.addedOn))}
                     </Typography>
                   )}
-                  <ProDetails isCart={true} preview={true} cart={item} />
+                  <ProDetails
+                    isCart={true}
+                    preview={true}
+                    cart={item}
+                    countProps={{ count, setCount }}
+                  />
                 </Grid>
               ))}
           </Grid>
