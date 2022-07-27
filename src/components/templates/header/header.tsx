@@ -8,9 +8,28 @@ import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import { NavLink } from "react-router-dom";
-import { iCount } from "../../pages/interface.page";
+import { iCount } from "../../interface.page";
+import Notify from "../notify/notify.template";
+import { useState } from "react";
 
 const Header = ({ count }: iCount) => {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   return (
     <Grid
       container
@@ -48,32 +67,65 @@ const Header = ({ count }: iCount) => {
             ),
           }}
         />
-        <Badge
-          badgeContent={count.length ? count.length : 0}
-          color="primary"
-          sx={{
-            mx: "1%",
-            "& .MuiBadge-badge": {
-              right: 8,
-              top: 8,
-              padding: "4px 4px",
-            },
-          }}
-        >
-          <IconButton
+        {count ? (
+          <Badge
+            badgeContent={count ? count.length : 0}
+            color="primary"
             sx={{
-              "&:hover": {
-                color: "white",
+              mx: "1%",
+              "& .MuiBadge-badge": {
+                right: 8,
+                top: 8,
+                padding: "4px 4px",
               },
             }}
-            color="secondary"
-            component={NavLink}
-            to="/cart"
           >
-            <ShoppingCartSharpIcon />
-          </IconButton>
-        </Badge>
+            <IconButton
+              sx={{
+                "&:hover": {
+                  color: "white",
+                },
+              }}
+              color="secondary"
+              component={NavLink}
+              to="/cart"
+            >
+              <ShoppingCartSharpIcon />
+            </IconButton>
+          </Badge>
+        ) : (
+          <Badge
+            badgeContent={0}
+            color="primary"
+            sx={{
+              mx: "1%",
+              "& .MuiBadge-badge": {
+                right: 8,
+                top: 8,
+                padding: "4px 4px",
+              },
+            }}
+          >
+            <IconButton
+              sx={{
+                "&:hover": {
+                  color: "white",
+                },
+              }}
+              color="secondary"
+              onClick={handleClick}
+            >
+              <ShoppingCartSharpIcon />
+            </IconButton>
+          </Badge>
+        )}
       </Grid>
+      <Notify
+        handleClose={handleClose}
+        open={open}
+        message={"Cart Is Empty"}
+        severity={"info"}
+      />
     </Grid>
   );
 };

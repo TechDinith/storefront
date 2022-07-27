@@ -13,7 +13,7 @@ import Contact from "../../pages/contact/contact.page";
 import SignInSide from "../../pages/signin/signin.page";
 import SignUpSide from "../../pages/signup/signup.page";
 import Category from "../../pages/category/category.page";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cart from "../../pages/cart/cart.page";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -24,6 +24,14 @@ const categories = ["men", "women", "accessories"];
 
 const Layout = () => {
   const [count, setCount] = useState([]);
+  useEffect(() => {
+    let localCart = localStorage.getItem("cart");
+    setCount(
+      localCart
+        ? JSON.parse(typeof localCart === "string" ? localCart : "")
+        : null
+    );
+  }, []);
   return (
     <>
       <Header setCount={null} count={count} />

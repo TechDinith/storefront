@@ -22,7 +22,8 @@ import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Badge from "@mui/material/Badge";
-import { iCount } from "../../pages/interface.page";
+import { iCount } from "../../interface.page";
+import Notify from "../notify/notify.template";
 
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
@@ -37,6 +38,23 @@ const Navbar = ({ count }: iCount) => {
   const [anchorElCateg, setAnchorElCateg] = React.useState<null | HTMLElement>(
     null
   );
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleNotifyClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAuth(event.target.checked);
@@ -348,23 +366,60 @@ const Navbar = ({ count }: iCount) => {
                 <MenuItem onClick={handleClose}>Sign Out</MenuItem>
               </Menu>
 
-              <Badge
-                badgeContent={count.length ? count.length : 0}
-                color="primary"
-                sx={{
-                  mx: "1%",
-                  display: { xs: "true", sm: "true", md: "none" },
-                  "& .MuiBadge-badge": {
-                    right: 8,
-                    top: 8,
-                    padding: "4px 4px",
-                  },
-                }}
-              >
-                <IconButton>
-                  <ShoppingCartSharpIcon color="secondary" />
-                </IconButton>
-              </Badge>
+              {count ? (
+                <Badge
+                  badgeContent={count ? count.length : 0}
+                  color="primary"
+                  sx={{
+                    mx: "1%",
+                    display: { xs: "true", sm: "true", md: "none" },
+                    "& .MuiBadge-badge": {
+                      right: 8,
+                      top: 8,
+                      padding: "4px 4px",
+                    },
+                  }}
+                >
+                  <IconButton
+                    sx={{
+                      "&:hover": {
+                        color: "white",
+                      },
+                    }}
+                    color="secondary"
+                    component={NavLink}
+                    to="/cart"
+                  >
+                    <ShoppingCartSharpIcon />
+                  </IconButton>
+                </Badge>
+              ) : (
+                <Badge
+                  badgeContent={0}
+                  color="primary"
+                  sx={{
+                    mx: "1%",
+                    display: { xs: "true", sm: "true", md: "none" },
+                    "& .MuiBadge-badge": {
+                      right: 8,
+                      top: 8,
+                      padding: "4px 4px",
+                    },
+                  }}
+                >
+                  <IconButton
+                    sx={{
+                      "&:hover": {
+                        color: "white",
+                      },
+                    }}
+                    color="secondary"
+                    onClick={handleClick}
+                  >
+                    <ShoppingCartSharpIcon />
+                  </IconButton>
+                </Badge>
+              )}
             </Box>
           ) : (
             <Box
@@ -463,6 +518,12 @@ const Navbar = ({ count }: iCount) => {
           {drawer}
         </Drawer>
       </Box>
+      <Notify
+        handleClose={handleNotifyClose}
+        open={open}
+        message={"Cart Is Empty"}
+        severity={"info"}
+      />
     </>
   );
 };

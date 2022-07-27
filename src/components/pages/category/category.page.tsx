@@ -14,61 +14,65 @@ import prod5red from "../../../images/prod5-red.jpg";
 import prod5white from "../../../images/prod5-white.jpg";
 import prod6 from "../../../images/prod6.jpg";
 import ProDetails from "../../templates/product-details/product.details";
-import { iCount } from "../interface.page";
+import { iCategory, iCount } from "../../interface.page";
+import { useEffect, useState } from "react";
 
 const Category = ({ setCount, count }: iCount) => {
+  const [cart, setCart] = useState<iCategory[]>([]);
   const location = useLocation();
   const category = location.pathname.substring(1);
 
-  const prodImages = [
-    {
-      image: prod1,
-      isColor: false,
-      name: "Sample Item",
-      price: "Rs.1500",
-      category: "men",
-    },
-    {
-      image: prod2,
-      isColor: false,
-      name: "Sample Item",
-      price: "Rs.1500",
-      category: "men",
-    },
-    {
-      image: prod3,
-      isColor: false,
-      name: "Sample Item",
-      price: "Rs.1500",
-      category: "women",
-    },
-    {
-      image: prod4,
-      isColor: false,
-      name: "Sample Item",
-      price: "Rs.1500",
-      category: "women",
-    },
-    {
-      image: null,
-      isColor: true,
-      name: "Sample Item",
-      price: "Rs.1500",
-      colors: [
-        { image: prod5black, color: "black" },
-        { image: prod5red, color: "red" },
-        { image: prod5white, color: "white" },
-      ],
-      category: "accessories",
-    },
-    {
-      image: prod6,
-      category: "accessories",
-      isColor: false,
-      name: "Sample Item",
-      price: "Rs.1500",
-    },
-  ];
+  useEffect(() => {
+    setCart([
+      {
+        image: prod1,
+        isColor: false,
+        name: "Sample Item",
+        price: "Rs.1500",
+        category: "men",
+      },
+      {
+        image: prod2,
+        isColor: false,
+        name: "Sample Item",
+        price: "Rs.1500",
+        category: "men",
+      },
+      {
+        image: prod3,
+        isColor: false,
+        name: "Sample Item",
+        price: "Rs.1500",
+        category: "women",
+      },
+      {
+        image: prod4,
+        isColor: false,
+        name: "Sample Item",
+        price: "Rs.1500",
+        category: "women",
+      },
+      {
+        image: null,
+        isColor: true,
+        name: "Sample Item",
+        price: "Rs.1500",
+        colors: [
+          { image: prod5black, color: "black" },
+          { image: prod5red, color: "red" },
+          { image: prod5white, color: "white" },
+        ],
+        category: "accessories",
+      },
+      {
+        image: prod6,
+        category: "accessories",
+        isColor: false,
+        name: "Sample Item",
+        price: "Rs.1500",
+      },
+    ]);
+  }, []);
 
   return (
     <>
@@ -120,17 +124,13 @@ const Category = ({ setCount, count }: iCount) => {
             direction="row"
             sx={{ display: { xs: "none", sm: "flex", md: "flex" } }}
           >
-            {prodImages.map((item, i) =>
+            {cart.map((item, i) =>
               item.category === category ? (
                 <Grid item xs={4} key={i}>
                   <ProDetails
                     countProps={{ setCount, count }}
-                    name={item.name}
-                    price={item.price}
                     preview={true}
-                    isColor={item.isColor}
-                    colors={item.colors}
-                    item={item.image}
+                    cart={item}
                   />
                 </Grid>
               ) : null
@@ -142,17 +142,13 @@ const Category = ({ setCount, count }: iCount) => {
             direction="row"
             sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
           >
-            {prodImages.map((item, i) =>
+            {cart.map((item, i) =>
               item.category === category ? (
                 <Grid item xs={10} key={i}>
                   <ProDetails
                     countProps={{ setCount, count }}
-                    name={item.name}
-                    price={item.price}
                     preview={true}
-                    isColor={item.isColor}
-                    colors={item.colors}
-                    item={item.image}
+                    cart={item}
                   />
                 </Grid>
               ) : null
