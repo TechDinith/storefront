@@ -44,10 +44,8 @@ const AuthenticationForm = ({
     });
     setTimeout(() => {
       navigate(-1);
-    }, 3000);
+    }, 100);
   };
-
-  const math = Math;
 
   return (
     <>

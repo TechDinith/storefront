@@ -37,8 +37,20 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
     null
   );
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    authProps.setAuth(event.target.checked);
+  const location = useLocation();
+  const ancorRef = React.useRef(null);
+
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   authProps.setAuth(event.target.checked);
+  // };
+
+  React.useLayoutEffect(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const handleSignOut = () => {
+    authProps.setAuth(false);
+    setAnchorEl(null);
   };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -58,8 +70,6 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
   };
 
   const math = Math;
-
-  const location = useLocation();
 
   const drawer = (
     <Box sx={{ textAlign: "center" }}>
@@ -342,7 +352,9 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                     Profile
                   </Link>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>Sign Out</MenuItem>
+                <MenuItem onClick={handleSignOut} ref={ancorRef}>
+                  Sign Out
+                </MenuItem>
               </Menu>
 
               {countProps.count ? (

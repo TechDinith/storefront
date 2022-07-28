@@ -126,7 +126,7 @@ const Latest = ({ notifyProps }: any) => {
         sx={{ display: { xs: "none", sm: "flex" } }}
       >
         <Grid item xs={12}>
-          <SubSlogan />
+          <SubSlogan path="/accssories" />
         </Grid>
       </Grid>
 

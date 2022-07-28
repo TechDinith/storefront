@@ -17,14 +17,21 @@ import SubSlogan from "../../sections/subSlogan/subSlogan.section";
 import Latest from "../../sections/latest/latest.section";
 import { iHome } from "./home.interfaces";
 
-const sliderImages = [
-  <Image src={sImage1} alt="1" preview={false} />,
-  <Image src={sImage2} alt="2" preview={false} />,
-  <Image src={sImage4} alt="3" preview={false} />,
-];
-
 const sliderItems = {
-  items: sliderImages,
+  items: [
+    {
+      image: <Image src={sImage1} alt={sImage1} preview={false} />,
+      category: "men",
+    },
+    {
+      image: <Image src={sImage2} alt={sImage2} preview={false} />,
+      category: "accessories",
+    },
+    {
+      image: <Image src={sImage4} alt={sImage4} preview={false} />,
+      category: "women",
+    },
+  ],
   isButton: true,
   btnText: "Check it Out",
   slidesToShow: 1,
@@ -32,11 +39,12 @@ const sliderItems = {
   speed: 2000,
   isArrows: true,
 };
+
 const sliderItems1 = {
   items: [
-    <Image src={wm} alt="2" preview={false} width="100%" />,
-    <Image src={sImg1} alt="2" preview={false} width="100%" />,
-    <Image src={wm1} alt="2" preview={false} width="100%" />,
+    <Image src={wm} alt={wm} preview={false} width="100%" />,
+    <Image src={sImg1} alt={sImage1} preview={false} width="100%" />,
+    <Image src={wm1} alt={wm1} preview={false} width="100%" />,
   ],
   slidesToShow: 1,
   draggable: true,
@@ -47,10 +55,10 @@ const sliderItems1 = {
 
 const sliderItems2 = {
   items: [
-    <Image src={mode1} alt="2" preview={false} />,
-    <Image src={mode2} alt="2" preview={false} />,
-    <Image src={mode3} alt="2" preview={false} />,
-    <Image src={mode4} alt="2" preview={false} />,
+    <Image src={mode1} alt={mode1} preview={false} />,
+    <Image src={mode2} alt={mode2} preview={false} />,
+    <Image src={mode3} alt={mode3} preview={false} />,
+    <Image src={mode4} alt={mode4} preview={false} />,
   ],
   slidesToShow: 3,
   draggable: true,
@@ -75,7 +83,7 @@ const Home = ({ notifyProps }: iHome) => {
       <Catogories />
 
       <Grid item xs={10} mt="5%">
-        <SubSlogan />
+        <SubSlogan path={"/women"} />
         <Slider {...sliderItems2} />
       </Grid>
 

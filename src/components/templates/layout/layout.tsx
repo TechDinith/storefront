@@ -47,7 +47,7 @@ const Layout = () => {
       <Header countProps={{ setCount, count }} />
       <Box component="main">
         <Grid container justifyContent="center">
-          {/* profile and signout */}
+          {/* profile search checkout if login cart should append and sent to database when removing it should go too*/}
           <Navbar
             authProps={{ auth, setAuth }}
             countProps={{ setCount, count }}
@@ -80,7 +80,6 @@ const Layout = () => {
                 path="/login"
                 element={<SignInSide authProps={{ auth, setAuth }} />}
               />
-              {/* //signup succes message */}
               <Route
                 path="/signup"
                 element={

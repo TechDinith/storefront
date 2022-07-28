@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
 
 const MainSlogan = () => {
   return (
@@ -20,6 +21,8 @@ const MainSlogan = () => {
         variant="outlined"
         color="inherit"
         size="large"
+        component={Link}
+        to={"/men"}
         sx={{ marginLeft: "auto", marginRight: "auto" }}
       >
         Lorem ipsum

@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { ArrowBackIosNewOutlined, ArrowForwardIos } from "@mui/icons-material";
 import "./slider.scss";
+import { Link } from "react-router-dom";
 
 const textStyle: React.CSSProperties = {
   height: "160px",
@@ -53,12 +54,14 @@ const Slider = ({
                   position: "absolute",
                   zIndex: "1",
                 }}
+                component={Link}
+                to={"/" + item.category}
                 color="error"
               >
                 {btnText}
               </Button>
             )}
-            {item}
+            {item.image ? item.image : item}
           </Box>
         );
       })}

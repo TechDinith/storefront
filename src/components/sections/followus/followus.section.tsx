@@ -23,8 +23,7 @@ const FollowUs = () => {
         textAlign="center"
       >
         <Box py="1%">
-          <Typography
-            variant="h5"
+          <Box
             color="white"
             my="8%"
             py="1%"
@@ -42,7 +41,7 @@ const FollowUs = () => {
               <InstagramIcon sx={{ m: "1%" }} fontSize="large" />
               <FacebookIcon sx={{ m: "1%" }} fontSize="large" />
             </Box>
-          </Typography>
+          </Box>
         </Box>
       </Grid>
     </>
