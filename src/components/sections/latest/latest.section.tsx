@@ -10,9 +10,9 @@ import prod5white from "../../../images/prod5-white.jpg";
 import prod6 from "../../../images/prod6.jpg";
 import SubSlogan from "../subSlogan/subSlogan.section";
 import { useState, useEffect } from "react";
-import { iLatest } from "../../interface.page";
+import { iLatest } from "../../templates/product-details/interface.productdetails";
 
-const Latest = () => {
+const Latest = ({ notifyProps }: any) => {
   const [latest, setLatest] = useState<iLatest[]>([]);
 
   useEffect(() => {
@@ -138,7 +138,12 @@ const Latest = () => {
       >
         {latest.map((item, i) => (
           <Grid item xs={4} key={i}>
-            <ProDetails preview={false} cart={item} latest={true} />
+            <ProDetails
+              notifyProps={notifyProps}
+              preview={false}
+              cart={item}
+              latest={true}
+            />
           </Grid>
         ))}
       </Grid>

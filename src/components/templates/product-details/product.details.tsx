@@ -4,86 +4,68 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CircleIcon from "@mui/icons-material/Circle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Image } from "antd";
-import { NavLink, useNavigate } from "react-router-dom";
-import Notify from "../notify/notify.template";
-import { iProdDetails } from "../../interface.page";
+import { NavLink } from "react-router-dom";
+import { iProdDetails } from "./interface.productdetails";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StartIcon from "@mui/icons-material/Start";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import ConsecutiveSnackbars from "../notify/notify.template";
 
-const ProDetails = (items: iProdDetails) => {
-  const navigate = useNavigate();
+const ProDetails = ({
+  cart,
+  countProps,
+  notifyProps,
+  isCart,
+  preview,
+  latest,
+}: iProdDetails) => {
   const [selectedProduct, setSelectedProduct] = useState({
-    image: items.cart.image
-      ? items.cart.image
-      : items.cart.colors
-      ? items.cart.colors[0].image
-      : null,
-    color: items.cart.colors ? items.cart.colors[0] : "transparent",
+    image: cart.image ? cart.image : cart.colors ? cart.colors[0].image : null,
+    color: cart.colors ? cart.colors[0] : "transparent",
   });
-
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState({ message: "", severity: "" });
-
-  // useEffect(() => {
-  //   //
-  // }, [items.countProps?.count]);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
 
   const handleAddToCart = () => {
     let cartItem = {
-      id: items.cart.id,
+      id: cart.id,
       image: selectedProduct.image,
-      category: items.cart.category,
-      isColor: items.cart.isColor,
-      name: items.cart.name,
-      price: items.cart.price,
-      addedOn: items.cart.addedOn,
+      category: cart.category,
+      isColor: cart.isColor,
+      name: cart.name,
+      price: cart.price,
+      addedOn: cart.addedOn,
       colors: [{ imgae: selectedProduct.image, color: selectedProduct.color }],
-      orderedOn: items.cart.orderedOn,
+      orderedOn: cart.orderedOn,
     };
     let isMatch: any =
-      items.countProps?.count !== null
-        ? items.countProps?.count.map((item: any) => {
-            if (item.id === cartItem.id) {
-              return true;
-            }
+      countProps?.count !== null
+        ? countProps?.count.map((item: any) => {
+            return item.id === cartItem.id ? true : false;
           })
         : false;
-    console.log(items.cart.id, items.countProps?.count, isMatch);
 
-    if (items.countProps?.count !== null && isMatch.includes(true)) {
-      setMessage({ message: "Item Already Added!", severity: "info" });
-      handleClick();
+    if (countProps?.count !== null && isMatch.includes(true)) {
+      notifyProps.handleNotificationClick({
+        message: "Item Already Added!",
+        severity: "info",
+      });
     } else {
-      if (items.countProps?.count === null) {
-        items.countProps!.setCount([cartItem]);
+      if (countProps?.count === null) {
+        countProps!.setCount([cartItem]);
         localStorage.setItem("cart", JSON.stringify([cartItem]));
       } else {
-        items.countProps!.setCount([...items.countProps!.count, cartItem]);
+        countProps!.setCount([...countProps!.count, cartItem]);
         localStorage.setItem(
           "cart",
-          JSON.stringify([...items.countProps!.count, cartItem])
+          JSON.stringify([...countProps!.count, cartItem])
         );
       }
-      setMessage({ message: "Item Added!", severity: "success" });
-      handleClick();
+
+      notifyProps.handleNotificationClick({
+        message: "Item Added!",
+        severity: "success",
+      });
     }
   };
 
@@ -92,24 +74,24 @@ const ProDetails = (items: iProdDetails) => {
     let jsonCart = JSON.parse(typeof localCart === "string" ? localCart : "");
 
     let cartItems = jsonCart.filter(
-      (product: any) =>
-        String(product.id).trim() !== String(items.cart.id).trim()
+      (product: any) => String(product.id).trim() !== String(cart.id).trim()
     );
     if (cartItems.length) {
       localStorage.setItem("cart", JSON.stringify(cartItems));
-      items.countProps!.setCount(cartItems);
+      countProps!.setCount(cartItems);
     } else {
-      items.countProps!.setCount(null);
+      notifyProps.handleNotificationClick({
+        message: "Cart is Empty!",
+        severity: "error",
+      });
       localStorage.removeItem("cart");
-      setMessage({ message: "Cart is Empty!", severity: "error" });
-      handleClick();
-      navigate(-1);
+      countProps!.setCount(null);
     }
   };
 
   return (
     <Box justifyContent="center" textAlign={"center"} color="white">
-      {items.isCart ? (
+      {isCart ? (
         <Box>
           <IconButton onClick={handleRemove}>
             <RemoveCircleOutlineIcon fontSize="large" color="error" />
@@ -117,36 +99,36 @@ const ProDetails = (items: iProdDetails) => {
           <Image
             src={selectedProduct.image}
             alt={selectedProduct.color}
-            preview={items.preview}
+            preview={preview}
           />
         </Box>
       ) : (
         <Image
           src={selectedProduct.image}
           alt={selectedProduct.color}
-          preview={items.preview}
+          preview={preview}
         />
       )}
 
       <Typography variant="h6" color="inherit" textTransform="uppercase">
-        {items.cart.name && items.cart.name}
+        {cart.name && cart.name}
       </Typography>
       <Typography variant="body1" color="cyan" textTransform="uppercase">
-        {items.cart.price && items.cart.price}
+        {cart.price && cart.price}
       </Typography>
 
-      {items.cart.isColor ? (
-        items.isCart ? (
+      {cart.isColor ? (
+        isCart ? (
           <Box display="flex" justifyContent={"center"}>
-            {items.cart.colors &&
-              items.cart.colors.map((item: any, i: number) => (
+            {cart.colors &&
+              cart.colors.map((item: any, i: number) => (
                 <CircleIcon key={i} sx={{ color: item.color }} />
               ))}
           </Box>
         ) : (
           <Box display="flex" justifyContent={"center"}>
-            {items.cart.colors &&
-              items.cart.colors.map((item: any, i: number) => (
+            {cart.colors &&
+              cart.colors.map((item: any, i: number) => (
                 <IconButton
                   key={i}
                   onClick={() =>
@@ -158,14 +140,14 @@ const ProDetails = (items: iProdDetails) => {
               ))}
           </Box>
         )
-      ) : items.latest ? null : (
+      ) : latest ? null : (
         <Box display="flex" justifyContent={"center"}>
           <IconButton disabled>
             <CircleIcon sx={{ color: "transparent" }} />
           </IconButton>
         </Box>
       )}
-      {items.isCart ? (
+      {isCart ? (
         <Button
           sx={{
             "&:hover": {
@@ -178,9 +160,9 @@ const ProDetails = (items: iProdDetails) => {
           fullWidth
           component={NavLink}
           to={"/checkout"}
-          disabled={items.cart.orderedOn !== null ? true : false}
+          disabled={cart.orderedOn !== null ? true : false}
         >
-          {items.cart.orderedOn !== null ? (
+          {cart.orderedOn !== null ? (
             "Order will receive within 15 days"
           ) : (
             <>
@@ -188,7 +170,7 @@ const ProDetails = (items: iProdDetails) => {
             </>
           )}
         </Button>
-      ) : items.latest ? (
+      ) : latest ? (
         <Button
           sx={{
             "&:hover": {
@@ -200,11 +182,11 @@ const ProDetails = (items: iProdDetails) => {
           size="large"
           fullWidth
           component={NavLink}
-          to={"/" + items.cart.category}
+          to={"/" + cart.category}
         >
           <StartIcon sx={{ mr: "4%" }} /> Lorem ipsum
         </Button>
-      ) : items.cart.category ? (
+      ) : cart.category ? (
         <Button
           variant="outlined"
           color="inherit"
@@ -215,11 +197,10 @@ const ProDetails = (items: iProdDetails) => {
           <ShoppingCartCheckoutIcon sx={{ mr: "4%" }} /> Lorem ipsum
         </Button>
       ) : null}
-      <Notify
-        handleClose={handleClose}
-        open={open}
-        message={message.message}
-        severity={message.severity}
+      <ConsecutiveSnackbars
+        message={notifyProps.message}
+        setSnackPack={notifyProps.setSnackPack}
+        snackPack={notifyProps.snackPack}
       />
     </Box>
   );

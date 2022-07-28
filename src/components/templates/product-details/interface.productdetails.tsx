@@ -1,3 +1,5 @@
+import { iNotifyProps } from "../notify/notify.interfaces";
+
 export interface iCount {
   count: any[];
   setCount: any;
@@ -40,6 +42,7 @@ export interface iLatest {
 }
 
 export interface iProdDetails {
+  notifyProps: iNotifyProps;
   countProps?: iCount;
   cart: iCart | iCategory | iLatest;
   isCart?: boolean;

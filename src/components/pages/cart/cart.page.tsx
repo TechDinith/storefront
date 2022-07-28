@@ -4,82 +4,29 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ProDetails from "../../templates/product-details/product.details";
 import { useEffect, useState } from "react";
-import { iCart, iCount } from "../../interface.page";
+import { iCart } from "../../templates/product-details/interface.productdetails";
 import { useNavigate } from "react-router-dom";
+import { iCartPage } from "./cart.interfaces";
 
-const Cart = ({ count, setCount }: iCount) => {
+const Cart = ({ countProps, notifyProps }: iCartPage) => {
   const [cart, setCart] = useState<iCart[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
-    setCart(
-      localCart
-        ? JSON.parse(typeof localCart === "string" ? localCart : "")
-        : null
-    );
-    if (!localCart?.length) {
-      navigate(-1);
+    if (localCart === null) {
+      setTimeout(() => {
+        setCart([]);
+        navigate(-1);
+      }, 1000);
+    } else {
+      setCart(
+        localCart
+          ? JSON.parse(typeof localCart === "string" ? localCart : "")
+          : []
+      );
     }
-  }, [count]);
-
-  // const cartItems = [
-  //   {
-  //     image: prod1,
-  //     isColor: false,
-  //     name: "Sample Item",
-  //     price: "Rs.1500",
-  //     category: "men",
-  //     orderedOn: null,
-  //     addedOn: "07/11/2022",
-  //   },
-  //   {
-  //     image: prod2,
-  //     isColor: false,
-  //     name: "Sample Item",
-  //     price: "Rs.1500",
-  //     category: "men",
-  //     orderedOn: "07/11/2022",
-  //     addedOn: "07/11/2022",
-  //   },
-  //   {
-  //     image: prod3,
-  //     isColor: false,
-  //     name: "Sample Item",
-  //     price: "Rs.1500",
-  //     category: "women",
-  //     orderedOn: "07/07/2022",
-  //     addedOn: "07/07/2022",
-  //   },
-  //   {
-  //     image: prod4,
-  //     isColor: false,
-  //     name: "Sample Item",
-  //     price: "Rs.1500",
-  //     category: "women",
-  //     orderedOn: null,
-  //     addedOn: "06/07/2022",
-  //   },
-  //   {
-  //     image: null,
-  //     isColor: true,
-  //     name: "Sample Item",
-  //     price: "Rs.1500",
-  //     colors: [{ image: prod5black, color: "black" }],
-  //     category: "accessories",
-  //     orderedOn: "07/06/2022",
-  //     addedOn: "07/06/2022",
-  //   },
-  //   {
-  //     image: prod6,
-  //     category: "accessories",
-  //     isColor: false,
-  //     name: "Sample Item",
-  //     price: "Rs.1500",
-  //     addedOn: "05/12/2022",
-  //     orderedOn: "05/12/2022",
-  //   },
-  // ];
+  }, [countProps.count]);
 
   return (
     <>
@@ -156,10 +103,11 @@ const Cart = ({ count, setCount }: iCount) => {
                     </>
                   )}
                   <ProDetails
+                    notifyProps={notifyProps}
                     isCart={true}
                     preview={true}
                     cart={item}
-                    countProps={{ count, setCount }}
+                    countProps={countProps}
                   />
                 </Grid>
               ))}
@@ -189,10 +137,11 @@ const Cart = ({ count, setCount }: iCount) => {
                     </Typography>
                   )}
                   <ProDetails
+                    notifyProps={notifyProps}
                     isCart={true}
                     preview={true}
                     cart={item}
-                    countProps={{ count, setCount }}
+                    countProps={countProps}
                   />
                 </Grid>
               ))}

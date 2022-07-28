@@ -14,10 +14,11 @@ import prod5red from "../../../images/prod5-red.jpg";
 import prod5white from "../../../images/prod5-white.jpg";
 import prod6 from "../../../images/prod6.jpg";
 import ProDetails from "../../templates/product-details/product.details";
-import { iCategory, iCount } from "../../interface.page";
+import { iCategory } from "../../templates/product-details/interface.productdetails";
 import { useEffect, useState } from "react";
+import { iCategories } from "./category.interfaces";
 
-const Category = ({ setCount, count }: iCount) => {
+const Category = ({ countProps, notifyProps }: iCategories) => {
   const [categories, setCategories] = useState<iCategory[]>([]);
   const location = useLocation();
   const category = location.pathname.substring(1);
@@ -134,7 +135,8 @@ const Category = ({ setCount, count }: iCount) => {
               item.category === category ? (
                 <Grid item xs={4} key={i}>
                   <ProDetails
-                    countProps={{ setCount, count }}
+                    notifyProps={notifyProps}
+                    countProps={countProps}
                     preview={true}
                     cart={item}
                   />
@@ -152,7 +154,8 @@ const Category = ({ setCount, count }: iCount) => {
               item.category === category ? (
                 <Grid item xs={10} key={i}>
                   <ProDetails
-                    countProps={{ setCount, count }}
+                    notifyProps={notifyProps}
+                    countProps={countProps}
                     preview={true}
                     cart={item}
                   />

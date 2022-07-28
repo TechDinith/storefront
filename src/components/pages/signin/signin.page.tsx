@@ -6,15 +6,6 @@ import simg1 from "../../../images/simg1.jpg";
 export default function SignInSide() {
   const fields = ["email", "password"];
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
   return (
     <Grid item xs={10} mt="4%">
       <Grid container>

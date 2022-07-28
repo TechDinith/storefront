@@ -1,11 +1,7 @@
-import { Button } from "@mui/material";
-
 const SandBox = () => {
   return (
     <>
-      <Button color="error" variant="contained">
-        clean
-      </Button>
+      <h1 color="white">sandbox</h1>
     </>
   );
 };

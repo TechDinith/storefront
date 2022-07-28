@@ -15,6 +15,7 @@ import MainSlogan from "../../sections/mainSlogan/mainSlogan.section";
 import Catogories from "../../sections/catogories/catogories.section";
 import SubSlogan from "../../sections/subSlogan/subSlogan.section";
 import Latest from "../../sections/latest/latest.section";
+import { iHome } from "./home.interfaces";
 
 const sliderImages = [
   <Image src={sImage1} alt="1" preview={false} />,
@@ -57,7 +58,7 @@ const sliderItems2 = {
   isArrows: true,
 };
 
-const Home = () => {
+const Home = ({ notifyProps }: iHome) => {
   return (
     <>
       <Grid item xs={10} m="1%">
@@ -79,7 +80,7 @@ const Home = () => {
       </Grid>
 
       <Grid item xs={10} mt="5%">
-        <Latest />
+        <Latest notifyProps={notifyProps} />
       </Grid>
     </>
   );
