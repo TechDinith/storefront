@@ -2,9 +2,11 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import AuthenticationForm from "../../sections/authentication/authenticationForm.section";
 import simg1 from "../../../images/simg1.jpg";
+import { iSignUp } from "./signup.interface";
 
-export default function SignUpSide() {
+export default function SignUpSide({ notifyProps, authProps }: iSignUp) {
   const fields = ["name", "email", "password"];
+
   return (
     <Grid item xs={10} mt="4%">
       <Grid container>
@@ -21,7 +23,12 @@ export default function SignUpSide() {
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <AuthenticationForm fields={fields} btnText="Sign Up" />
+          <AuthenticationForm
+            authProps={authProps}
+            notifyProps={notifyProps}
+            fields={fields}
+            btnText="Sign Up"
+          />
         </Grid>
       </Grid>
     </Grid>

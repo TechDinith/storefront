@@ -8,7 +8,7 @@ import { iCart } from "../../templates/product-details/interface.productdetails"
 import { useNavigate } from "react-router-dom";
 import { iCartPage } from "./cart.interfaces";
 
-const Cart = ({ countProps, notifyProps }: iCartPage) => {
+const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
   const [cart, setCart] = useState<iCart[]>([]);
   const navigate = useNavigate();
 
@@ -103,6 +103,7 @@ const Cart = ({ countProps, notifyProps }: iCartPage) => {
                     </>
                   )}
                   <ProDetails
+                    dialogProps={dialogProps}
                     notifyProps={notifyProps}
                     isCart={true}
                     preview={true}
@@ -137,6 +138,7 @@ const Cart = ({ countProps, notifyProps }: iCartPage) => {
                     </Typography>
                   )}
                   <ProDetails
+                    dialogProps={dialogProps}
                     notifyProps={notifyProps}
                     isCart={true}
                     preview={true}

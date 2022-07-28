@@ -4,36 +4,48 @@ import { Image } from "antd";
 import swideimg from "../../../images/swideimg.jpg";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import Grid from "@mui/material/Grid";
 
 const FollowUs = () => {
   return (
-    <Box textAlign="center">
-      <Box
-        width="100%"
-        bgcolor="black"
+    <>
+      <Grid
+        item
+        xs={12}
         sx={{
-          opacity: 0.75,
-          zIndex: 1,
-          position: "absolute",
-          mt: "15%",
-          py: "1%",
+          backgroundImage: `url( ${swideimg})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
         }}
+        mt="2%"
+        justifyContent="center"
+        alignItems="center"
+        textAlign="center"
       >
-        <Typography variant="h5" color="inherit">
-          <b>Follow Us</b>
-        </Typography>
-        <Box
-          display="flex"
-          mx="auto"
-          alignItems="center"
-          sx={{ justifyContent: "center" }}
-        >
-          <InstagramIcon sx={{ m: "1%" }} fontSize="large" />
-          <FacebookIcon sx={{ m: "1%" }} fontSize="large" />
+        <Box py="1%">
+          <Typography
+            variant="h5"
+            color="white"
+            my="8%"
+            py="1%"
+            sx={{ background: "rgb(0,0,0,0.50)", width: "100%" }}
+          >
+            <Typography variant="h5" color="inherit">
+              <b>Follow Us</b>
+            </Typography>
+            <Box
+              display="flex"
+              mx="auto"
+              alignItems="center"
+              sx={{ justifyContent: "center" }}
+            >
+              <InstagramIcon sx={{ m: "1%" }} fontSize="large" />
+              <FacebookIcon sx={{ m: "1%" }} fontSize="large" />
+            </Box>
+          </Typography>
         </Box>
-      </Box>
-      <Image src={swideimg} alt="1" preview={false} />
-    </Box>
+      </Grid>
+    </>
   );
 };
 

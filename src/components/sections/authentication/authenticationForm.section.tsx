@@ -10,6 +10,9 @@ import Avatar from "@mui/material/Avatar";
 import Link from "@mui/material/Link";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Grid from "@mui/material/Grid";
+import { iAuthentication } from "./authentication.interface";
+import ConsecutiveSnackbars from "../../templates/notify/notify.template";
+import { useNavigate } from "react-router-dom";
 
 interface IFormInput {
   email: string;
@@ -18,7 +21,14 @@ interface IFormInput {
   remember: boolean;
 }
 
-const AuthenticationForm = ({ fields, btnText }: any) => {
+const AuthenticationForm = ({
+  fields,
+  btnText,
+  notifyProps,
+  authProps,
+}: iAuthentication) => {
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
@@ -27,6 +37,14 @@ const AuthenticationForm = ({ fields, btnText }: any) => {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
+    authProps.setAuth(true);
+    notifyProps?.handleNotificationClick({
+      message: "Registration Successful!",
+      severity: "success",
+    });
+    setTimeout(() => {
+      navigate(-1);
+    }, 3000);
   };
 
   const math = Math;
@@ -51,17 +69,17 @@ const AuthenticationForm = ({ fields, btnText }: any) => {
 
         <Box sx={{ mt: 1, width: "100%" }}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {fields.map((fieldName: any) => {
+            {fields.map((fieldName: any, i: number) => {
               return (
                 <>
                   <Controller
-                    key={math.random()}
+                    key={i}
                     name={fieldName}
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                       <TextField
-                        key={math.random()}
+                        key={i * 2}
                         margin="normal"
                         type={
                           fieldName === "email" || fieldName === "password"
@@ -85,31 +103,19 @@ const AuthenticationForm = ({ fields, btnText }: any) => {
                   />
                   {fieldName === "email"
                     ? errors.email && (
-                        <Typography
-                          color="red"
-                          variant="caption"
-                          key={math.random()}
-                        >
+                        <Typography color="red" variant="caption" key={i * 3}>
                           {errors.email.message}
                         </Typography>
                       )
                     : fieldName === "password"
                     ? errors.password && (
-                        <Typography
-                          color="red"
-                          variant="caption"
-                          key={math.random()}
-                        >
+                        <Typography color="red" variant="caption" key={i * 4}>
                           {errors.password.message}
                         </Typography>
                       )
                     : fieldName === "name"
                     ? errors.name && (
-                        <Typography
-                          color="red"
-                          variant="caption"
-                          key={math.random()}
-                        >
+                        <Typography color="red" variant="caption" key={i * 5}>
                           {errors.name.message}
                         </Typography>
                       )
@@ -158,6 +164,11 @@ const AuthenticationForm = ({ fields, btnText }: any) => {
           </Grid>
         </Box>
       </Box>
+      <ConsecutiveSnackbars
+        message={notifyProps?.message}
+        setSnackPack={notifyProps?.setSnackPack}
+        snackPack={notifyProps?.snackPack}
+      />
     </>
   );
 };

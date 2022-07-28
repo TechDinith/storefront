@@ -2,8 +2,9 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import AuthenticationForm from "../../sections/authentication/authenticationForm.section";
 import simg1 from "../../../images/simg1.jpg";
+import { iSignIn } from "./signin.interface";
 
-export default function SignInSide() {
+export default function SignInSide({ authProps }: iSignIn) {
   const fields = ["email", "password"];
 
   return (
@@ -22,7 +23,11 @@ export default function SignInSide() {
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <AuthenticationForm fields={fields} btnText="Sign In" />
+          <AuthenticationForm
+            fields={fields}
+            btnText="Sign In"
+            authProps={authProps}
+          />
         </Grid>
       </Grid>
     </Grid>

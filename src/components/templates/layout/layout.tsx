@@ -25,6 +25,8 @@ const Layout = () => {
     message: "",
     severity: "info",
   });
+  const [openDialog, setOpenDialog] = useState(false);
+  const [auth, setAuth] = React.useState(false);
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
@@ -42,19 +44,12 @@ const Layout = () => {
 
   return (
     <>
-      <Header
-        countProps={{ setCount, count }}
-        notifyProps={{
-          handleNotificationClick,
-          setSnackPack,
-          snackPack,
-          message,
-        }}
-      />
+      <Header countProps={{ setCount, count }} />
       <Box component="main">
         <Grid container justifyContent="center">
           {/* profile and signout */}
           <Navbar
+            authProps={{ auth, setAuth }}
             countProps={{ setCount, count }}
             notifyProps={{
               handleNotificationClick,
@@ -81,14 +76,30 @@ const Layout = () => {
               />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<SignInSide />} />
+              <Route
+                path="/login"
+                element={<SignInSide authProps={{ auth, setAuth }} />}
+              />
               {/* //signup succes message */}
-              <Route path="/signup" element={<SignUpSide />} />
-              {/* remove confirm notification */}
+              <Route
+                path="/signup"
+                element={
+                  <SignUpSide
+                    authProps={{ auth, setAuth }}
+                    notifyProps={{
+                      handleNotificationClick,
+                      setSnackPack,
+                      snackPack,
+                      message,
+                    }}
+                  />
+                }
+              />
               <Route
                 path="/cart"
                 element={
                   <Cart
+                    dialogProps={{ openDialog, setOpenDialog }}
                     countProps={{ setCount, count }}
                     notifyProps={{
                       handleNotificationClick,

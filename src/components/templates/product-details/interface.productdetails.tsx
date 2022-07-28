@@ -1,3 +1,4 @@
+import { iDialog } from "../dialog/dialog.interface";
 import { iNotifyProps } from "../notify/notify.interfaces";
 
 export interface iCount {
@@ -44,6 +45,7 @@ export interface iLatest {
 export interface iProdDetails {
   notifyProps: iNotifyProps;
   countProps?: iCount;
+  dialogProps?: iDialog;
   cart: iCart | iCategory | iLatest;
   isCart?: boolean;
   preview: boolean;

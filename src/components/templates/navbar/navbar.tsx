@@ -29,9 +29,8 @@ const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
 const categories = ["Men", "Women", "Accessories"];
 
-const Navbar = ({ countProps, notifyProps }: iNavbar) => {
+const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [auth, setAuth] = React.useState(false);
   const [categ, setCateg] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorElCateg, setAnchorElCateg] = React.useState<null | HTMLElement>(
@@ -39,7 +38,7 @@ const Navbar = ({ countProps, notifyProps }: iNavbar) => {
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
+    authProps.setAuth(event.target.checked);
   };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -280,7 +279,7 @@ const Navbar = ({ countProps, notifyProps }: iNavbar) => {
               })}
             </Menu>
           </Box>
-          {auth ? (
+          {authProps.auth ? (
             <Box
               sx={{
                 display: "flex",
@@ -352,7 +351,7 @@ const Navbar = ({ countProps, notifyProps }: iNavbar) => {
                   color="primary"
                   sx={{
                     mx: "1%",
-                    display: { xs: "true", sm: "true", md: "none" },
+
                     "& .MuiBadge-badge": {
                       right: 8,
                       top: 8,
@@ -379,7 +378,7 @@ const Navbar = ({ countProps, notifyProps }: iNavbar) => {
                   color="primary"
                   sx={{
                     mx: "1%",
-                    display: { xs: "true", sm: "true", md: "none" },
+
                     "& .MuiBadge-badge": {
                       right: 8,
                       top: 8,
@@ -469,7 +468,7 @@ const Navbar = ({ countProps, notifyProps }: iNavbar) => {
                   color="primary"
                   sx={{
                     mx: "1%",
-                    display: { xs: "true", sm: "true", md: "none" },
+
                     "& .MuiBadge-badge": {
                       right: 8,
                       top: 8,
@@ -496,7 +495,7 @@ const Navbar = ({ countProps, notifyProps }: iNavbar) => {
                   color="primary"
                   sx={{
                     mx: "1%",
-                    display: { xs: "true", sm: "true", md: "none" },
+
                     "& .MuiBadge-badge": {
                       right: 8,
                       top: 8,

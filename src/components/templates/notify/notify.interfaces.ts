@@ -4,7 +4,7 @@ export interface SnackbarMessage {
 }
 
 export interface iSnackBar {
-  message: iMessage;
+  message: iMessage | undefined;
   snackPack: any;
   setSnackPack: any;
 }

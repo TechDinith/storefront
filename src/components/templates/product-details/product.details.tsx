@@ -12,6 +12,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StartIcon from "@mui/icons-material/Start";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import ConsecutiveSnackbars from "../notify/notify.template";
+import AlertDialog from "../dialog/dialog.template";
 
 const ProDetails = ({
   cart,
@@ -20,6 +21,7 @@ const ProDetails = ({
   isCart,
   preview,
   latest,
+  dialogProps,
 }: iProdDetails) => {
   const [selectedProduct, setSelectedProduct] = useState({
     image: cart.image ? cart.image : cart.colors ? cart.colors[0].image : null,
@@ -70,6 +72,7 @@ const ProDetails = ({
   };
 
   const handleRemove = () => {
+    dialogProps?.setOpenDialog(false);
     let localCart = localStorage.getItem("cart");
     let jsonCart = JSON.parse(typeof localCart === "string" ? localCart : "");
 
@@ -89,11 +92,15 @@ const ProDetails = ({
     }
   };
 
+  const handleDialogOpen = () => {
+    dialogProps?.setOpenDialog(true);
+  };
+
   return (
     <Box justifyContent="center" textAlign={"center"} color="white">
       {isCart ? (
         <Box>
-          <IconButton onClick={handleRemove}>
+          <IconButton onClick={handleDialogOpen}>
             <RemoveCircleOutlineIcon fontSize="large" color="error" />
           </IconButton>
           <Image
@@ -201,6 +208,18 @@ const ProDetails = ({
         message={notifyProps.message}
         setSnackPack={notifyProps.setSnackPack}
         snackPack={notifyProps.snackPack}
+      />
+      <AlertDialog
+        attributes={{
+          title: "Lorem ipsum?",
+          content:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, incidunt minus. Molestiae error soluta culpa autem saepe aliquam dolor eius, quibusdam, ipsam corporis quis enim alias eligendi optio. Suscipit, at?",
+          yesBtn: "Lorem ipsum",
+          yesFunction: handleRemove,
+          noBtn: "dolor sit",
+        }}
+        openDialog={dialogProps?.openDialog ? dialogProps?.openDialog : false}
+        setOpenDialog={dialogProps?.setOpenDialog}
       />
     </Box>
   );
