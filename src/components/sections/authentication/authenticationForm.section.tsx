@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import { iAuthentication } from "./authentication.interface";
 import ConsecutiveSnackbars from "../../templates/notify/notify.template";
 import { useNavigate } from "react-router-dom";
+import { Fragment } from "react";
 
 interface IFormInput {
   email: string;
@@ -37,7 +38,7 @@ const AuthenticationForm = ({
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
-    authProps.setAuth(true);
+    authProps.setAuth([data]);
     notifyProps?.handleNotificationClick({
       message: "Registration Successful!",
       severity: "success",
@@ -69,15 +70,13 @@ const AuthenticationForm = ({
           <form onSubmit={handleSubmit(onSubmit)}>
             {fields.map((fieldName: any, i: number) => {
               return (
-                <>
+                <Fragment key={i}>
                   <Controller
-                    key={i}
                     name={fieldName}
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                       <TextField
-                        key={i * 2}
                         margin="normal"
                         type={
                           fieldName === "email" || fieldName === "password"
@@ -87,7 +86,7 @@ const AuthenticationForm = ({
                         fullWidth
                         label={capitalize(fieldName)}
                         autoComplete={fieldName}
-                        autoFocus
+                        autoFocus={i === 0}
                         {...field}
                         error={Boolean(errors.email)}
                       />
@@ -101,24 +100,24 @@ const AuthenticationForm = ({
                   />
                   {fieldName === "email"
                     ? errors.email && (
-                        <Typography color="red" variant="caption" key={i * 3}>
+                        <Typography color="red" variant="caption">
                           {errors.email.message}
                         </Typography>
                       )
                     : fieldName === "password"
                     ? errors.password && (
-                        <Typography color="red" variant="caption" key={i * 4}>
+                        <Typography color="red" variant="caption">
                           {errors.password.message}
                         </Typography>
                       )
                     : fieldName === "name"
                     ? errors.name && (
-                        <Typography color="red" variant="caption" key={i * 5}>
+                        <Typography color="red" variant="caption">
                           {errors.name.message}
                         </Typography>
                       )
                     : null}
-                </>
+                </Fragment>
               );
             })}
             <Box>

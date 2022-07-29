@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { AccountCircle } from "@mui/icons-material";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
@@ -20,10 +20,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import ConsecutiveSnackbars from "../notify/notify.template";
 import { iNavbar } from "./navbar.interfaces";
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import EmailIcon from "@mui/icons-material/Email";
+import { AccountCircleOutlined } from "@mui/icons-material";
 
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
@@ -49,7 +53,7 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
   }, []);
 
   const handleSignOut = () => {
-    authProps.setAuth(false);
+    authProps.setAuth(null);
     setAnchorEl(null);
   };
 
@@ -69,7 +73,25 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const math = Math;
+  function stringToColor(string: string) {
+    let hash = 0;
+    let i;
+
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    let color = "#";
+
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+
+    return color;
+  }
 
   const drawer = (
     <Box sx={{ textAlign: "center" }}>
@@ -80,7 +102,7 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
       <List>
         {navItems.map((item: string, i: number) => {
           return String(item.toLowerCase()) === String("home") ? (
-            <ListItem key={math.random()} disablePadding>
+            <ListItem key={i} disablePadding>
               <ListItemButton
                 sx={{
                   "&:hover": {
@@ -89,17 +111,16 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                   textAlign: "left",
                 }}
                 onClick={handleDrawerToggle}
-                key={math.random()}
                 component={NavLink}
                 to="/"
                 selected={String("/") === location.pathname}
               >
-                <ListItemText primary={item} key={math.random()} />
+                <ListItemText primary={item} />
               </ListItemButton>
             </ListItem>
           ) : String(item.toLowerCase()) === String("categories") ? (
-            <>
-              <ListItem key={math.random()} disablePadding>
+            <React.Fragment key={i}>
+              <ListItem disablePadding>
                 <ListItemButton
                   sx={{
                     "&:hover": {
@@ -108,21 +129,16 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                     textAlign: "left",
                   }}
                   onClick={() => (categ ? setCateg(false) : setCateg(true))}
-                  key={math.random()}
                 >
-                  <ListItemText primary={item} key={math.random()} />
+                  <ListItemText primary={item} />
                 </ListItemButton>
               </ListItem>
 
               {categ ? (
-                <>
+                <React.Fragment>
                   <Divider />
                   {categories.map((item: string, i: number) => (
-                    <ListItem
-                      key={math.random()}
-                      disablePadding
-                      sx={{ pl: "10%" }}
-                    >
+                    <ListItem key={i} disablePadding sx={{ pl: "10%" }}>
                       <ListItemButton
                         sx={{
                           "&:hover": {
@@ -130,7 +146,6 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                           },
                           textAlign: "left",
                         }}
-                        key={math.random()}
                         component={NavLink}
                         to={"/" + item.toLowerCase()}
                         selected={
@@ -138,17 +153,17 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                         }
                         onClick={handleDrawerToggle}
                       >
-                        <ListItemText primary={item} key={math.random()} />
+                        <ListItemText primary={item} />
                       </ListItemButton>
                     </ListItem>
                   ))}
 
                   <Divider />
-                </>
+                </React.Fragment>
               ) : null}
-            </>
+            </React.Fragment>
           ) : (
-            <ListItem key={math.random()} disablePadding>
+            <ListItem key={i} disablePadding>
               <ListItemButton
                 sx={{
                   "&:hover": {
@@ -157,14 +172,13 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                   textAlign: "left",
                 }}
                 onClick={handleDrawerToggle}
-                key={math.random()}
                 component={NavLink}
                 to={"/" + item.toLowerCase()}
                 selected={
                   String("/" + item.toLowerCase()) === location.pathname
                 }
               >
-                <ListItemText primary={item} key={math.random()} />
+                <ListItemText primary={item} />
               </ListItemButton>
             </ListItem>
           );
@@ -325,9 +339,11 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleMenu}
-                color="inherit"
+                sx={{
+                  color: stringToColor(authProps.auth[0].name),
+                }}
               >
-                <AccountCircle />
+                <AccountCircleOutlined />
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -344,14 +360,21 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    to="/profile"
-                    style={{ textDecoration: "none", color: "white" }}
-                  >
-                    Profile
-                  </Link>
-                </MenuItem>
+                <Card>
+                  <Box sx={{ p: 2, display: "flex" }}>
+                    <Stack spacing={0.5}>
+                      <Typography color="white">
+                        <b>{authProps.auth[0].name}</b>
+                      </Typography>
+                      <Box display="flex" sx={{ alignItems: "center" }}>
+                        <EmailIcon sx={{ color: "grey[500]", mr: "2%" }} />{" "}
+                        <Typography variant="body2" color="text.secondary">
+                          {authProps.auth[0].email}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </Box>
+                </Card>
                 <MenuItem onClick={handleSignOut} ref={ancorRef}>
                   Sign Out
                 </MenuItem>

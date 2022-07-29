@@ -1,4 +1,4 @@
 export interface iAuthProps {
-  auth: boolean;
+  auth: any[] | null;
   setAuth: any;
 }

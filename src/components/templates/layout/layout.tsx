@@ -26,7 +26,7 @@ const Layout = () => {
     severity: "info",
   });
   const [openDialog, setOpenDialog] = useState(false);
-  const [auth, setAuth] = React.useState(false);
+  const [auth, setAuth] = React.useState(null);
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
@@ -47,7 +47,9 @@ const Layout = () => {
       <Header countProps={{ setCount, count }} />
       <Box component="main">
         <Grid container justifyContent="center">
-          {/* profile search checkout if login cart should append and sent to database when removing it should go too*/}
+          {/* search checkout if login cart should append and sent to database when removing it should go too/ no products coming soon*/}
+          {/* admin addadmin=>only pedros admins can delete/ addproduct => new category */}
+          {/* signed in user has cross platform cart */}
           <Navbar
             authProps={{ auth, setAuth }}
             countProps={{ setCount, count }}

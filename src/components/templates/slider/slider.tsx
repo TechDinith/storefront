@@ -1,5 +1,5 @@
 import { Carousel } from "antd";
-import React from "react";
+import React, { Fragment } from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { ArrowBackIosNewOutlined, ArrowForwardIos } from "@mui/icons-material";
@@ -24,6 +24,17 @@ const Slider = ({
   speed,
   effect,
 }: any) => {
+  const PrevArrow = ({ currentSlide, slideCount, ...props }: any) => (
+    <div {...props}>
+      <ArrowBackIosNewOutlined />
+    </div>
+  );
+  const NextArrow = ({ currentSlide, slideCount, ...props }: any) => (
+    <div {...props}>
+      <ArrowForwardIos />
+    </div>
+  );
+
   return !items ? (
     <Carousel autoplay>
       <div>
@@ -36,8 +47,8 @@ const Slider = ({
       slidesToShow={slidesToShow ? slidesToShow : null}
       draggable={draggable ? draggable : false}
       arrows={isArrows}
-      prevArrow={<ArrowBackIosNewOutlined />}
-      nextArrow={<ArrowForwardIos />}
+      prevArrow={<PrevArrow />}
+      nextArrow={<NextArrow />}
       effect={effect}
       speed={speed}
       autoplaySpeed={5000}
