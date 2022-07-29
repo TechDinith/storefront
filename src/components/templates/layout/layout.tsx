@@ -15,6 +15,15 @@ import { useEffect, useState } from "react";
 import Cart from "../../pages/cart/cart.page";
 import NotFound from "../../pages/notfound/notfound.page";
 import { iMessage, SnackbarMessage } from "../notify/notify.interfaces";
+import { iProducts } from "../product-details/interface.productdetails";
+import prod1 from "../../../images/prod1.jpg";
+import prod2 from "../../../images/prod2.jpg";
+import prod3 from "../../../images/prod3.jpg";
+import prod4 from "../../../images/prod4.jpg";
+import prod5black from "../../../images/prod5-black.jpg";
+import prod5red from "../../../images/prod5-red.jpg";
+import prod5white from "../../../images/prod5-white.jpg";
+import prod6 from "../../../images/prod6.jpg";
 
 const categories = ["men", "women", "accessories"];
 
@@ -27,6 +36,7 @@ const Layout = () => {
   });
   const [openDialog, setOpenDialog] = useState(false);
   const [auth, setAuth] = React.useState(null);
+  const [products, setProducts] = useState<iProducts[] | []>([]);
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
@@ -35,6 +45,68 @@ const Layout = () => {
         ? JSON.parse(typeof localCart === "string" ? localCart : "")
         : null
     );
+
+    setProducts([
+      {
+        id: "1",
+        image: prod1,
+        name: "Sample Item",
+        price: "Rs.1500",
+        category: "men",
+        isColor: false,
+        enteredOn: "02/04/2022",
+      },
+      {
+        id: "2",
+        image: prod2,
+        name: "Sample Item",
+        price: "Rs.1500",
+        category: "men",
+        isColor: false,
+        enteredOn: "02/05/2022",
+      },
+      {
+        id: "3",
+        image: prod3,
+        name: "Sample Item",
+        price: "Rs.1500",
+        category: "women",
+        isColor: false,
+        enteredOn: "02/06/2022",
+      },
+      {
+        id: "4",
+        image: prod4,
+        name: "Sample Item",
+        price: "Rs.1500",
+        category: "women",
+        isColor: false,
+        enteredOn: "02/07/2022",
+      },
+      {
+        id: "5",
+        image: null,
+        name: "Sample Item",
+        price: "Rs.1500",
+        colors: [
+          { image: prod5black, color: "black" },
+          { image: prod5red, color: "red" },
+          { image: prod5white, color: "white" },
+        ],
+        category: "accessories",
+        isColor: false,
+        enteredOn: "02/08/2022",
+      },
+      {
+        id: "6",
+        image: prod6,
+        category: "accessories",
+        name: "Sample Item",
+        price: "Rs.1500",
+        isColor: false,
+        enteredOn: "02/09/2022",
+      },
+    ]);
   }, []);
 
   const handleNotificationClick = ({ message, severity }: iMessage) => {
@@ -44,7 +116,7 @@ const Layout = () => {
 
   return (
     <>
-      <Header countProps={{ setCount, count }} />
+      <Header products={products} />
       <Box component="main">
         <Grid container justifyContent="center">
           {/* search checkout if login cart should append and sent to database when removing it should go too/ no products coming soon*/}

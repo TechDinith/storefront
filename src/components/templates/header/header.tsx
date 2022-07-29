@@ -1,11 +1,11 @@
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import { iHeader } from "./header.interfaces";
+import Search from "../../sections/search/search.section";
 
-const Header = ({ countProps }: iHeader) => {
+const Header = ({ products }: iHeader) => {
   return (
     <Grid
       container
@@ -29,19 +29,14 @@ const Header = ({ countProps }: iHeader) => {
       </Grid>
 
       <Grid item xs={6} container direction="row" justifyContent="flex-end">
-        <TextField
-          id="outlined-search"
+        <Search
           label="Search"
-          type="search"
-          sx={{ color: "white" }}
-          size="small"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
+          options={products}
+          inputAdornment={
+            <InputAdornment position="end">
+              <SearchIcon />
+            </InputAdornment>
+          }
         />
       </Grid>
     </Grid>

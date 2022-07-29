@@ -51,3 +51,14 @@ export interface iProdDetails {
   preview: boolean;
   latest?: boolean;
 }
+
+export interface iProducts {
+  id: string;
+  image: string | null;
+  isColor: boolean;
+  colors?: { [x: string]: any } | undefined;
+  name: string;
+  price: string;
+  category: string;
+  enteredOn: string;
+}
