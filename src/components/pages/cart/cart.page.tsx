@@ -65,7 +65,7 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
             container
             spacing={2}
             direction="row"
-            sx={{ display: { xs: "none", sm: "flex", md: "flex" } }}
+            sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
           >
             {cart
               .sort((a, b) => +new Date(b.addedOn) - +new Date(a.addedOn))

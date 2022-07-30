@@ -12,7 +12,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
@@ -28,12 +27,13 @@ import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import EmailIcon from "@mui/icons-material/Email";
 import { AccountCircleOutlined } from "@mui/icons-material";
+import Search from "../../sections/search/search.section";
 
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
 const categories = ["Men", "Women", "Accessories"];
 
-const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
+const Navbar = ({ countProps, notifyProps, authProps, products }: iNavbar) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [categ, setCateg] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -319,18 +319,14 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
                   width: "100%",
                 }}
               >
-                <TextField
-                  id="outlined-search"
+                <Search
                   label="Search"
-                  type="search"
-                  size="small"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
+                  options={products}
+                  inputAdornment={
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  }
                 />
               </Box>
               <IconButton
@@ -451,15 +447,10 @@ const Navbar = ({ countProps, notifyProps, authProps }: iNavbar) => {
               <Box
                 sx={{
                   display: { xs: "true", sm: "true", md: "none" },
-                  width: "100%",
+                  width: "30vw",
                 }}
               >
-                <TextField
-                  id="outlined-search"
-                  label={<SearchIcon />}
-                  type="search"
-                  size="small"
-                />
+                <Search label={<SearchIcon />} options={products} />
               </Box>
 
               <Button

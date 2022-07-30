@@ -6,13 +6,14 @@ import CircleIcon from "@mui/icons-material/Circle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useState } from "react";
 import { Image } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { iProdDetails } from "./interface.productdetails";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StartIcon from "@mui/icons-material/Start";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import ConsecutiveSnackbars from "../notify/notify.template";
 import AlertDialog from "../dialog/dialog.template";
+import Paper from "@mui/material/Paper";
 
 const ProDetails = ({
   cart,
@@ -22,7 +23,10 @@ const ProDetails = ({
   preview,
   latest,
   dialogProps,
+  handleClickCloseSearchResult,
 }: iProdDetails) => {
+  const { state }: any = useLocation();
+
   const [selectedProduct, setSelectedProduct] = useState({
     image: cart.image ? cart.image : cart.colors ? cart.colors[0].image : null,
     color: cart.colors ? cart.colors[0] : "transparent",
@@ -36,10 +40,13 @@ const ProDetails = ({
       isColor: cart.isColor,
       name: cart.name,
       price: cart.price,
-      addedOn: cart.addedOn,
+      addedOn: new Date(),
       colors: [{ imgae: selectedProduct.image, color: selectedProduct.color }],
       orderedOn: cart.orderedOn,
     };
+
+    console.log(cart.orderedOn);
+
     let isMatch: any =
       countProps?.count !== null
         ? countProps?.count.map((item: any) => {
@@ -69,6 +76,7 @@ const ProDetails = ({
         severity: "success",
       });
     }
+    if (handleClickCloseSearchResult) handleClickCloseSearchResult();
   };
 
   const handleRemove = () => {
@@ -97,7 +105,13 @@ const ProDetails = ({
   };
 
   return (
-    <Box justifyContent="center" textAlign={"center"} color="white">
+    <Box
+      justifyContent="center"
+      textAlign={"center"}
+      color="white"
+      component={Paper}
+      elevation={state ? (state.value.id === cart.id ? 0 : 20) : 20}
+    >
       {isCart ? (
         <Box>
           <IconButton onClick={handleDialogOpen}>
@@ -147,7 +161,11 @@ const ProDetails = ({
               ))}
           </Box>
         )
-      ) : latest ? null : (
+      ) : latest ? null : isCart ? (
+        <Box display="flex" justifyContent={"center"}>
+          <CircleIcon sx={{ color: "transparent" }} />
+        </Box>
+      ) : (
         <Box display="flex" justifyContent={"center"}>
           <IconButton disabled>
             <CircleIcon sx={{ color: "transparent" }} />
@@ -167,9 +185,9 @@ const ProDetails = ({
           fullWidth
           component={NavLink}
           to={"/checkout"}
-          disabled={cart.orderedOn !== null ? true : false}
+          disabled={cart.orderedOn ? true : false}
         >
-          {cart.orderedOn !== null ? (
+          {cart.orderedOn ? (
             "Order will receive within 15 days"
           ) : (
             <>

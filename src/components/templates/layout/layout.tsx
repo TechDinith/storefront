@@ -50,7 +50,7 @@ const Layout = () => {
       {
         id: "1",
         image: prod1,
-        name: "Sample Item",
+        name: "Sample Item1",
         price: "Rs.1500",
         category: "men",
         isColor: false,
@@ -59,7 +59,7 @@ const Layout = () => {
       {
         id: "2",
         image: prod2,
-        name: "Sample Item",
+        name: "Sample Item2",
         price: "Rs.1500",
         category: "men",
         isColor: false,
@@ -68,7 +68,7 @@ const Layout = () => {
       {
         id: "3",
         image: prod3,
-        name: "Sample Item",
+        name: "Sample Item3",
         price: "Rs.1500",
         category: "women",
         isColor: false,
@@ -77,7 +77,7 @@ const Layout = () => {
       {
         id: "4",
         image: prod4,
-        name: "Sample Item",
+        name: "Sample Item4",
         price: "Rs.1500",
         category: "women",
         isColor: false,
@@ -86,7 +86,7 @@ const Layout = () => {
       {
         id: "5",
         image: null,
-        name: "Sample Item",
+        name: "Sample Item5",
         price: "Rs.1500",
         colors: [
           { image: prod5black, color: "black" },
@@ -101,7 +101,7 @@ const Layout = () => {
         id: "6",
         image: prod6,
         category: "accessories",
-        name: "Sample Item",
+        name: "Sample Item6",
         price: "Rs.1500",
         isColor: false,
         enteredOn: "02/09/2022",
@@ -131,6 +131,7 @@ const Layout = () => {
               snackPack,
               message,
             }}
+            products={products}
           />
           <Grid container justifyContent="center">
             <Routes>

@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import { iHeader } from "./header.interfaces";
 import Search from "../../sections/search/search.section";
+import { Box } from "@mui/system";
 
 const Header = ({ products }: iHeader) => {
   return (
@@ -17,7 +18,7 @@ const Header = ({ products }: iHeader) => {
         p: "1%",
       }}
     >
-      <Grid item xs={6}>
+      <Grid item xs={9}>
         <Typography
           variant="body2"
           color="white"
@@ -28,7 +29,7 @@ const Header = ({ products }: iHeader) => {
         </Typography>
       </Grid>
 
-      <Grid item xs={6} container direction="row" justifyContent="flex-end">
+      <Grid item xs={3} container direction="row" justifyContent="flex-end">
         <Search
           label="Search"
           options={products}

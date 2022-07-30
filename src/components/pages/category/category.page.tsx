@@ -15,12 +15,24 @@ import prod5white from "../../../images/prod5-white.jpg";
 import prod6 from "../../../images/prod6.jpg";
 import ProDetails from "../../templates/product-details/product.details";
 import { iCategory } from "../../templates/product-details/interface.productdetails";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { iCategories } from "./category.interfaces";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 
 const Category = ({ countProps, notifyProps }: iCategories) => {
   const [categories, setCategories] = useState<iCategory[]>([]);
-  const location = useLocation();
+  const [openSearchResult, setOpenSearchResult] = useState(false);
+
+  const handleClickOpenSearchResult = () => {
+    setOpenSearchResult(true);
+  };
+
+  const handleClickCloseSearchResult = () => {
+    setOpenSearchResult(false);
+  };
+
+  const location: any = useLocation();
   const category = location.pathname.substring(1);
 
   useEffect(() => {
@@ -79,7 +91,10 @@ const Category = ({ countProps, notifyProps }: iCategories) => {
         price: "Rs.1500",
       },
     ]);
-  }, []);
+
+    if (location.state)
+      if (location.state.value.id) handleClickOpenSearchResult();
+  }, [location.state]);
 
   return (
     <>
@@ -129,20 +144,48 @@ const Category = ({ countProps, notifyProps }: iCategories) => {
             container
             spacing={2}
             direction="row"
-            sx={{ display: { xs: "none", sm: "flex", md: "flex" } }}
+            sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
           >
-            {categories.map((item, i) =>
-              item.category === category ? (
-                <Grid item xs={4} key={i}>
-                  <ProDetails
-                    notifyProps={notifyProps}
-                    countProps={countProps}
-                    preview={true}
-                    cart={item}
-                  />
-                </Grid>
-              ) : null
-            )}
+            {categories.map((item, i) => (
+              <Fragment key={i}>
+                {location.state ? (
+                  location.state.value.id === item.id ? (
+                    <Dialog
+                      open={openSearchResult}
+                      onClose={handleClickCloseSearchResult}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogContent sx={{ backgroundColor: "transparent" }}>
+                        <Box display="flex" justifyContent="center">
+                          <Box width="90%">
+                            <ProDetails
+                              handleClickCloseSearchResult={
+                                handleClickCloseSearchResult
+                              }
+                              notifyProps={notifyProps}
+                              countProps={countProps}
+                              preview={false}
+                              cart={item}
+                            />
+                          </Box>
+                        </Box>
+                      </DialogContent>
+                    </Dialog>
+                  ) : null
+                ) : null}
+                {item.category === category ? (
+                  <Grid item xs={4}>
+                    <ProDetails
+                      notifyProps={notifyProps}
+                      countProps={countProps}
+                      preview={true}
+                      cart={item}
+                    />
+                  </Grid>
+                ) : null}
+              </Fragment>
+            ))}
           </Grid>
           <Grid
             container
@@ -150,18 +193,46 @@ const Category = ({ countProps, notifyProps }: iCategories) => {
             direction="row"
             sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
           >
-            {categories.map((item, i) =>
-              item.category === category ? (
-                <Grid item xs={10} key={i}>
-                  <ProDetails
-                    notifyProps={notifyProps}
-                    countProps={countProps}
-                    preview={true}
-                    cart={item}
-                  />
-                </Grid>
-              ) : null
-            )}
+            {categories.map((item, i) => (
+              <Fragment key={i}>
+                {location.state ? (
+                  location.state.value.id === item.id ? (
+                    <Dialog
+                      open={openSearchResult}
+                      onClose={handleClickCloseSearchResult}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogContent sx={{ backgroundColor: "transparent" }}>
+                        <Box display="flex" justifyContent="center">
+                          <Box width="90%">
+                            <ProDetails
+                              handleClickCloseSearchResult={
+                                handleClickCloseSearchResult
+                              }
+                              notifyProps={notifyProps}
+                              countProps={countProps}
+                              preview={false}
+                              cart={item}
+                            />
+                          </Box>
+                        </Box>
+                      </DialogContent>
+                    </Dialog>
+                  ) : null
+                ) : null}
+                {item.category === category ? (
+                  <Grid item xs={10}>
+                    <ProDetails
+                      notifyProps={notifyProps}
+                      countProps={countProps}
+                      preview={true}
+                      cart={item}
+                    />
+                  </Grid>
+                ) : null}
+              </Fragment>
+            ))}
           </Grid>
         </Grid>
       </Grid>

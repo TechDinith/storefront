@@ -50,6 +50,7 @@ export interface iProdDetails {
   isCart?: boolean;
   preview: boolean;
   latest?: boolean;
+  handleClickCloseSearchResult?: () => void;
 }
 
 export interface iProducts {
