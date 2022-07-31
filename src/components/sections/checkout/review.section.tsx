@@ -7,41 +7,9 @@ import { Fragment } from "react";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { iReview } from "./checkout.sections.interface";
 
-const products = [
-  {
-    name: "Product 1",
-    desc: "A nice thing",
-    price: "$9.99",
-  },
-  {
-    name: "Product 2",
-    desc: "Another thing",
-    price: "$3.45",
-  },
-  {
-    name: "Product 3",
-    desc: "Something else",
-    price: "$6.51",
-  },
-  {
-    name: "Product 4",
-    desc: "Best thing of all",
-    price: "$14.11",
-  },
-  { name: "Shipping", desc: "", price: "Free" },
-];
-// const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
-// const payments = [
-//   { name: "Card type", detail: "Visa" },
-//   { name: "Card holder", detail: "Mr John Smith" },
-//   { name: "Card number", detail: "xxxx-xxxx-xxxx-1234" },
-//   { name: "Expiry date", detail: "04/2024" },
-// ];
-
-//checkout price must be int and Rs must be added and total should change
-
-export default function Review({ products, deliveryDetails }: any) {
+export default function Review({ products, deliveryDetails }: iReview) {
   return (
     <Fragment>
       <Typography variant="h6" gutterBottom color="inherit">
@@ -65,7 +33,7 @@ export default function Review({ products, deliveryDetails }: any) {
             color="inherit"
           >
             {products
-              .map((items: any) => parseInt(items["price"].split(".")[1]))
+              .map((items: any) => parseFloat(items["price"]))
               .reduce((a: any, b: any) => a + b)}
           </Typography>
         </ListItem>

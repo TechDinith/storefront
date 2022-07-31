@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
 
 const Docs = () => {
   return (
@@ -10,7 +11,13 @@ const Docs = () => {
       }}
       textAlign="center"
     >
-      <Typography variant="body2" color="inherit" textTransform="uppercase">
+      <Typography
+        variant="body2"
+        color="inherit"
+        textTransform="uppercase"
+        component={Link}
+        to="#"
+      >
         Terms & Conditons
       </Typography>
     </Box>

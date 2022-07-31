@@ -51,60 +51,66 @@ const Layout = () => {
       {
         id: "1",
         image: prod1,
-        name: "Sample Item1",
-        price: "Rs.1500",
-        category: "men",
         isColor: false,
+        name: "Sample Item 1",
+        price: 1500.5,
+        category: "men",
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
         enteredOn: "02/04/2022",
       },
       {
         id: "2",
         image: prod2,
-        name: "Sample Item2",
-        price: "Rs.1500",
-        category: "men",
         isColor: false,
+        name: "Sample Item 2",
+        price: 1400.5,
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
+        category: "men",
         enteredOn: "02/05/2022",
       },
       {
         id: "3",
         image: prod3,
-        name: "Sample Item3",
-        price: "Rs.1500",
-        category: "women",
         isColor: false,
+        name: "Sample Item 3",
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
+        price: 1540.5,
+        category: "women",
         enteredOn: "02/06/2022",
       },
       {
         id: "4",
         image: prod4,
-        name: "Sample Item4",
-        price: "Rs.1500",
-        category: "women",
         isColor: false,
+        name: "Sample Item 4",
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
+        price: 1504.5,
+        category: "women",
         enteredOn: "02/07/2022",
       },
       {
         id: "5",
         image: null,
-        name: "Sample Item5",
-        price: "Rs.1500",
+        isColor: true,
+        name: "Sample Item 5",
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
+        price: 150.5,
         colors: [
           { image: prod5black, color: "black" },
           { image: prod5red, color: "red" },
           { image: prod5white, color: "white" },
         ],
         category: "accessories",
-        isColor: false,
         enteredOn: "02/08/2022",
       },
       {
         id: "6",
         image: prod6,
         category: "accessories",
-        name: "Sample Item6",
-        price: "Rs.1500",
         isColor: false,
+        name: "Sample Item 6",
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
+        price: 1500,
         enteredOn: "02/09/2022",
       },
     ]);
@@ -114,7 +120,7 @@ const Layout = () => {
     setMessage({ message, severity });
     setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   };
-
+  //description products
   return (
     <>
       <Header products={products} />
@@ -142,6 +148,7 @@ const Layout = () => {
                 path="/"
                 element={
                   <Home
+                    products={products}
                     notifyProps={{
                       message,
                       handleNotificationClick,
@@ -153,7 +160,20 @@ const Layout = () => {
               />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/checkout" element={<Checkout />} />
+              <Route
+                path="/checkout"
+                element={
+                  <Checkout
+                    notifyProps={{
+                      message,
+                      handleNotificationClick,
+                      setSnackPack,
+                      snackPack,
+                    }}
+                    authProps={{ auth, setAuth }}
+                  />
+                }
+              />
               <Route
                 path="/login"
                 element={<SignInSide authProps={{ auth, setAuth }} />}
@@ -194,7 +214,7 @@ const Layout = () => {
                     path={"/" + path.toLowerCase()}
                     element={
                       <Category
-                        key={i + 1}
+                        products={products}
                         countProps={{ setCount, count }}
                         notifyProps={{
                           handleNotificationClick,

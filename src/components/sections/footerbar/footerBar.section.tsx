@@ -20,15 +20,14 @@ const FooterBar = () => {
       <Grid item xs={12} container direction="row" justifyContent="flex-end">
         <Typography
           variant="subtitle2"
-          color="orange"
-          fontStyle="oblique"
+          color="cyan"
+          fontStyle="revert"
           my="auto"
           py="0"
+          component={Link}
+          to="#"
         >
-          by{" "}
-          <Link to="#" style={{ textDecoration: "none", color: "#00FFC9" }}>
-            iTrans
-          </Link>
+          by iTrans
         </Typography>
       </Grid>
     </>

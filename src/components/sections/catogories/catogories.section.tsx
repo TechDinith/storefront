@@ -18,13 +18,13 @@ const Catogories = () => {
     <>
       <Grid item xs={10} mt="5%" display={{ xs: "block", sm: "flex" }}>
         {group.map((item, i) => (
-          <Grid item xs={12} sm={4} justifyContent={"center"}>
-            <Box width={"34%"} key={i * 2}>
+          <Grid item xs={12} sm={4} justifyContent={"center"} key={i}>
+            <Box width={"34%"}>
               <Typography variant="h6" color="white">
                 {item.name.toUpperCase()}
               </Typography>
             </Box>
-            <Box className="image-group" key={i * 3}>
+            <Box className="image-group">
               <Link to={"/" + item.name.toLowerCase()}>
                 <Image src={item.image} alt={item.name} preview={false} />
               </Link>

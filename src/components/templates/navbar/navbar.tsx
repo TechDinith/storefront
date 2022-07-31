@@ -14,9 +14,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import { NavLink, useLocation } from "react-router-dom";
@@ -316,18 +314,10 @@ const Navbar = ({ countProps, notifyProps, authProps, products }: iNavbar) => {
                   display: { xs: "true", sm: "true", md: "none" },
                   margin: "auto",
 
-                  width: "100%",
+                  width: "40vw",
                 }}
               >
-                <Search
-                  label="Search"
-                  options={products}
-                  inputAdornment={
-                    <InputAdornment position="end">
-                      <SearchIcon />
-                    </InputAdornment>
-                  }
-                />
+                <Search label={<SearchIcon />} options={products} />
               </Box>
               <IconButton
                 size="large"
@@ -336,7 +326,7 @@ const Navbar = ({ countProps, notifyProps, authProps, products }: iNavbar) => {
                 aria-haspopup="true"
                 onClick={handleMenu}
                 sx={{
-                  color: stringToColor(authProps.auth[0].name),
+                  color: stringToColor(authProps.auth[0].name || "test name"),
                 }}
               >
                 <AccountCircleOutlined />
@@ -360,7 +350,7 @@ const Navbar = ({ countProps, notifyProps, authProps, products }: iNavbar) => {
                   <Box sx={{ p: 2, display: "flex" }}>
                     <Stack spacing={0.5}>
                       <Typography color="white">
-                        <b>{authProps.auth[0].name}</b>
+                        <b>{authProps.auth[0].name || "test name"}</b>
                       </Typography>
                       <Box display="flex" sx={{ alignItems: "center" }}>
                         <EmailIcon sx={{ color: "grey[500]", mr: "2%" }} />{" "}

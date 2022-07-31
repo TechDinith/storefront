@@ -1,11 +1,7 @@
 import Checkout from "../../pages/checkout/checkout.page";
 
 const SandBox = () => {
-  return (
-    <>
-      <Checkout />
-    </>
-  );
+  return <>{/* <Checkout /> */}</>;
 };
 
 export default SandBox;

@@ -66,7 +66,7 @@ const sliderItems2 = {
   isArrows: true,
 };
 
-const Home = ({ notifyProps }: iHome) => {
+const Home = ({ notifyProps, products }: iHome) => {
   return (
     <>
       <Grid item xs={10} m="1%">
@@ -88,7 +88,7 @@ const Home = ({ notifyProps }: iHome) => {
       </Grid>
 
       <Grid item xs={10} mt="5%">
-        <Latest notifyProps={notifyProps} />
+        <Latest latestProducts={products} notifyProps={notifyProps} />
       </Grid>
     </>
   );

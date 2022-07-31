@@ -9,10 +9,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { iCartPage } from "./cart.interfaces";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import Quote from "../../templates/quote/quote.section";
 
 const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
   const [cart, setCart] = useState<iCart[]>([]);
-  const [checkouts, setCheckouts] = useState<null | any[]>(null);
+  const [checkouts, setCheckouts] = useState<null | iCart[]>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,8 +21,9 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
     if (localCart === null) {
       setTimeout(() => {
         setCart([]);
+        setCheckouts(null);
         navigate(-1);
-      }, 1000);
+      }, 100);
     } else {
       setCart(
         localCart
@@ -33,31 +35,10 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
 
   return (
     <>
-      <Grid
-        item
-        xs={10}
-        sx={{ backgroundImage: `url( ${wideabout})`, backgroundSize: "100%" }}
-        mt="2%"
-        justifyContent="center"
-        alignItems="center"
-        textAlign="center"
-      >
-        <Box>
-          <Typography
-            variant="h5"
-            color="white"
-            my="10%"
-            mx="auto"
-            fontStyle="oblique"
-            sx={{ background: "rgb(0,0,0,0.80)", width: "fit-content" }}
-          >
-            " Possimus dignissimos voluptates nulla explicabo at dolore. "
-          </Typography>
-        </Box>
-      </Grid>
+      <Quote bgImage={wideabout} />
 
       <Grid item xs={10} mt="5%" mb="1%">
-        <Typography variant="h4" textAlign="center" color="white">
+        <Typography variant="h4" textAlign="center" color="white" mb={1}>
           <b>CART</b>
         </Typography>
         <Box display="flex" justifyContent="right">

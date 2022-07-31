@@ -12,10 +12,12 @@ import Review from "../../sections/checkout/review.section";
 import { Fragment, useEffect, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
+import { iCheckoutPage } from "./checkoutPage.interface";
+import ConsecutiveSnackbars from "../../templates/notify/notify.template";
 
 const steps = ["Delivery address", "Payment details", "Review your order"];
 
-export default function Checkout() {
+export default function Checkout({ authProps, notifyProps }: iCheckoutPage) {
   const [activeStep, setActiveStep] = useState(0);
   const [deliveryDetails, setDeliveryDetails] = useState<any>({});
 
@@ -29,8 +31,6 @@ export default function Checkout() {
       }
     } else navigate(-1);
   }, []);
-
-  console.log(state);
 
   const onSubmit: SubmitHandler<any> = (data) => {
     console.log(data);
@@ -52,7 +52,11 @@ export default function Checkout() {
     switch (step) {
       case 0:
         return (
-          <AddressForm deliveryDetails={deliveryDetails} onSubmit={onSubmit} />
+          <AddressForm
+            deliveryDetails={deliveryDetails}
+            onSubmit={onSubmit}
+            authProps={authProps}
+          />
         );
       case 1:
         return <PaymentForm />;
@@ -68,7 +72,48 @@ export default function Checkout() {
     }
   }
 
-  //remember choosen
+  const handlePlaceOrder = () => {
+    const orderedOn = new Date();
+    const order = {
+      deliveryDetails: deliveryDetails,
+      products: state.checkouts,
+      total: state.checkouts
+        .map((items: any) => parseFloat(items["price"]))
+        .reduce((a: any, b: any) => a + b),
+      orderedOn: orderedOn,
+    };
+
+    const localCart = localStorage.getItem("cart");
+    const jsonCart = JSON.parse(typeof localCart === "string" ? localCart : "");
+
+    let filteredProducts: any[] = [];
+    jsonCart.map((item: any) => {
+      if (state.checkouts.some((checkout: any) => checkout.id === item.id)) {
+        return;
+      } else {
+        filteredProducts.push(item);
+        return item;
+      }
+    });
+
+    const upadtedItems = state.checkouts.map((item: any) => {
+      return {
+        ...item,
+        orderedOn: orderedOn,
+      };
+    });
+
+    const updatedCart = [...filteredProducts, ...upadtedItems];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    notifyProps.handleNotificationClick({
+      message: "Your order will be delivered soon!",
+      severity: "success",
+    });
+
+    setTimeout(() => {
+      navigate(-1);
+    }, 100);
+  };
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
@@ -107,14 +152,26 @@ export default function Checkout() {
                     <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                       Back
                     </Button>
-
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      sx={{ mt: 3, ml: 1 }}
-                    >
-                      {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                    </Button>
+                    {activeStep === steps.length - 1 ? (
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={handlePlaceOrder}
+                        sx={{ mt: 3, ml: 1 }}
+                      >
+                        {activeStep === steps.length - 1
+                          ? "Place order"
+                          : "Next"}
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        onClick={handleNext}
+                        sx={{ mt: 3, ml: 1 }}
+                      >
+                        Next
+                      </Button>
+                    )}
                   </>
                 )}
               </Box>
@@ -122,6 +179,11 @@ export default function Checkout() {
           )}
         </Fragment>
       </Paper>
+      <ConsecutiveSnackbars
+        message={notifyProps.message}
+        setSnackPack={notifyProps.setSnackPack}
+        snackPack={notifyProps.snackPack}
+      />
     </Container>
   );
 }

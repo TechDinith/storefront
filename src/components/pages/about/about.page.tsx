@@ -3,34 +3,13 @@ import { Image } from "antd";
 import wideabout from "../../../images/wideabout.jpg";
 import simg2 from "../../../images/simg2.jpg";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import Quote from "../../templates/quote/quote.section";
 
 const About = () => {
   return (
     <>
-      <Grid
-        item
-        xs={10}
-        sx={{ backgroundImage: `url( ${wideabout})`, backgroundSize: "100%" }}
-        mt="2%"
-        justifyContent="center"
-        alignItems="center"
-        textAlign="center"
-      >
-        <Box>
-          <Typography
-            variant="h5"
-            color="white"
-            my="10%"
-            mx="auto"
-            fontStyle="oblique"
-            sx={{ background: "rgb(0,0,0,0.80)", width: "fit-content" }}
-          >
-            " Possimus dignissimos voluptates nulla explicabo at dolore. "
-          </Typography>
-        </Box>
-      </Grid>
+      <Quote bgImage={wideabout} />
 
       <Grid item xs={10} mt="5%" mb="1%">
         <Typography variant="h4" textAlign="center" color="white">

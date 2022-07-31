@@ -133,8 +133,8 @@ const ProDetails = ({
       <Typography variant="h6" color="inherit" textTransform="uppercase">
         {cart.name && cart.name}
       </Typography>
-      <Typography variant="body1" color="cyan" textTransform="uppercase">
-        {cart.price && cart.price}
+      <Typography variant="body1" color="cyan">
+        {cart.price && "Rs." + cart.price}
       </Typography>
 
       {cart.isColor ? (
@@ -145,7 +145,7 @@ const ProDetails = ({
                 <CircleIcon key={i} sx={{ color: item.color }} />
               ))}
           </Box>
-        ) : (
+        ) : latest ? null : (
           <Box display="flex" justifyContent={"center"}>
             {cart.colors &&
               cart.colors.map((item: any, i: number) => (
@@ -177,6 +177,7 @@ const ProDetails = ({
             "&:hover": {
               color: "white",
             },
+            mt: 1,
           }}
           variant="outlined"
           color="inherit"
@@ -201,6 +202,7 @@ const ProDetails = ({
             "&:hover": {
               color: "white",
             },
+            mt: 1,
           }}
           variant="outlined"
           color="inherit"
@@ -218,6 +220,7 @@ const ProDetails = ({
           size="large"
           fullWidth
           onClick={handleAddToCart}
+          sx={{ mt: 1 }}
         >
           <ShoppingCartCheckoutIcon sx={{ mr: "4%" }} /> Lorem ipsum
         </Button>

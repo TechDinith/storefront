@@ -5,13 +5,20 @@ import { Link } from "react-router-dom";
 const SubSlogan = ({ path }: { path: string }) => {
   return (
     <Grid container spacing={2} mb="2%">
-      <Grid item xs={6}>
+      <Grid item xs={8} sm={6}>
         <Typography variant="h6" color="white" sx={{ background: "gray" }}>
           Lorem Ipsum. <b>SIT Amet</b>
         </Typography>
       </Grid>
 
-      <Grid item xs={6} container direction="row" justifyContent="flex-end">
+      <Grid
+        item
+        xs={4}
+        sm={6}
+        container
+        direction="row"
+        justifyContent="flex-end"
+      >
         <Typography
           variant="h6"
           color="white"

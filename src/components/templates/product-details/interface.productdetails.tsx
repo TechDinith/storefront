@@ -1,3 +1,5 @@
+import { iCategory } from "../../pages/category/category.interfaces";
+import { iLatest } from "../../sections/latest/latest.interface";
 import { iDialog } from "../dialog/dialog.interface";
 import { iNotifyProps } from "../notify/notify.interfaces";
 
@@ -14,32 +16,9 @@ export interface iCart {
   isColor: boolean;
   colors?: { [x: string]: any } | undefined;
   name: string | undefined;
-  price: string | undefined;
+  price: number | undefined;
+  desc: string;
   category: string;
-}
-
-export interface iCategory {
-  id: string;
-  image: any;
-  isColor: boolean;
-  colors?: { [x: string]: any } | undefined;
-  name: string | undefined;
-  price: string | undefined;
-  category: string;
-  orderedOn?: string;
-  addedOn?: string;
-}
-
-export interface iLatest {
-  id: string;
-  image: any;
-  isColor: boolean;
-  colors?: { [x: string]: any } | undefined;
-  name: string | undefined;
-  price: string | undefined;
-  category: string;
-  orderedOn?: string;
-  addedOn?: string;
 }
 
 export interface iProdDetails {
@@ -59,7 +38,8 @@ export interface iProducts {
   isColor: boolean;
   colors?: { [x: string]: any } | undefined;
   name: string;
-  price: string;
+  price: number | undefined;
+  desc: string;
   category: string;
   enteredOn: string;
 }

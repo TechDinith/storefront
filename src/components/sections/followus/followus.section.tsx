@@ -5,6 +5,8 @@ import swideimg from "../../../images/swideimg.jpg";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Grid from "@mui/material/Grid";
+import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
 
 const FollowUs = () => {
   return (
@@ -38,8 +40,12 @@ const FollowUs = () => {
               alignItems="center"
               sx={{ justifyContent: "center" }}
             >
-              <InstagramIcon sx={{ m: "1%" }} fontSize="large" />
-              <FacebookIcon sx={{ m: "1%" }} fontSize="large" />
+              <IconButton component={Link} to="#">
+                <InstagramIcon sx={{ m: "1%" }} fontSize="large" />
+              </IconButton>
+              <IconButton component={Link} to="#">
+                <FacebookIcon sx={{ m: "1%" }} fontSize="large" />
+              </IconButton>
             </Box>
           </Box>
         </Box>

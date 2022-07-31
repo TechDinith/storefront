@@ -7,6 +7,7 @@ import { Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Box from "@mui/material/Box/Box";
 import Button from "@mui/material/Button";
+import { iAddressForm } from "./checkout.sections.interface";
 
 const fields = [
   {
@@ -59,7 +60,11 @@ const fields = [
   },
 ];
 
-export default function AddressForm({ onSubmit, deliveryDetails }: any) {
+export default function AddressForm({
+  onSubmit,
+  deliveryDetails,
+  authProps,
+}: iAddressForm) {
   const {
     control,
     handleSubmit,
@@ -74,7 +79,6 @@ export default function AddressForm({ onSubmit, deliveryDetails }: any) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           {fields.map((fieldDetails: any, i: number) => {
-            console.log(deliveryDetails[fieldDetails.id]);
             return (
               <Fragment key={i}>
                 <Grid item xs={12} sm={6}>
@@ -134,24 +138,27 @@ export default function AddressForm({ onSubmit, deliveryDetails }: any) {
               </Fragment>
             );
           })}
-          <Box ml="5%">
-            <FormControlLabel
-              control={
-                <Controller
-                  name="saveAddress"
-                  control={control}
-                  defaultValue={false}
-                  render={({ field }) => (
-                    <Checkbox
-                      {...field}
-                      defaultChecked={deliveryDetails["saveAddress"]}
-                    />
-                  )}
-                />
-              }
-              label="Save address details for the future purchases"
-            />
-          </Box>
+          {authProps?.auth && (
+            <Box ml="5%">
+              <FormControlLabel
+                control={
+                  <Controller
+                    name="saveAddress"
+                    control={control}
+                    defaultValue={false}
+                    render={({ field }) => (
+                      <Checkbox
+                        {...field}
+                        defaultChecked={deliveryDetails["saveAddress"]}
+                      />
+                    )}
+                  />
+                }
+                label="Save address details for the future purchases"
+              />
+            </Box>
+          )}
+
           <Box width="100%" display="flex" justifyContent="right">
             <Button variant="contained" type="submit" sx={{ mt: 3 }}>
               NEXT
