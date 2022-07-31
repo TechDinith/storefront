@@ -171,6 +171,7 @@ const Layout = () => {
                       snackPack,
                     }}
                     authProps={{ auth, setAuth }}
+                    countProps={{ setCount, count }}
                   />
                 }
               />

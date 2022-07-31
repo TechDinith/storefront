@@ -17,7 +17,11 @@ import ConsecutiveSnackbars from "../../templates/notify/notify.template";
 
 const steps = ["Delivery address", "Payment details", "Review your order"];
 
-export default function Checkout({ authProps, notifyProps }: iCheckoutPage) {
+export default function Checkout({
+  authProps,
+  notifyProps,
+  countProps,
+}: iCheckoutPage) {
   const [activeStep, setActiveStep] = useState(0);
   const [deliveryDetails, setDeliveryDetails] = useState<any>({});
 
@@ -105,6 +109,7 @@ export default function Checkout({ authProps, notifyProps }: iCheckoutPage) {
 
     const updatedCart = [...filteredProducts, ...upadtedItems];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+    countProps.setCount(updatedCart);
     notifyProps.handleNotificationClick({
       message: "Your order will be delivered soon!",
       severity: "success",
