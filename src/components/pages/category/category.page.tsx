@@ -144,7 +144,7 @@ const Category = ({ countProps, notifyProps }: iCategories) => {
             container
             spacing={2}
             direction="row"
-            sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
+            // sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
           >
             {categories.map((item, i) => (
               <Fragment key={i}>
@@ -175,54 +175,7 @@ const Category = ({ countProps, notifyProps }: iCategories) => {
                   ) : null
                 ) : null}
                 {item.category === category ? (
-                  <Grid item xs={4}>
-                    <ProDetails
-                      notifyProps={notifyProps}
-                      countProps={countProps}
-                      preview={true}
-                      cart={item}
-                    />
-                  </Grid>
-                ) : null}
-              </Fragment>
-            ))}
-          </Grid>
-          <Grid
-            container
-            spacing={2}
-            direction="row"
-            sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
-          >
-            {categories.map((item, i) => (
-              <Fragment key={i}>
-                {location.state ? (
-                  location.state.value.id === item.id ? (
-                    <Dialog
-                      open={openSearchResult}
-                      onClose={handleClickCloseSearchResult}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogContent sx={{ backgroundColor: "transparent" }}>
-                        <Box display="flex" justifyContent="center">
-                          <Box width="90%">
-                            <ProDetails
-                              handleClickCloseSearchResult={
-                                handleClickCloseSearchResult
-                              }
-                              notifyProps={notifyProps}
-                              countProps={countProps}
-                              preview={false}
-                              cart={item}
-                            />
-                          </Box>
-                        </Box>
-                      </DialogContent>
-                    </Dialog>
-                  ) : null
-                ) : null}
-                {item.category === category ? (
-                  <Grid item xs={10}>
+                  <Grid item xs={10} sm={4}>
                     <ProDetails
                       notifyProps={notifyProps}
                       countProps={countProps}

@@ -16,51 +16,21 @@ const group = [
 const Catogories = () => {
   return (
     <>
-      <Grid item xs={10} mt="5%" sx={{ display: { xs: "block", sm: "none" } }}>
+      <Grid item xs={10} mt="5%" display={{ xs: "block", sm: "flex" }}>
         {group.map((item, i) => (
-          <Link to={"/" + item.name.toLowerCase()} key={i}>
-            <Box className="image-group-vertical" mb="2%" key={i++}>
-              <Typography
-                variant="h4"
-                color="white"
-                sx={{
-                  width: "85%",
-                  height: "57%",
-                  position: "absolute",
-                  py: "40%",
-                  textAlign: "center",
-                }}
-              >
-                {item.name}
-              </Typography>
-              <Image src={item.image} alt={item.name} preview={false} />
-            </Box>
-          </Link>
-        ))}
-      </Grid>
-
-      <Grid item xs={10} mt="5%" sx={{ display: { xs: "none", sm: "block" } }}>
-        <Box display={"flex"}>
-          {group.map((item, i) => (
+          <Grid item xs={12} sm={4} justifyContent={"center"}>
             <Box width={"34%"} key={i * 2}>
               <Typography variant="h6" color="white">
                 {item.name.toUpperCase()}
               </Typography>
             </Box>
-          ))}
-        </Box>
-
-        <Image.PreviewGroup>
-          <Box display={"flex"}>
-            {group.map((item, i) => (
-              <Box className="image-group" width={"34%"} key={i * 3}>
-                <Link to={"/" + item.name.toLowerCase()}>
-                  <Image src={item.image} alt={item.name} preview={false} />
-                </Link>
-              </Box>
-            ))}
-          </Box>
-        </Image.PreviewGroup>
+            <Box className="image-group" key={i * 3}>
+              <Link to={"/" + item.name.toLowerCase()}>
+                <Image src={item.image} alt={item.name} preview={false} />
+              </Link>
+            </Box>
+          </Grid>
+        ))}
       </Grid>
     </>
   );

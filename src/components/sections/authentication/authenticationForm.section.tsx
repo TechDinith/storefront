@@ -88,7 +88,11 @@ const AuthenticationForm = ({
                         autoComplete={fieldName}
                         autoFocus={i === 0}
                         {...field}
-                        error={Boolean(errors.email)}
+                        error={Boolean(
+                          fieldName === errors.email ||
+                            fieldName === errors.name ||
+                            fieldName === errors.password
+                        )}
                       />
                     )}
                     rules={{
@@ -139,11 +143,11 @@ const AuthenticationForm = ({
           </form>
 
           <Grid container mt="1%" justifyContent="center">
-            {/* <Grid item xs>
+            <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>
-            </Grid> */}
+            </Grid>
             <Grid item>
               <Link
                 href={

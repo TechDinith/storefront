@@ -5,11 +5,14 @@ import Box from "@mui/material/Box";
 import ProDetails from "../../templates/product-details/product.details";
 import { useEffect, useState } from "react";
 import { iCart } from "../../templates/product-details/interface.productdetails";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { iCartPage } from "./cart.interfaces";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 
 const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
   const [cart, setCart] = useState<iCart[]>([]);
+  const [checkouts, setCheckouts] = useState<null | any[]>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,20 +60,59 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
         <Typography variant="h4" textAlign="center" color="white">
           <b>CART</b>
         </Typography>
+        <Box display="flex" justifyContent="right">
+          {checkouts === null ? (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => setCheckouts([])}
+            >
+              Select Lorem
+            </Button>
+          ) : (
+            <>
+              {checkouts.length && (
+                <Button
+                  variant="outlined"
+                  color="info"
+                  component={Link}
+                  to="/checkout"
+                  state={{ checkouts: checkouts }}
+                  sx={{ mr: 1 }}
+                >
+                  ipsum
+                </Button>
+              )}
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => setCheckouts(null)}
+              >
+                Cancel Lorem
+              </Button>
+            </>
+          )}
+        </Box>
       </Grid>
-
       <Grid container spacing={2} m="auto" justifyContent="center">
         <Grid item xs={10} mt="1%" mb="1%">
-          <Grid
-            container
-            spacing={2}
-            direction="row"
-            sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
-          >
+          <Grid container spacing={2} direction="row">
             {cart
               .sort((a, b) => +new Date(b.addedOn) - +new Date(a.addedOn))
               .map((item, i) => (
-                <Grid item xs={4} key={i}>
+                <Grid item xs={10} sm={4} key={i}>
+                  {checkouts !== null ? (
+                    <Checkbox
+                      onChange={(e) =>
+                        e.target.checked === true
+                          ? setCheckouts([...checkouts, item])
+                          : setCheckouts(
+                              checkouts.filter((items) => items.id !== item.id)
+                            )
+                      }
+                      name="checkoutselect"
+                    />
+                  ) : null}
                   {item.addedOn && (
                     <>
                       <Typography
@@ -101,41 +143,6 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
                           : "Not yet checked out"}
                       </Typography>
                     </>
-                  )}
-                  <ProDetails
-                    dialogProps={dialogProps}
-                    notifyProps={notifyProps}
-                    isCart={true}
-                    preview={true}
-                    cart={item}
-                    countProps={countProps}
-                  />
-                </Grid>
-              ))}
-          </Grid>
-          <Grid
-            container
-            spacing={2}
-            direction="row"
-            sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
-          >
-            {cart
-              .sort((a, b) => +new Date(b.addedOn) - +new Date(a.addedOn))
-              .map((item, i) => (
-                <Grid item xs={10} key={i}>
-                  {item.addedOn && (
-                    <Typography
-                      variant="body2"
-                      textAlign="center"
-                      color="orange"
-                    >
-                      Added On:{" "}
-                      {new Intl.DateTimeFormat("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "2-digit",
-                      }).format(new Date(item.addedOn))}
-                    </Typography>
                   )}
                   <ProDetails
                     dialogProps={dialogProps}

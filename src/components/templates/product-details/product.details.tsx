@@ -14,6 +14,7 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import ConsecutiveSnackbars from "../notify/notify.template";
 import AlertDialog from "../dialog/dialog.template";
 import Paper from "@mui/material/Paper";
+import InventoryIcon from "@mui/icons-material/Inventory";
 
 const ProDetails = ({
   cart,
@@ -44,8 +45,6 @@ const ProDetails = ({
       colors: [{ imgae: selectedProduct.image, color: selectedProduct.color }],
       orderedOn: cart.orderedOn,
     };
-
-    console.log(cart.orderedOn);
 
     let isMatch: any =
       countProps?.count !== null
@@ -185,13 +184,14 @@ const ProDetails = ({
           fullWidth
           component={NavLink}
           to={"/checkout"}
+          state={{ checkouts: [cart] }}
           disabled={cart.orderedOn ? true : false}
         >
           {cart.orderedOn ? (
             "Order will receive within 15 days"
           ) : (
             <>
-              <FavoriteBorderIcon sx={{ mr: "4%" }} /> Lorem ipsum
+              <InventoryIcon sx={{ mr: "4%" }} /> Lorem ipsum
             </>
           )}
         </Button>

@@ -24,6 +24,7 @@ import prod5black from "../../../images/prod5-black.jpg";
 import prod5red from "../../../images/prod5-red.jpg";
 import prod5white from "../../../images/prod5-white.jpg";
 import prod6 from "../../../images/prod6.jpg";
+import Checkout from "../../pages/checkout/checkout.page";
 
 const categories = ["men", "women", "accessories"];
 
@@ -119,9 +120,10 @@ const Layout = () => {
       <Header products={products} />
       <Box component="main">
         <Grid container justifyContent="center">
-          {/* search checkout if login cart should append and sent to database when removing it should go too/ no products coming soon*/}
+          {/*checkout reset password if login cart should append and sent to database when removing it should go too and checkout details can be saved/ no products coming soon*/}
           {/* admin addadmin=>only pedros admins can delete/ addproduct => new category */}
-          {/* signed in user has cross platform cart */}
+          {/* validate form fields password phone numbers / add counter for the cart */}
+          {/* checkout selected for cart/ delivery free or charge on categories */}
           <Navbar
             authProps={{ auth, setAuth }}
             countProps={{ setCount, count }}
@@ -151,6 +153,7 @@ const Layout = () => {
               />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route
                 path="/login"
                 element={<SignInSide authProps={{ auth, setAuth }} />}

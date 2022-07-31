@@ -73,10 +73,10 @@ const Home = ({ notifyProps }: iHome) => {
         <Slider {...sliderItems} />
       </Grid>
 
-      <Grid item xs={5} justifyContent={"center"}>
+      <Grid item xs={10} sm={5} justifyContent={"center"}>
         <MainSlogan />
       </Grid>
-      <Grid item xs={5}>
+      <Grid item sm={5} sx={{ display: { xs: "none", sm: "block" } }}>
         <Slider {...sliderItems1} />
       </Grid>
 
