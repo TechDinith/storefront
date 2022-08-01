@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CircleIcon from "@mui/icons-material/Circle";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Image } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import { iProdDetails } from "./interface.productdetails";
@@ -14,6 +14,7 @@ import ConsecutiveSnackbars from "../notify/notify.template";
 import AlertDialog from "../dialog/dialog.template";
 import Paper from "@mui/material/Paper";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import TextField from "@mui/material/TextField";
 
 const ProDetails = ({
   cart,
@@ -32,6 +33,7 @@ const ProDetails = ({
     image: cart.image ? cart.image : cart.colors ? cart.colors[0].image : null,
     color: cart.colors ? cart.colors[0] : "transparent",
   });
+  const [quantity, setQuantity] = useState("1");
 
   const handleAddToCart = () => {
     let cartItem = {
@@ -45,6 +47,7 @@ const ProDetails = ({
       colors: [{ imgae: selectedProduct.image, color: selectedProduct.color }],
       orderedOn: cart.orderedOn,
       desc: cart.desc,
+      quantity: quantity,
     };
 
     let isMatch: any =
@@ -145,7 +148,6 @@ const ProDetails = ({
             key={selectedProduct.image}
             preview={preview}
           />
-          ;
         </>
       )}
 
@@ -168,34 +170,76 @@ const ProDetails = ({
               ))}
           </Box>
         ) : latest ? null : (
-          <Box display="flex" justifyContent={"center"}>
-            {cart.colors &&
-              cart.colors.map((item: any, i: number) => (
-                <IconButton
-                  key={i}
-                  onClick={() =>
-                    setSelectedProduct({
-                      id: item.id,
-                      image: item.image,
-                      color: item.color,
-                    })
-                  }
-                >
-                  <CircleIcon sx={{ color: item.color }} />
-                </IconButton>
-              ))}
-          </Box>
+          <>
+            <Box display="flex" justifyContent={"center"}>
+              {cart.colors &&
+                cart.colors.map((item: any, i: number) => (
+                  <Fragment key={i}>
+                    <IconButton
+                      key={i}
+                      onClick={() =>
+                        setSelectedProduct({
+                          id: item.id,
+                          image: item.image,
+                          color: item.color,
+                        })
+                      }
+                    >
+                      <CircleIcon sx={{ color: item.color }} />
+                    </IconButton>
+                  </Fragment>
+                ))}
+            </Box>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Typography variant="body1" color="white" textAlign="center">
+                Quantity :
+              </Typography>
+              <TextField
+                id="outlined-number"
+                label="Number"
+                sx={{ ml: 1, width: "40%", mt: 1 }}
+                defaultValue={1}
+                InputProps={{ inputProps: { min: 1 } }}
+                type="number"
+                size="small"
+                onChange={(e) => setQuantity(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+          </>
         )
       ) : latest ? null : isCart ? (
         <Box display="flex" justifyContent={"center"}>
           <CircleIcon sx={{ color: "transparent" }} />
         </Box>
       ) : (
-        <Box display="flex" justifyContent={"center"}>
-          <IconButton disabled>
-            <CircleIcon sx={{ color: "transparent" }} />
-          </IconButton>
-        </Box>
+        <>
+          <Box display="flex" justifyContent={"center"}>
+            <IconButton disabled>
+              <CircleIcon sx={{ color: "transparent" }} />
+            </IconButton>
+          </Box>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Typography variant="body1" color="white" textAlign="center">
+              Quantity :
+            </Typography>
+            <TextField
+              id="outlined-number"
+              label="Number"
+              sx={{ ml: 1, width: "40%", mt: 1 }}
+              defaultValue={1}
+              InputProps={{ inputProps: { min: 1 } }}
+              type="number"
+              size="small"
+              onChange={(e) => setQuantity(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Box>
+        </>
       )}
       {isCart ? (
         <Button

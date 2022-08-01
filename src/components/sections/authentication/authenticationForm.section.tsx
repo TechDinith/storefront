@@ -96,6 +96,13 @@ const AuthenticationForm = ({
                       />
                     )}
                     rules={{
+                      // pattern: {
+                      //   value:
+                      //     fieldName === "password"
+                      //       ? /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/
+                      //       : /^/,
+                      //   message: "Password should contained Valid",
+                      // },
                       required: {
                         value: true,
                         message: capitalize(fieldName) + " is Required",

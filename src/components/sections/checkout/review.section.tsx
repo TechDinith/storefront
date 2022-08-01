@@ -16,15 +16,22 @@ export default function Review({ products, deliveryDetails }: iReview) {
         <b>Order summary</b>
       </Typography>
       <List disablePadding>
-        {products.map((product: any) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
+        {products.map((product: any, i: number) => (
+          <ListItem key={i} sx={{ py: 1, px: 0 }}>
             <ListItemText
               primary={
                 product.colors[0].color !== "transparent"
                   ? product.name + "-" + product.colors[0].color
                   : product.name
               }
-              secondary={product.desc ? product.desc : ""}
+              secondary={
+                <Typography variant="subtitle2" color="gray">
+                  {product.desc ? product.desc : ""}
+                  <br />
+                  <br /> <b>Quantity: </b>
+                  {product.quantity}
+                </Typography>
+              }
               color="inherit"
             />
             <Typography variant="body2" color="inherit">
@@ -40,8 +47,12 @@ export default function Review({ products, deliveryDetails }: iReview) {
             sx={{ fontWeight: 700 }}
             color="inherit"
           >
+            Rs.
             {products
-              .map((items: any) => parseFloat(items["price"]))
+              .map(
+                (items: any) =>
+                  parseFloat(items["price"]) * parseInt(items["quantity"])
+              )
               .reduce((a: any, b: any) => a + b)}
           </Typography>
         </ListItem>

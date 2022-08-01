@@ -122,10 +122,17 @@ const Layout = () => {
       <Header products={products} />
       <Box component="main">
         <Grid container justifyContent="center">
-          {/* reset password if login cart should append and sent to database when removing it should go too and checkout details can be saved*/}
-          {/* admin addadmin=>only pedros admins can delete/ addproduct => new category */}
-          {/* validate form fields password phone numbers / add counter for the cart */}
-          {/*  delivery free or charge on categories */}
+          {/*if login => 
+          reset password /
+          cart should append and sent to database/ 
+          when removing it should go too /
+          checkout details can be saved*/}
+
+          {/* admin=> 
+          addadmin
+          only pedros admins can delete products add admins or remove them 
+          others can edite add products/ addproduct => new category */}
+
           <Navbar
             authProps={{ auth, setAuth }}
             countProps={{ setCount, count }}
