@@ -1,5 +1,5 @@
 export interface iDialog {
-  openDialog: boolean;
+  openDialog: iOpenDialog;
   setOpenDialog: any;
   attributes?: {
     title: string;
@@ -8,4 +8,9 @@ export interface iDialog {
     yesFunction: () => void;
     noBtn: string;
   };
+}
+
+export interface iOpenDialog {
+  value: boolean;
+  id?: string;
 }

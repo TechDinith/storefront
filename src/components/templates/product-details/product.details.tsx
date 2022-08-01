@@ -3,8 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CircleIcon from "@mui/icons-material/Circle";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import { iProdDetails } from "./interface.productdetails";
@@ -29,13 +28,14 @@ const ProDetails = ({
   const { state }: any = useLocation();
 
   const [selectedProduct, setSelectedProduct] = useState({
+    id: cart.image ? cart.id : cart.colors ? cart.colors[0].id : null,
     image: cart.image ? cart.image : cart.colors ? cart.colors[0].image : null,
     color: cart.colors ? cart.colors[0] : "transparent",
   });
 
   const handleAddToCart = () => {
     let cartItem = {
-      id: cart.id,
+      id: selectedProduct.id,
       image: selectedProduct.image,
       category: cart.category,
       isColor: cart.isColor,
@@ -44,6 +44,7 @@ const ProDetails = ({
       addedOn: new Date(),
       colors: [{ imgae: selectedProduct.image, color: selectedProduct.color }],
       orderedOn: cart.orderedOn,
+      desc: cart.desc,
     };
 
     let isMatch: any =
@@ -78,17 +79,26 @@ const ProDetails = ({
     if (handleClickCloseSearchResult) handleClickCloseSearchResult();
   };
 
+  const handleDialogOpen = () => {
+    dialogProps?.setOpenDialog({ value: true, id: cart.id });
+  };
+
   const handleRemove = () => {
-    dialogProps?.setOpenDialog(false);
     let localCart = localStorage.getItem("cart");
     let jsonCart = JSON.parse(typeof localCart === "string" ? localCart : "");
 
     let cartItems = jsonCart.filter(
-      (product: any) => String(product.id).trim() !== String(cart.id).trim()
+      (product: any) =>
+        String(product.id).trim() !== String(dialogProps?.openDialog.id).trim()
     );
+
     if (cartItems.length) {
       localStorage.setItem("cart", JSON.stringify(cartItems));
       countProps!.setCount(cartItems);
+      notifyProps.handleNotificationClick({
+        message: "Item Removed!",
+        severity: "info",
+      });
     } else {
       notifyProps.handleNotificationClick({
         message: "Cart is Empty!",
@@ -97,10 +107,11 @@ const ProDetails = ({
       localStorage.removeItem("cart");
       countProps!.setCount(null);
     }
-  };
+    dialogProps?.setOpenDialog({ value: false, id: "" });
 
-  const handleDialogOpen = () => {
-    dialogProps?.setOpenDialog(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 10);
   };
 
   return (
@@ -113,21 +124,29 @@ const ProDetails = ({
     >
       {isCart ? (
         <Box>
-          <IconButton onClick={handleDialogOpen}>
-            <RemoveCircleOutlineIcon fontSize="large" color="error" />
-          </IconButton>
-          <Image
-            src={selectedProduct.image}
-            alt={selectedProduct.color}
-            preview={preview}
-          />
+          <>
+            <IconButton onClick={handleDialogOpen}>
+              <RemoveCircleOutlineIcon fontSize="large" color="error" />
+            </IconButton>
+            <Image
+              key={selectedProduct.image}
+              src={require(`../../../images/${selectedProduct.image}`)}
+              alt={selectedProduct.image}
+              preview={preview}
+            />
+            ;
+          </>
         </Box>
       ) : (
-        <Image
-          src={selectedProduct.image}
-          alt={selectedProduct.color}
-          preview={preview}
-        />
+        <>
+          <Image
+            src={require(`../../../images/${selectedProduct.image}`)}
+            alt={selectedProduct.image}
+            key={selectedProduct.image}
+            preview={preview}
+          />
+          ;
+        </>
       )}
 
       <Typography variant="h6" color="inherit" textTransform="uppercase">
@@ -135,6 +154,9 @@ const ProDetails = ({
       </Typography>
       <Typography variant="body1" color="cyan">
         {cart.price && "Rs." + cart.price}
+      </Typography>
+      <Typography variant="subtitle2" color="pink">
+        {cart.desc && cart.desc}
       </Typography>
 
       {cart.isColor ? (
@@ -152,7 +174,11 @@ const ProDetails = ({
                 <IconButton
                   key={i}
                   onClick={() =>
-                    setSelectedProduct({ image: item.image, color: item.color })
+                    setSelectedProduct({
+                      id: item.id,
+                      image: item.image,
+                      color: item.color,
+                    })
                   }
                 >
                   <CircleIcon sx={{ color: item.color }} />
@@ -239,7 +265,9 @@ const ProDetails = ({
           yesFunction: handleRemove,
           noBtn: "dolor sit",
         }}
-        openDialog={dialogProps?.openDialog ? dialogProps?.openDialog : false}
+        openDialog={
+          dialogProps?.openDialog ? dialogProps?.openDialog : { value: false }
+        }
         setOpenDialog={dialogProps?.setOpenDialog}
       />
     </Box>

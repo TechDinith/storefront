@@ -32,8 +32,25 @@ const Category = ({ countProps, notifyProps, products }: iCategories) => {
 
     if (location.state)
       if (location.state.value.id) handleClickOpenSearchResult();
-  }, [location.state]);
+  }, [location.state, products]);
 
+  let nullCount = 0;
+
+  const CommingSoon = () => {
+    nullCount++;
+    if (nullCount >= categories.length) {
+      return (
+        <Typography
+          textAlign="center"
+          variant="h1"
+          color="orange"
+          textTransform="uppercase"
+        >
+          coming soon
+        </Typography>
+      );
+    } else return null;
+  };
   return (
     <>
       <Quote
@@ -55,8 +72,8 @@ const Category = ({ countProps, notifyProps, products }: iCategories) => {
       </Grid>
 
       <Grid container spacing={2} m="auto" justifyContent="center">
-        <Grid item xs={10} mt="1%" mb="1%">
-          <Grid container spacing={2} direction="row">
+        <Grid item xs={10} mt="1%" mb="1%" justifyContent="center">
+          <Grid container spacing={2} direction="row" justifyContent="center">
             {categories.map((item, i) => (
               <Fragment key={i}>
                 {location.state ? (
@@ -94,7 +111,9 @@ const Category = ({ countProps, notifyProps, products }: iCategories) => {
                       cart={item}
                     />
                   </Grid>
-                ) : null}
+                ) : (
+                  CommingSoon()
+                )}
               </Fragment>
             ))}
           </Grid>

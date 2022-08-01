@@ -12,13 +12,13 @@ export default function AlertDialog({
   attributes,
 }: iDialog) {
   const handleClose = () => {
-    setOpenDialog(false);
+    setOpenDialog({ value: false, id: "" });
   };
 
   return (
     <div>
       <Dialog
-        open={openDialog}
+        open={openDialog?.value}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

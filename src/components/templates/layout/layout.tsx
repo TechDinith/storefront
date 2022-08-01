@@ -16,15 +16,8 @@ import Cart from "../../pages/cart/cart.page";
 import NotFound from "../../pages/notfound/notfound.page";
 import { iMessage, SnackbarMessage } from "../notify/notify.interfaces";
 import { iProducts } from "../product-details/interface.productdetails";
-import prod1 from "../../../images/prod1.jpg";
-import prod2 from "../../../images/prod2.jpg";
-import prod3 from "../../../images/prod3.jpg";
-import prod4 from "../../../images/prod4.jpg";
-import prod5black from "../../../images/prod5-black.jpg";
-import prod5red from "../../../images/prod5-red.jpg";
-import prod5white from "../../../images/prod5-white.jpg";
-import prod6 from "../../../images/prod6.jpg";
 import Checkout from "../../pages/checkout/checkout.page";
+import { iOpenDialog } from "../dialog/dialog.interface";
 
 const categories = ["men", "women", "accessories"];
 
@@ -35,7 +28,10 @@ const Layout = () => {
     message: "",
     severity: "info",
   });
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState<iOpenDialog>({
+    value: false,
+    id: "",
+  });
   const [auth, setAuth] = React.useState(null);
   const [products, setProducts] = useState<iProducts[] | []>([]);
 
@@ -50,7 +46,7 @@ const Layout = () => {
     setProducts([
       {
         id: "1",
-        image: prod1,
+        image: "prod1.jpg",
         isColor: false,
         name: "Sample Item 1",
         price: 1500.5,
@@ -60,7 +56,7 @@ const Layout = () => {
       },
       {
         id: "2",
-        image: prod2,
+        image: "prod2.jpg",
         isColor: false,
         name: "Sample Item 2",
         price: 1400.5,
@@ -70,7 +66,7 @@ const Layout = () => {
       },
       {
         id: "3",
-        image: prod3,
+        image: "prod3.jpg",
         isColor: false,
         name: "Sample Item 3",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
@@ -80,7 +76,7 @@ const Layout = () => {
       },
       {
         id: "4",
-        image: prod4,
+        image: "prod4.jpg",
         isColor: false,
         name: "Sample Item 4",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
@@ -96,17 +92,17 @@ const Layout = () => {
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
         price: 150.5,
         colors: [
-          { image: prod5black, color: "black" },
-          { image: prod5red, color: "red" },
-          { image: prod5white, color: "white" },
+          { id: "7", image: "prod5-black.jpg", color: "black" },
+          { id: "8", image: "prod5-red.jpg", color: "red" },
+          { id: "9", image: "prod5-white.jpg", color: "white" },
         ],
-        category: "accessories",
+        category: "women",
         enteredOn: "02/08/2022",
       },
       {
         id: "6",
-        image: prod6,
-        category: "accessories",
+        image: "prod6.jpg",
+        category: "women",
         isColor: false,
         name: "Sample Item 6",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
@@ -120,16 +116,16 @@ const Layout = () => {
     setMessage({ message, severity });
     setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   };
-  //description products
+
   return (
     <>
       <Header products={products} />
       <Box component="main">
         <Grid container justifyContent="center">
-          {/*checkout reset password if login cart should append and sent to database when removing it should go too and checkout details can be saved/ no products coming soon*/}
+          {/* reset password if login cart should append and sent to database when removing it should go too and checkout details can be saved*/}
           {/* admin addadmin=>only pedros admins can delete/ addproduct => new category */}
           {/* validate form fields password phone numbers / add counter for the cart */}
-          {/* checkout selected for cart/ delivery free or charge on categories */}
+          {/*  delivery free or charge on categories */}
           <Navbar
             authProps={{ auth, setAuth }}
             countProps={{ setCount, count }}

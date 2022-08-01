@@ -1,5 +1,5 @@
 import { Carousel } from "antd";
-import React, { Fragment } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { ArrowBackIosNewOutlined, ArrowForwardIos } from "@mui/icons-material";

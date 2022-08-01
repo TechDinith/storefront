@@ -18,7 +18,15 @@ export default function Review({ products, deliveryDetails }: iReview) {
       <List disablePadding>
         {products.map((product: any) => (
           <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={product.name} color="inherit" />
+            <ListItemText
+              primary={
+                product.colors[0].color !== "transparent"
+                  ? product.name + "-" + product.colors[0].color
+                  : product.name
+              }
+              secondary={product.desc ? product.desc : ""}
+              color="inherit"
+            />
             <Typography variant="body2" color="inherit">
               {product.price}
             </Typography>

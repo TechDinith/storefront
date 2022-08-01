@@ -31,7 +31,7 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
           : []
       );
     }
-  }, [countProps.count]);
+  }, [countProps.count, dialogProps?.openDialog]);
 
   return (
     <>
@@ -133,6 +133,7 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
                     cart={item}
                     countProps={countProps}
                   />
+                  ;
                 </Grid>
               ))}
           </Grid>
