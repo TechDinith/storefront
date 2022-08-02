@@ -11,7 +11,12 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Quote from "../../templates/quote/quote.section";
 
-const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
+const Cart = ({
+  countProps,
+  notifyProps,
+  dialogProps,
+  authProps,
+}: iCartPage) => {
   const [cart, setCart] = useState<iCart[]>([]);
   const [checkouts, setCheckouts] = useState<null | iCart[]>(null);
   const navigate = useNavigate();
@@ -20,6 +25,7 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
     let localCart = localStorage.getItem("cart");
     if (localCart === null) {
       setTimeout(() => {
+        authProps?.setAuth(authProps.auth ? authProps.auth : null);
         setCart([]);
         setCheckouts(null);
         navigate(-1);
@@ -30,9 +36,23 @@ const Cart = ({ countProps, notifyProps, dialogProps }: iCartPage) => {
           ? JSON.parse(typeof localCart === "string" ? localCart : "")
           : []
       );
-    }
-  }, [countProps.count, dialogProps?.openDialog]);
 
+      //should sent to the database too and replace the current cart of the user
+      authProps?.setAuth(
+        authProps.auth
+          ? [
+              {
+                ...authProps?.auth[0],
+                cart: localCart
+                  ? JSON.parse(typeof localCart === "string" ? localCart : "")
+                  : [],
+              },
+            ]
+          : authProps.auth
+      );
+    }
+  }, [countProps.count, dialogProps?.openDialog, navigate]);
+  console.log(authProps?.auth);
   return (
     <>
       <Quote bgImage={wideabout} />

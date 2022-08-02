@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CircleIcon from "@mui/icons-material/Circle";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { Image } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import { iProdDetails } from "./interface.productdetails";
@@ -163,12 +163,32 @@ const ProDetails = ({
 
       {cart.isColor ? (
         isCart ? (
-          <Box display="flex" justifyContent={"center"}>
-            {cart.colors &&
-              cart.colors.map((item: any, i: number) => (
-                <CircleIcon key={i} sx={{ color: item.color }} />
-              ))}
-          </Box>
+          <>
+            <Box display="flex" justifyContent={"center"}>
+              {cart.colors &&
+                cart.colors.map((item: any, i: number) => (
+                  <CircleIcon key={i} sx={{ color: item.color }} />
+                ))}
+            </Box>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Typography variant="body1" color="white" textAlign="center">
+                Quantity :
+              </Typography>
+              <TextField
+                id="outlined-number"
+                label="Number"
+                sx={{ ml: 1, width: "40%", mt: 1 }}
+                value={cart.quantity}
+                InputProps={{ inputProps: { min: 1 } }}
+                type="number"
+                size="small"
+                disabled
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+          </>
         ) : latest ? null : (
           <>
             <Box display="flex" justifyContent={"center"}>
@@ -211,9 +231,29 @@ const ProDetails = ({
           </>
         )
       ) : latest ? null : isCart ? (
-        <Box display="flex" justifyContent={"center"}>
-          <CircleIcon sx={{ color: "transparent" }} />
-        </Box>
+        <>
+          <Box display="flex" justifyContent={"center"}>
+            <CircleIcon sx={{ color: "transparent" }} />
+          </Box>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Typography variant="body1" color="white" textAlign="center">
+              Quantity :
+            </Typography>
+            <TextField
+              id="outlined-number"
+              label="Number"
+              sx={{ ml: 1, width: "40%", mt: 1 }}
+              value={cart.quantity}
+              InputProps={{ inputProps: { min: 1 } }}
+              type="number"
+              size="small"
+              disabled
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Box>
+        </>
       ) : (
         <>
           <Box display="flex" justifyContent={"center"}>

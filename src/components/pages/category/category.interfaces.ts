@@ -18,4 +18,5 @@ export interface iCategory {
   category: string;
   orderedOn?: string;
   addedOn?: string;
+  quantity?: string;
 }

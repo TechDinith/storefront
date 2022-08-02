@@ -1,3 +1,4 @@
+import { iAuthProps } from "../../../auth/auth.interface";
 import { iCategory } from "../../pages/category/category.interfaces";
 import { iLatest } from "../../sections/latest/latest.interface";
 import { iDialog } from "../dialog/dialog.interface";
@@ -19,9 +20,11 @@ export interface iCart {
   price: number | undefined;
   desc: string;
   category: string;
+  quantity?: string;
 }
 
 export interface iProdDetails {
+  authProps?: iAuthProps;
   notifyProps: iNotifyProps;
   countProps?: iCount;
   dialogProps?: iDialog;

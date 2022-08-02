@@ -34,7 +34,7 @@ export default function Checkout({
         navigate(-1);
       }
     } else navigate(-1);
-  }, []);
+  }, [navigate, state]);
 
   const onSubmit: SubmitHandler<any> = (data) => {
     console.log(data);
@@ -78,6 +78,8 @@ export default function Checkout({
 
   const handlePlaceOrder = () => {
     const orderedOn = new Date();
+
+    //database order for admins
     const order = {
       deliveryDetails: deliveryDetails,
       products: state.checkouts,
@@ -110,10 +112,23 @@ export default function Checkout({
     const updatedCart = [...filteredProducts, ...upadtedItems];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     countProps.setCount(updatedCart);
+
     notifyProps.handleNotificationClick({
       message: "Your order will be delivered soon!",
       severity: "success",
     });
+
+    authProps?.setAuth(
+      authProps.auth
+        ? [
+            {
+              ...authProps?.auth[0],
+              cart: updatedCart,
+              order: order,
+            },
+          ]
+        : authProps.auth
+    );
 
     setTimeout(() => {
       navigate(-1);

@@ -7,4 +7,5 @@ export interface iNavbar {
   notifyProps: iNotifyProps;
   authProps: iAuthProps;
   products: iProducts[];
+  categories: string[];
 }

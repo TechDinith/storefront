@@ -16,4 +16,5 @@ export interface iLatest {
   category: string;
   orderedOn?: string;
   addedOn?: string;
+  quantity?: string;
 }

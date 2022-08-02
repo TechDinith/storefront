@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import { iHeader } from "./header.interfaces";
 import Search from "../../sections/search/search.section";
-import { Box } from "@mui/system";
 
 const Header = ({ products }: iHeader) => {
   return (

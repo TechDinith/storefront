@@ -150,12 +150,12 @@ const AuthenticationForm = ({
           </form>
 
           <Grid container mt="1%" justifyContent="center">
-            <Grid item xs>
-              <Link href="#" variant="body2">
+            <Grid item xs={12} sm={6} textAlign={{ xs: "center", sm: "left" }}>
+              <Link href="/reset" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item>
+            <Grid item xs={12} sm={6} textAlign={{ xs: "center", sm: "right" }}>
               <Link
                 href={
                   String(btnText).toLowerCase() !== "sign up"

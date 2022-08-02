@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Navbar from "../navbar/navbar";
@@ -18,7 +17,7 @@ import { iMessage, SnackbarMessage } from "../notify/notify.interfaces";
 import { iProducts } from "../product-details/interface.productdetails";
 import Checkout from "../../pages/checkout/checkout.page";
 import { iOpenDialog } from "../dialog/dialog.interface";
-
+import ResetPasswordPage from "../../pages/resetpassword/resetPassword.page";
 const categories = ["men", "women", "accessories"];
 
 const Layout = () => {
@@ -32,7 +31,7 @@ const Layout = () => {
     value: false,
     id: "",
   });
-  const [auth, setAuth] = React.useState(null);
+  const [auth, setAuth] = useState<any>(null);
   const [products, setProducts] = useState<iProducts[] | []>([]);
 
   useEffect(() => {
@@ -43,6 +42,10 @@ const Layout = () => {
         : null
     );
 
+    //replace with async
+    // setAuth([{ name: "fred morgen", email: "sdsd@sdsd.com", remember: true }]);
+
+    //replace with async
     setProducts([
       {
         id: "1",
@@ -122,18 +125,13 @@ const Layout = () => {
       <Header products={products} />
       <Box component="main">
         <Grid container justifyContent="center">
-          {/*if login => 
-          reset password /
-          cart should append and sent to database/ 
-          when removing it should go too /
-          checkout details can be saved*/}
-
           {/* admin=> 
           addadmin
           only pedros admins can delete products add admins or remove them 
-          others can edite add products/ addproduct => new category */}
+          others can edite add products/ addproduct => new category   */}
 
           <Navbar
+            categories={categories}
             authProps={{ auth, setAuth }}
             countProps={{ setCount, count }}
             notifyProps={{
@@ -162,6 +160,7 @@ const Layout = () => {
                 }
               />
               <Route path="/about" element={<About />} />
+
               <Route path="/contact" element={<Contact />} />
               <Route
                 path="/checkout"
@@ -197,9 +196,24 @@ const Layout = () => {
                 }
               />
               <Route
+                path="/reset"
+                element={
+                  <ResetPasswordPage
+                    authProps={{ auth, setAuth }}
+                    notifyProps={{
+                      handleNotificationClick,
+                      setSnackPack,
+                      snackPack,
+                      message,
+                    }}
+                  />
+                }
+              />
+              <Route
                 path="/cart"
                 element={
                   <Cart
+                    authProps={{ auth, setAuth }}
                     dialogProps={{ openDialog, setOpenDialog }}
                     countProps={{ setCount, count }}
                     notifyProps={{

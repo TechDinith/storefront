@@ -29,9 +29,14 @@ import Search from "../../sections/search/search.section";
 
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
-const categories = ["Men", "Women", "Accessories"];
 
-const Navbar = ({ countProps, notifyProps, authProps, products }: iNavbar) => {
+const Navbar = ({
+  countProps,
+  notifyProps,
+  authProps,
+  products,
+  categories,
+}: iNavbar) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [categ, setCateg] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -41,10 +46,6 @@ const Navbar = ({ countProps, notifyProps, authProps, products }: iNavbar) => {
 
   const location = useLocation();
   const ancorRef = React.useRef(null);
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   authProps.setAuth(event.target.checked);
-  // };
 
   React.useLayoutEffect(() => {
     setAnchorEl(null);
@@ -269,6 +270,7 @@ const Navbar = ({ countProps, notifyProps, authProps, products }: iNavbar) => {
                       },
 
                       color: "white",
+                      textTransform: "uppercase",
                       background:
                         String("/" + item.toLowerCase()) === location.pathname
                           ? "rgba(0, 0, 0, 0.30)"
@@ -281,7 +283,7 @@ const Navbar = ({ countProps, notifyProps, authProps, products }: iNavbar) => {
               })}
             </Menu>
           </Box>
-          {authProps.auth ? (
+          {authProps.auth && authProps.auth[0] && authProps.auth[0].email ? (
             <Box
               sx={{
                 display: "flex",
