@@ -1,6 +1,5 @@
 import DataTable from "../../templates/admin/dataTable.template";
-import { iProducts } from "../../templates/product-details/interface.productdetails";
-import { iOrder, iProductsSection } from "./interface.admin.section";
+import { iProductsSection } from "./interface.admin.section";
 
 // Generate Order Data
 function createData(
@@ -13,7 +12,7 @@ function createData(
   category: string,
   enteredOn: string,
   colors?: { [x: string]: any } | undefined
-): iProducts {
+) {
   return {
     id,
     enteredOn,
@@ -22,7 +21,6 @@ function createData(
     desc,
     category,
     price,
-    isColor,
     colors,
   };
 }

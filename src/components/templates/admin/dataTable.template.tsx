@@ -11,17 +11,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { EnhancedTableHead } from "../../templates/admin/enchancedTabledHead.template";
 import { EnhancedTableToolbar } from "../../templates/admin/enchancedTableToolbar.template";
 import { iOrder, Order } from "../../sections/admin/interface.admin.section";
 import { iDataTable } from "./admin.template.interface";
 import { iProducts } from "../product-details/interface.productdetails";
-import { Image } from "antd";
-import CircleIcon from "@mui/icons-material/Circle";
-import Tooltip from "@mui/material/Tooltip";
-import DescriptionIcon from "@mui/icons-material/Description";
-import CollectionsIcon from "@mui/icons-material/Collections";
+import dynamicCells from "./dynamicCells.template";
+import { Link, useLocation } from "react-router-dom";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -61,6 +58,7 @@ function stableSort<T>(
 }
 
 export default function DataTable({ rows, sectionName }: iDataTable) {
+  const { state, pathname }: any = useLocation();
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof iOrder | keyof iProducts>(
     "date" || "enteredOn"
@@ -129,77 +127,6 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const dynamicCells = (row: any, labelId: string) => {
-    let elements: any[] = [];
-    // console.log(row);
-    let uniqueKey = 0;
-    for (let x in row) {
-      if (x != "id") {
-        elements = [
-          ...elements,
-          uniqueKey === 1 ? (
-            <TableCell
-              key={uniqueKey}
-              component="th"
-              id={labelId}
-              scope="row"
-              padding="none"
-            >
-              {row[x]}
-            </TableCell>
-          ) : x === "image" && typeof row[x] === "object" ? (
-            <TableCell key={uniqueKey} align="center">
-              <Tooltip
-                title={
-                  <Image.PreviewGroup>
-                    {row[x].map((image: string, i: number) => (
-                      <Image
-                        width="40%"
-                        key={i}
-                        src={require(`../../../images/${image}`)}
-                      />
-                    ))}
-                  </Image.PreviewGroup>
-                }
-              >
-                <CollectionsIcon />
-              </Tooltip>
-            </TableCell>
-          ) : x === "image" ? (
-            <TableCell key={uniqueKey} align="center">
-              <Image width="40%" src={require(`../../../images/${row[x]}`)} />
-            </TableCell>
-          ) : x === "colors" && typeof row[x] === "object" ? (
-            <TableCell key={uniqueKey} align="center">
-              <Box display="flex">
-                {row[x].map((color: string, i: number) => (
-                  <CircleIcon key={i} sx={{ color: color }} />
-                ))}
-              </Box>
-            </TableCell>
-          ) : x === "colors" ? (
-            <TableCell key={uniqueKey} align="center">
-              None
-            </TableCell>
-          ) : x === "desc" ? (
-            <TableCell key={uniqueKey} align="left">
-              <Tooltip title={row[x]}>
-                <DescriptionIcon />
-              </Tooltip>
-            </TableCell>
-          ) : (
-            <TableCell key={uniqueKey} align="left">
-              {row[x]}
-            </TableCell>
-          ),
-        ];
-      }
-      uniqueKey++;
-    }
-
-    return elements;
-  };
-
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -253,6 +180,13 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
                         />
                       </TableCell>
                       {dynamicCells(row, labelId).map((item: any) => item)}
+                      {pathname.substring(17) === "products" && (
+                        <TableCell padding="checkbox">
+                          <Link state={state} to="/admin/dashboard/update">
+                            Update
+                          </Link>
+                        </TableCell>
+                      )}
                     </TableRow>
                   );
                 })}

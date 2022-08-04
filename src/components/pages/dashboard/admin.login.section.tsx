@@ -21,6 +21,7 @@ export default function AdminLogin() {
       navigate("/notfound");
     }
   }, [params.id]);
+
   const formSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is Required!")

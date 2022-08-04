@@ -1,7 +1,11 @@
-import Dashboard from "../../pages/dashboard/Dashboard";
+import ProductUpdateModal from "../admin/productUpdate.template";
 
 const SandBox = () => {
-  return <>{/* <Dashboard /> */}</>;
+  return (
+    <>
+      <ProductUpdateModal />
+    </>
+  );
 };
 
 export default SandBox;
