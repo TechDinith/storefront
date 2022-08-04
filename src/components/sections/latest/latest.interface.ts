@@ -11,7 +11,7 @@ export interface iLatest {
   isColor: boolean;
   colors?: { [x: string]: any } | undefined;
   name: string | undefined;
-  price: number | undefined;
+  price: string | undefined;
   desc: string;
   category: string;
   orderedOn?: string;

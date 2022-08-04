@@ -17,7 +17,11 @@ export default function ResetPassword({
   notifyProps,
 }: iResetPassword) {
   const formSchema = Yup.object().shape({
-    email: Yup.string().required("Email is Required!"),
+    email: Yup.string()
+      .required("Email is Required!")
+      .test("match", "User does not Exist!", function (email) {
+        return email === "test@test.com";
+      }),
     password: Yup.string()
       .required("Password is Required!")
       .min(3, "Password must be at 3 char long"),
@@ -35,19 +39,12 @@ export default function ResetPassword({
   } = useForm(formOptions);
 
   const onSubmit = (data: any) => {
-    if (data.email === "test@test.com") {
-      //reset auth password in the database acording to email
-      console.log(data);
-      notifyProps.handleNotificationClick({
-        message: "Password Changed!",
-        severity: "success",
-      });
-    } else {
-      notifyProps.handleNotificationClick({
-        message: "User does not Exist!",
-        severity: "error",
-      });
-    }
+    //reset auth password in the database acording to email
+    console.log(data);
+    notifyProps.handleNotificationClick({
+      message: "Password Changed!",
+      severity: "success",
+    });
   };
 
   return (

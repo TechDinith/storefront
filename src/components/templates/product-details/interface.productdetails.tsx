@@ -17,7 +17,7 @@ export interface iCart {
   isColor: boolean;
   colors?: { [x: string]: any } | undefined;
   name: string | undefined;
-  price: number | undefined;
+  price: string | undefined;
   desc: string;
   category: string;
   quantity?: string;
@@ -41,7 +41,7 @@ export interface iProducts {
   isColor: boolean;
   colors?: { [x: string]: any } | undefined;
   name: string;
-  price: number | undefined;
+  price: string | undefined;
   desc: string;
   category: string;
   enteredOn: string;

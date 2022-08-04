@@ -1,7 +1,7 @@
-import Checkout from "../../pages/checkout/checkout.page";
+import Dashboard from "../../pages/dashboard/Dashboard";
 
 const SandBox = () => {
-  return <>{/* <Checkout /> */}</>;
+  return <>{/* <Dashboard /> */}</>;
 };
 
 export default SandBox;
