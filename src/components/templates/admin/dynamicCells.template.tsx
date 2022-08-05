@@ -11,7 +11,7 @@ const dynamicCells = (row: any, labelId: string) => {
   let elements: any[] = [];
   let uniqueKey = 0;
   for (let x in row) {
-    if (x != "id") {
+    if (x != "id" && x != "isColor") {
       elements = [
         ...elements,
         uniqueKey === 1 ? (

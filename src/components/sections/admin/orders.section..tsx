@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import DataTable from "../../templates/admin/dataTable.template";
 import { iOrder, iOrderSection } from "./interface.admin.section";
 
@@ -88,8 +89,19 @@ const rows = [
     212.79
   ),
 ];
+
 const Orders = ({ sectionName }: iOrderSection) => {
-  return <DataTable sectionName={sectionName} rows={rows} />;
+  const [orderList, setOrderList] = useState<any[]>();
+
+  useEffect(() => {
+    if (rows) setOrderList(rows);
+  }, [rows]);
+
+  return orderList ? (
+    <DataTable sectionName={sectionName} rows={orderList} />
+  ) : (
+    <p>Loading</p>
+  );
 };
 
 export default Orders;

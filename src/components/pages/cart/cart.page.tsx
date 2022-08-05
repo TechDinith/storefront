@@ -52,7 +52,7 @@ const Cart = ({
       );
     }
   }, [countProps.count, dialogProps?.openDialog, navigate]);
-  console.log(authProps?.auth);
+
   return (
     <>
       <Quote bgImage={wideabout} />

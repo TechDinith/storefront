@@ -11,14 +11,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EnhancedTableHead } from "../../templates/admin/enchancedTabledHead.template";
 import { EnhancedTableToolbar } from "../../templates/admin/enchancedTableToolbar.template";
 import { iOrder, Order } from "../../sections/admin/interface.admin.section";
 import { iDataTable } from "./admin.template.interface";
 import { iProducts } from "../product-details/interface.productdetails";
 import dynamicCells from "./dynamicCells.template";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Button from "@mui/material/Button";
+import ProductUpdateModal from "./productUpdate.template";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -58,6 +60,10 @@ function stableSort<T>(
 }
 
 export default function DataTable({ rows, sectionName }: iDataTable) {
+  const [openModal, setOpenModal] = useState(false);
+
+  console.log("dataTable Rows", rows);
+
   const { state, pathname }: any = useLocation();
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof iOrder | keyof iProducts>(
@@ -67,6 +73,7 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [currentProduct, setCurrentProduct] = useState<any>();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -84,6 +91,11 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
       return;
     }
     setSelected([]);
+  };
+
+  const handleCurrentProduct = (crruentProd: any) => {
+    setCurrentProduct(crruentProd);
+    setOpenModal(true);
   };
 
   const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
@@ -123,7 +135,6 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -182,9 +193,9 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
                       {dynamicCells(row, labelId).map((item: any) => item)}
                       {pathname.substring(17) === "products" && (
                         <TableCell padding="checkbox">
-                          <Link state={state} to="/admin/dashboard/update">
+                          <Button onClick={() => handleCurrentProduct(row)}>
                             Update
-                          </Link>
+                          </Button>
                         </TableCell>
                       )}
                     </TableRow>
@@ -216,6 +227,12 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Small"
       />
+      {currentProduct && (
+        <ProductUpdateModal
+          modalProps={{ openModal, setOpenModal }}
+          product={currentProduct}
+        />
+      )}
     </Box>
   );
 }

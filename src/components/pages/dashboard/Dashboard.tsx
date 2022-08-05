@@ -14,7 +14,7 @@ import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MainListItems from "../../sections/admin/listItems";
-import Orders from "../../sections/admin/Orders";
+import Orders from "../../sections/admin/orders.section.";
 import { useEffect, useState } from "react";
 import {
   Navigate,
@@ -220,7 +220,6 @@ export default function Dashboard({ products }: iDashboard) {
   const sectionName = pathname.substring(17);
 
   useEffect(() => {
-    console.log(state);
     if (state) {
       if (state.id !== "1" && state.email !== "admin@admin.com")
         navigate("/notfound");

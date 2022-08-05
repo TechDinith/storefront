@@ -5,7 +5,7 @@ import {
   createTheme,
   responsiveFontSizes,
 } from "@mui/material/styles";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import SandBox from "./components/templates/sandbox/sandbox";
 import AdminLogin from "./components/pages/dashboard/admin.login.section";
 import Typography from "@mui/material/Typography";
@@ -22,6 +22,7 @@ let theme = createTheme({
 const darkTheme = responsiveFontSizes(theme);
 
 function App() {
+  const location = useLocation();
   const [products, setProducts] = useState<iProducts[] | [] | any>([]);
 
   useEffect(() => {
@@ -93,7 +94,7 @@ function App() {
         enteredOn: "02/09/2022",
       },
     ]);
-  }, []);
+  }, [location]);
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="App">
