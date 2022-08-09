@@ -20,7 +20,7 @@ export default function AdminLogin() {
     if (params.id !== "1") {
       navigate("/notfound");
     }
-  }, [params.id]);
+  }, [params.id, navigate]);
 
   const formSchema = Yup.object().shape({
     email: Yup.string()

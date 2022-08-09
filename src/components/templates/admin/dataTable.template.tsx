@@ -11,7 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EnhancedTableHead } from "../../templates/admin/enchancedTabledHead.template";
 import { EnhancedTableToolbar } from "../../templates/admin/enchancedTableToolbar.template";
 import { iOrder, Order } from "../../sections/admin/interface.admin.section";
@@ -64,7 +64,7 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
 
   console.log("dataTable Rows", rows);
 
-  const { state, pathname }: any = useLocation();
+  const { pathname }: any = useLocation();
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof iOrder | keyof iProducts>(
     "date" || "enteredOn"

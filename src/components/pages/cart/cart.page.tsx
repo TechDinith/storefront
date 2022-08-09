@@ -51,7 +51,7 @@ const Cart = ({
           : authProps.auth
       );
     }
-  }, [countProps.count, dialogProps?.openDialog, navigate]);
+  }, [countProps.count, dialogProps?.openDialog, navigate, authProps]);
 
   return (
     <>

@@ -95,7 +95,7 @@ const Orders = ({ sectionName }: iOrderSection) => {
 
   useEffect(() => {
     if (rows) setOrderList(rows);
-  }, [rows]);
+  }, []);
 
   return orderList ? (
     <DataTable sectionName={sectionName} rows={orderList} />

@@ -2,7 +2,6 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { capitalize } from "@material-ui/core";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
@@ -14,6 +13,7 @@ import { iAuthentication } from "./authentication.interface";
 import ConsecutiveSnackbars from "../../templates/notify/notify.template";
 import { useNavigate } from "react-router-dom";
 import { Fragment } from "react";
+import { capitalize } from "@mui/material/utils";
 
 interface IFormInput {
   email: string;

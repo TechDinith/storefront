@@ -224,7 +224,7 @@ export default function Dashboard({ products }: iDashboard) {
       if (state.id !== "1" && state.email !== "admin@admin.com")
         navigate("/notfound");
     } else navigate("/notfound");
-  }, [state]);
+  }, [state, navigate]);
 
   return (
     <DashboardContent
