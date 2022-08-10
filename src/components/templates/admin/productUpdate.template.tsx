@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ImageUpload from "../imageUpload/imageupload.template";
 import { Fragment, useEffect, useState } from "react";
 import { iUpdateProduct } from "./admin.template.interface";
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
   position: "absolute" as "absolute",
@@ -55,11 +56,6 @@ export default function ProductUpdateModal({
           },
         ]
   );
-
-  //image any colors multiple or single
-  //color picker or enter
-  //any colors is a switch
-  //category should be a select, new category =>create one
 
   useEffect(() => {
     setFields([
@@ -234,6 +230,13 @@ export default function ProductUpdateModal({
                 </Box>
 
                 <Box width="100%" display="flex" justifyContent="right">
+                  <IconButton
+                    sx={{ mt: 3 }}
+                    color="error"
+                    onClick={() => modalProps.setOpenModal(false)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
                   <IconButton type="submit" sx={{ mt: 3 }} color="success">
                     <EventAvailableIcon />
                   </IconButton>

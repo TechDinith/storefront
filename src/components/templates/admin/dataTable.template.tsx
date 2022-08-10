@@ -62,6 +62,7 @@ function stableSort<T>(
 export default function DataTable({ rows, sectionName }: iDataTable) {
   const [openModal, setOpenModal] = useState(false);
 
+  const [currentProduct, setCurrentProduct] = useState<any>();
   console.log("dataTable Rows", rows);
 
   const { pathname }: any = useLocation();
@@ -73,7 +74,6 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [currentProduct, setCurrentProduct] = useState<any>();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,

@@ -6,8 +6,11 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import PaletteIcon from "@mui/icons-material/Palette";
 import TableCell from "@mui/material/TableCell";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 
-const dynamicCells = (row: any, labelId: string) => {
+import EditIcon from "@mui/icons-material/Edit";
+
+const dynamicCells = (row: any, labelId?: string) => {
   let elements: any[] = [];
   let uniqueKey = 0;
   for (let x in row) {
@@ -18,7 +21,7 @@ const dynamicCells = (row: any, labelId: string) => {
           <TableCell
             key={uniqueKey}
             component="th"
-            id={labelId}
+            id={labelId || row.id}
             scope="row"
             padding="none"
           >
@@ -82,5 +85,70 @@ const dynamicCells = (row: any, labelId: string) => {
 
   return elements;
 };
+
+const dynamicCell = (row: any, handleCurrentProduct: any) => {
+  let element: any;
+  if (row.field !== "id" && row.field !== "isColor") {
+    element =
+      row.field === "enteredOn" ? (
+        new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "2-digit",
+        }).format(new Date(row.value))
+      ) : row.field === "image" && typeof row.value === "object" ? (
+        <Tooltip
+          title={
+            <Image.PreviewGroup>
+              {row.value.map((image: string, i: number) => (
+                <Image
+                  width="40%"
+                  key={i}
+                  src={require(`../../../images/${image}`)}
+                />
+              ))}
+            </Image.PreviewGroup>
+          }
+        >
+          <CollectionsIcon />
+        </Tooltip>
+      ) : row.field === "image" ? (
+        <Image width="30%" src={require(`../../../images/${row.value}`)} />
+      ) : row.field === "colors" && typeof row.value === "object" ? (
+        <Tooltip
+          title={
+            <Box display="flex">
+              {row.value.map((color: string, i: number) => (
+                <CircleIcon key={i} sx={{ color: color }} />
+              ))}
+            </Box>
+          }
+        >
+          <PaletteIcon />
+        </Tooltip>
+      ) : row.field === "colors" ? (
+        "None"
+      ) : row.field === "desc" ? (
+        <Tooltip title={row.value}>
+          <DescriptionIcon />
+        </Tooltip>
+      ) : (
+        row.value
+      );
+  } else if (row.field === "isColor") {
+    element = (
+      <IconButton
+        color="secondary"
+        onClick={() => handleCurrentProduct(row.row)}
+      >
+        <EditIcon />
+      </IconButton>
+    );
+  }
+
+  return element;
+};
+
+export { dynamicCell };
 
 export default dynamicCells;

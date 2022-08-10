@@ -1,6 +1,6 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { iUploadImage } from "./imageUpload.interface";
 
 const getBase64 = (file: any) =>
@@ -17,6 +17,11 @@ const ImageUpload = ({ colors, fileProps }: iUploadImage) => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
+
+  useEffect(() => {
+    fileProps.setFileList(fileProps.fileList);
+  }, [fileProps]);
+
   const handleCancel = () => setPreviewVisible(false);
 
   const handlePreview = async (file: any) => {
@@ -63,6 +68,7 @@ const ImageUpload = ({ colors, fileProps }: iUploadImage) => {
         title={previewTitle}
         footer={null}
         onCancel={handleCancel}
+        zIndex={1301}
       >
         <img
           alt="example"

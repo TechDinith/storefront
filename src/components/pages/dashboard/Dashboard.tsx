@@ -23,8 +23,8 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import Products from "../../sections/admin/products.section";
 import { iDashboard, iDashboardContent } from "./dashboard.interface";
+import Products from "../../sections/admin/products.section";
 
 function Copyright(props: any) {
   return (
@@ -159,13 +159,14 @@ function DashboardContent({ state, sectionName, products }: iDashboardContent) {
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component="nav">
+        <List component="nav" onClick={() => setOpen(false)}>
           <MainListItems state={state} />
         </List>
       </Drawer>
     );
   };
 
+  console.log("dashboard: ", products);
   return (
     <Box sx={{ display: "flex" }}>
       <AdminAppbar />

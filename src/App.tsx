@@ -36,7 +36,7 @@ function App() {
         price: "1500.5",
         category: "men",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
-        enteredOn: "02/04/2022",
+        enteredOn: new Date(),
       },
       {
         id: "2",
@@ -46,7 +46,7 @@ function App() {
         price: 1400.5,
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
         category: "men",
-        enteredOn: "02/05/2022",
+        enteredOn: new Date(),
       },
       {
         id: "3",
@@ -56,7 +56,7 @@ function App() {
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
         price: "1540.5",
         category: "women",
-        enteredOn: "02/06/2022",
+        enteredOn: new Date(),
       },
       {
         id: "4",
@@ -66,7 +66,7 @@ function App() {
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
         price: "1504.5",
         category: "women",
-        enteredOn: "02/07/2022",
+        enteredOn: new Date(),
       },
       {
         id: "5",
@@ -81,7 +81,7 @@ function App() {
           { id: "9", image: "prod5-white.jpg", color: "white" },
         ],
         category: "women",
-        enteredOn: "02/08/2022",
+        enteredOn: new Date(),
       },
       {
         id: "6",
@@ -91,7 +91,7 @@ function App() {
         name: "Sample Item 6",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
         price: "1500",
-        enteredOn: "02/09/2022",
+        enteredOn: new Date(),
       },
     ]);
   }, [location]);
