@@ -25,6 +25,11 @@ import {
 } from "react-router-dom";
 import { iDashboard, iDashboardContent } from "./dashboard.interface";
 import Products from "../../sections/admin/products.section";
+import Users from "../../sections/admin/users.section";
+import Admins from "../../sections/admin/admins.section";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import { Tooltip } from "antd";
 
 function Copyright(props: any) {
   return (
@@ -94,7 +99,12 @@ const Drawer: any = styled(MuiDrawer, {
   },
 }));
 
-function DashboardContent({ state, sectionName, products }: iDashboardContent) {
+function DashboardContent({
+  state,
+  sectionName,
+  products,
+  dialogProps,
+}: iDashboardContent) {
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -102,49 +112,65 @@ function DashboardContent({ state, sectionName, products }: iDashboardContent) {
 
   const AdminAppbar = () => {
     return (
-      <AppBar
-        position="absolute"
-        open={open}
-        // sx={{ display: { xs: "none", sm: "flex" } }}
-      >
-        <Toolbar
-          sx={{
-            pr: "24px", // keep right padding when drawer closed
-          }}
-        >
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer}
-            sx={{
-              marginRight: "36px",
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          >
-            {sectionName.toLocaleUpperCase()}
-          </Typography>
-        </Toolbar>
+      <AppBar position="absolute" open={open}>
+        <Box display="flex" alignItems="center">
+          <Grid container alignItems="center">
+            <Grid item xs={7} sm={11}>
+              <Toolbar
+                sx={{
+                  pr: "24px",
+                }}
+              >
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={toggleDrawer}
+                  sx={{
+                    marginRight: "36px",
+                    ...(open && { display: "none" }),
+                  }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  color="inherit"
+                  noWrap
+                  sx={{ flexGrow: 1 }}
+                >
+                  {sectionName.toLocaleUpperCase()}
+                </Typography>
+              </Toolbar>
+            </Grid>
+            <Grid item justifyContent="left" alignItems="center" xs={5} sm={1}>
+              <Box display="flex" alignItems="center">
+                <Tooltip
+                  title={
+                    <Typography variant="caption">
+                      {state.email}
+                      <br />
+                      {state.role}
+                    </Typography>
+                  }
+                >
+                  <AdminPanelSettingsIcon color="action" />
+                </Tooltip>
+                <IconButton>
+                  <LogoutIcon color="error" />
+                </IconButton>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
       </AppBar>
     );
   };
 
   const AdminDrawer = () => {
     return (
-      <Drawer
-        variant="permanent"
-        open={open}
-        // sx={{ display: { xs: "none", sm: "flex" } }}
-      >
+      <Drawer variant="permanent" open={open}>
         <Toolbar
           sx={{
             display: "flex",
@@ -166,7 +192,6 @@ function DashboardContent({ state, sectionName, products }: iDashboardContent) {
     );
   };
 
-  console.log("dashboard: ", products);
   return (
     <Box sx={{ display: "flex" }}>
       <AdminAppbar />
@@ -195,12 +220,55 @@ function DashboardContent({ state, sectionName, products }: iDashboardContent) {
                   />
                   <Route
                     path="/orders"
-                    element={<Orders sectionName={sectionName} />}
+                    element={
+                      <Orders
+                        dialogProps={dialogProps}
+                        sectionName={sectionName}
+                      />
+                    }
                   />
                   <Route
                     path="/products"
                     element={
-                      <Products products={products} sectionName={sectionName} />
+                      <Products
+                        products={products}
+                        dialogProps={dialogProps}
+                        sectionName={sectionName}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/users"
+                    element={
+                      <Users
+                        users={[
+                          {
+                            id: "1",
+                            name: "Fred",
+                            email: "test@test.com",
+                            joinedDate: new Date().toDateString(),
+                          },
+                        ]}
+                        dialogProps={dialogProps}
+                        sectionName={sectionName}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/admins"
+                    element={
+                      <Admins
+                        admins={[
+                          {
+                            id: "1",
+                            role: "pedros-admin",
+                            email: "test@test.com",
+                            assignedDate: new Date().toDateString(),
+                          },
+                        ]}
+                        dialogProps={dialogProps}
+                        sectionName={sectionName}
+                      />
                     }
                   />
                 </Routes>
@@ -214,13 +282,14 @@ function DashboardContent({ state, sectionName, products }: iDashboardContent) {
   );
 }
 
-export default function Dashboard({ products }: iDashboard) {
+export default function Dashboard({ products, dialogProps }: iDashboard) {
   const { state, pathname }: any = useLocation();
   const navigate = useNavigate();
 
   const sectionName = pathname.substring(17);
 
   useEffect(() => {
+    console.log(state);
     if (state) {
       if (state.id !== "1" && state.email !== "admin@admin.com")
         navigate("/notfound");
@@ -232,6 +301,7 @@ export default function Dashboard({ products }: iDashboard) {
       products={products}
       state={state}
       sectionName={sectionName}
+      dialogProps={dialogProps}
     />
   );
 }

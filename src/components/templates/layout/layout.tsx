@@ -20,17 +20,14 @@ import ResetPasswordPage from "../../pages/resetpassword/resetPassword.page";
 import { iLayout } from "./layout.interface";
 const categories = ["men", "women", "accessories"];
 
-const Layout = ({ products }: iLayout) => {
+const Layout = ({ products, dialogProps }: iLayout) => {
   const [count, setCount] = useState([]);
   const [snackPack, setSnackPack] = useState<readonly SnackbarMessage[]>([]);
   const [message, setMessage] = useState<iMessage>({
     message: "",
     severity: "info",
   });
-  const [openDialog, setOpenDialog] = useState<iOpenDialog>({
-    value: false,
-    id: "",
-  });
+
   const [auth, setAuth] = useState<any>(null);
 
   useEffect(() => {
@@ -145,7 +142,7 @@ const Layout = ({ products }: iLayout) => {
                 element={
                   <Cart
                     authProps={{ auth, setAuth }}
-                    dialogProps={{ openDialog, setOpenDialog }}
+                    dialogProps={dialogProps}
                     countProps={{ setCount, count }}
                     notifyProps={{
                       handleNotificationClick,

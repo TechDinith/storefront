@@ -1,3 +1,4 @@
+import { iDialog } from "../dialog/dialog.interface";
 import { iProducts } from "../product-details/interface.productdetails";
 
 export interface iDataTable {
@@ -7,5 +8,5 @@ export interface iDataTable {
 
 export interface iUpdateProduct {
   modalProps: { openModal: boolean; setOpenModal: any };
-  product: iProducts | any;
+  product?: iProducts | any;
 }

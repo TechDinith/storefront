@@ -90,7 +90,7 @@ const rows = [
   ),
 ];
 
-const Orders = ({ sectionName }: iOrderSection) => {
+const Orders = ({ sectionName, dialogProps }: iOrderSection) => {
   const [orderList, setOrderList] = useState<any[]>();
 
   useEffect(() => {

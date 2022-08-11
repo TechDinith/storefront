@@ -6,7 +6,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -15,6 +14,7 @@ import ImageUpload from "../imageUpload/imageupload.template";
 import { Fragment, useEffect, useState } from "react";
 import { iUpdateProduct } from "./admin.template.interface";
 import CloseIcon from "@mui/icons-material/Close";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 
 const style = {
   position: "absolute" as "absolute",
@@ -29,79 +29,87 @@ const style = {
 
 const math = Math;
 
+const formSchema = Yup.object().shape({
+  name: Yup.string().required("Name is Required!"),
+  price: Yup.number().required("Price is Required!"),
+  desc: Yup.string().required("Description is Required!"),
+  category: Yup.string().required("Category is Required!"),
+});
+
 export default function ProductUpdateModal({
   modalProps,
   product,
 }: iUpdateProduct) {
   const [colors, setColors] = useState(false);
-  const [fields, setFields] = useState<any>([]);
-  const handleClose = () => modalProps.setOpenModal(false);
+  console.log(product);
+  const fields = [
+    {
+      name: "Name",
+      id: "name",
+      defaultValue: product !== null ? product.name : "",
+    },
+    {
+      name: "Price",
+      id: "price",
+      defaultValue: product !== null ? product.price : "",
+    },
+    {
+      name: "Description",
+      id: "desc",
+      defaultValue: product !== null ? product.desc : "",
+    },
+  ];
 
-  console.log("prod", product);
-
-  const [fileList, setFileList] = useState<any>(
-    product.isColor
-      ? product.colors.map((pro: any, i: number) => ({
-          uid: math.random(),
-          name: product.image[i],
-          url: require(`../../../images/${product.image[i]}`),
-          status: "done",
-        }))
-      : [
-          {
-            uid: product.id,
-            name: product.image,
-            url: require(`../../../images/${product.image}`),
-            status: "done",
-          },
-        ]
-  );
+  const [fileList, setFileList] = useState<any>([]);
 
   useEffect(() => {
-    setFields([
-      {
-        name: "Name",
-        id: "name",
-        defaultValue: product ? product.name : "",
-      },
-      {
-        name: "Price",
-        id: "price",
-        defaultValue: product ? product.price : "",
-      },
-      {
-        name: "Description",
-        id: "desc",
-        defaultValue: product ? product.desc : "",
-      },
-    ]);
+    setTimeout(() => {
+      console.log("ran list", product);
+      if (product !== null) {
+        setFileList(
+          product.isColor
+            ? product.colors.map((pro: any, i: number) => ({
+                uid: math.random(),
+                name: product.image[i],
+                url: require(`../../../images/${product.image[i]}`),
+                status: "done",
+              }))
+            : [
+                {
+                  uid: product.id,
+                  name: product.image,
+                  url: require(`../../../images/${product.image}`),
+                  status: "done",
+                },
+              ]
+        );
+      }
+    }, 10);
 
-    setColors(product ? product.isColor : false);
+    setColors(product !== null ? product.isColor : false);
+    if (product !== null) {
+      reset({
+        name: product.name,
+        price: product.price,
+        desc: product.desc,
+      });
+    }
   }, [product]);
 
-  const formSchema = Yup.object().shape({
-    name: Yup.string().required("Name is Required!"),
-    price: Yup.number().required("Price is Required!"),
-    desc: Yup.string().required("Description is Required!"),
-    category: Yup.string().required("Category is Required!"),
-  });
+  const handleClose = () => modalProps.setOpenModal(false);
 
-  const formOptions = { resolver: yupResolver(formSchema) };
+  const formOptions = { resolver: yupResolver(formSchema), defaultValues: {} };
 
   const {
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm(formOptions);
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    const colorList =
-      typeof colors === "string"
-        ? data.colors.split(",")
-        : colors
-        ? data.colors
-        : null;
-
+    const colorList = colors ? data.colors.split(",") : colors;
+    console.log("data", colorList);
     const fileWithColorList = fileList.map((file: any, i: number) => ({
       ...file,
       color: colors ? colorList[i] : colorList,
@@ -139,7 +147,7 @@ export default function ProductUpdateModal({
       >
         <Box sx={style}>
           <Grid container justifyContent="center" color="white">
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} sm={12} md={12}>
               <Typography
                 color="inherit"
                 variant="h6"
@@ -149,7 +157,7 @@ export default function ProductUpdateModal({
                 New Product
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12} md={12}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 {fields.map((fieldItems: any, i: number) => (
                   <Fragment key={i}>
@@ -202,7 +210,11 @@ export default function ProductUpdateModal({
                     <Controller
                       name="colors"
                       control={control}
-                      defaultValue={product.isColor ? product.colors : ""}
+                      defaultValue={
+                        product !== null && product.isColor
+                          ? product.colors
+                          : ""
+                      }
                       render={({ field }) => (
                         <TextField
                           helperText="Enter comma separated color names or #codes"
@@ -218,7 +230,7 @@ export default function ProductUpdateModal({
                   <Controller
                     name="category"
                     control={control}
-                    defaultValue={product ? product.category : "men"}
+                    defaultValue={product !== null ? product.category : "men"}
                     render={({ field }) => (
                       <TextField fullWidth select label="Category" {...field}>
                         <MenuItem value="men">Men</MenuItem>

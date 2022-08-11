@@ -41,7 +41,7 @@ export default function AdminLogin() {
   const onSubmit: SubmitHandler<any> = (data) => {
     console.log(data);
     navigate("/admin/dashboard", {
-      state: { id: params.id, email: data.email },
+      state: { id: params.id, email: data.email, role: "pedros-admin" },
     });
   };
 

@@ -18,9 +18,6 @@ import { iOrder, Order } from "../../sections/admin/interface.admin.section";
 import { iDataTable } from "./admin.template.interface";
 import { iProducts } from "../product-details/interface.productdetails";
 import dynamicCells from "./dynamicCells.template";
-import { useLocation } from "react-router-dom";
-import Button from "@mui/material/Button";
-import ProductUpdateModal from "./productUpdate.template";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,12 +57,6 @@ function stableSort<T>(
 }
 
 export default function DataTable({ rows, sectionName }: iDataTable) {
-  const [openModal, setOpenModal] = useState(false);
-
-  const [currentProduct, setCurrentProduct] = useState<any>();
-  console.log("dataTable Rows", rows);
-
-  const { pathname }: any = useLocation();
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof iOrder | keyof iProducts>(
     "date" || "enteredOn"
@@ -91,11 +82,6 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
       return;
     }
     setSelected([]);
-  };
-
-  const handleCurrentProduct = (crruentProd: any) => {
-    setCurrentProduct(crruentProd);
-    setOpenModal(true);
   };
 
   const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
@@ -161,8 +147,6 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
               rows={rows}
             />
             <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                rows.slice().sort(getComparator(order, orderBy)) */}
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -191,13 +175,6 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
                         />
                       </TableCell>
                       {dynamicCells(row, labelId).map((item: any) => item)}
-                      {pathname.substring(17) === "products" && (
-                        <TableCell padding="checkbox">
-                          <Button onClick={() => handleCurrentProduct(row)}>
-                            Update
-                          </Button>
-                        </TableCell>
-                      )}
                     </TableRow>
                   );
                 })}
@@ -227,12 +204,6 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Small"
       />
-      {currentProduct && (
-        <ProductUpdateModal
-          modalProps={{ openModal, setOpenModal }}
-          product={currentProduct}
-        />
-      )}
     </Box>
   );
 }

@@ -60,6 +60,7 @@ const ImageUpload = ({ colors, fileProps }: iUploadImage) => {
         fileList={fileProps.fileList as any}
         onPreview={handlePreview}
         onChange={handleChange}
+        onRemove={(prod) => console.log("should remove ", prod)}
       >
         {fileProps.fileList.length >= (colors ? 8 : 1) ? null : uploadButton}
       </Upload>

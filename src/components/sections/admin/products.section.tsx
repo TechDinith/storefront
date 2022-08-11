@@ -3,9 +3,11 @@ import { useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { dynamicCell } from "../../templates/admin/dynamicCells.template";
-import { useLocation } from "react-router-dom";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import ProductUpdateModal from "../../templates/admin/productUpdate.template";
+import AlertDialog from "../../templates/dialog/dialog.template";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 
 // Generate Order Data
 function createData(
@@ -32,8 +34,15 @@ function createData(
   };
 }
 
-export default function Products({ sectionName, products }: iProductsSection) {
-  const rows = products.map((product) => {
+export default function Products({
+  sectionName,
+  products,
+  dialogProps,
+}: iProductsSection) {
+  const [openModal, setOpenModal] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState<any>(null);
+
+  let rows = products.map((product) => {
     let productImages: any = product.image;
     let productColors: any = product.colors;
 
@@ -57,7 +66,6 @@ export default function Products({ sectionName, products }: iProductsSection) {
 
   const withoutId = Object.keys(rows[0]);
   withoutId.shift();
-  // withoutId.pop();
 
   const columns: GridColDef[] = withoutId.map((rowKey, i) => {
     return {
@@ -65,54 +73,29 @@ export default function Products({ sectionName, products }: iProductsSection) {
       flex: 1,
       minWidth: 120,
       headerName:
-        rowKey === "isColor" ? (
-          <Typography color="orange">Edit</Typography>
-        ) : (
-          (rowKey.toLocaleUpperCase() as any)
-        ),
+        rowKey === "isColor"
+          ? "Edit / Delete"
+          : (rowKey.toLocaleUpperCase() as any),
       renderCell: (params: GridRenderCellParams<any>) =>
-        dynamicCell(params, handleCurrentProduct),
+        dynamicCell(params, handleCurrentProduct, handleDelete),
     };
   });
-
-  const [adminProducts, setAdminProducts] = useState<any>();
-  const { pathname }: any = useLocation();
-  const [openModal, setOpenModal] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState<any>();
-
-  // useEffect(() => {
-  //   if (products) {
-  //     setAdminProducts(
-  //       products.map((product) => {
-  //         let productImages: any = product.image;
-  //         let productColors: any = product.colors;
-  //         if (product.image === null) {
-  //           productImages = productColors.map((color: any) => color.image);
-  //           productColors = productColors.map((color: any) => color.color);
-  //         }
-  //         return createData(
-  //           product.id,
-  //           productImages,
-  //           product.isColor,
-  //           product.name,
-  //           product.price,
-  //           product.desc,
-  //           product.category,
-  //           product.enteredOn,
-  //           productColors
-  //         );
-  //       })
-  //     );
-  //   }
-  // }, [products]);
 
   const handleCurrentProduct = (crruentProd: any) => {
     setCurrentProduct(crruentProd);
     setOpenModal(true);
   };
 
-  //category must be a select
-  //delete icon should be added
+  const handleDelete = (prodId: string) => {
+    dialogProps?.setOpenDialog({ value: true, id: prodId });
+  };
+
+  const handleRemove = () => {
+    const newProducts = products.filter(
+      (product: any) => product.id !== dialogProps.openDialog.id
+    );
+    console.log(newProducts);
+  };
 
   return (
     <>
@@ -127,9 +110,17 @@ export default function Products({ sectionName, products }: iProductsSection) {
           {sectionName}
         </Typography>
       </Toolbar>
+
       <div style={{ height: 400, width: "100%" }}>
         <div style={{ display: "flex", height: "100%" }}>
           <div style={{ flexGrow: 1 }}>
+            <Button
+              startIcon={<AddIcon />}
+              sx={{ mb: 1 }}
+              onClick={() => setOpenModal(true)}
+            >
+              New Product
+            </Button>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -143,12 +134,25 @@ export default function Products({ sectionName, products }: iProductsSection) {
         </div>
       </div>
 
-      {currentProduct && (
-        <ProductUpdateModal
-          modalProps={{ openModal, setOpenModal }}
-          product={currentProduct}
-        />
-      )}
+      <ProductUpdateModal
+        modalProps={{ openModal, setOpenModal }}
+        product={currentProduct}
+      />
+
+      <AlertDialog
+        attributes={{
+          title: "Lorem ipsum?",
+          content:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, incidunt minus. Molestiae error soluta culpa autem saepe aliquam dolor eius, quibusdam, ipsam corporis quis enim alias eligendi optio. Suscipit, at?",
+          yesBtn: "Lorem ipsum",
+          yesFunction: handleRemove,
+          noBtn: "dolor sit",
+        }}
+        openDialog={
+          dialogProps?.openDialog ? dialogProps?.openDialog : { value: false }
+        }
+        setOpenDialog={dialogProps?.setOpenDialog}
+      />
     </>
   );
 }

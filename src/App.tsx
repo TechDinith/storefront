@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Dashboard from "./components/pages/dashboard/Dashboard";
 import { iProducts } from "./components/templates/product-details/interface.productdetails";
+import { iOpenDialog } from "./components/templates/dialog/dialog.interface";
 
 let theme = createTheme({
   palette: {
@@ -24,7 +25,10 @@ const darkTheme = responsiveFontSizes(theme);
 function App() {
   const location = useLocation();
   const [products, setProducts] = useState<iProducts[] | [] | any>([]);
-
+  const [openDialog, setOpenDialog] = useState<iOpenDialog>({
+    value: false,
+    id: "",
+  });
   useEffect(() => {
     //replace with async
     setProducts([
@@ -95,15 +99,29 @@ function App() {
       },
     ]);
   }, [location]);
+
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="App">
         <Routes>
-          <Route path="/*" element={<Layout products={products} />} />
+          <Route
+            path="/*"
+            element={
+              <Layout
+                dialogProps={{ openDialog, setOpenDialog }}
+                products={products}
+              />
+            }
+          />
           <Route path="/admin/:id" element={<AdminLogin />} />
           <Route
             path="/admin/dashboard/*"
-            element={<Dashboard products={products} />}
+            element={
+              <Dashboard
+                dialogProps={{ openDialog, setOpenDialog }}
+                products={products}
+              />
+            }
           />
           <Route path="/sand" element={<SandBox />} />
           <Route

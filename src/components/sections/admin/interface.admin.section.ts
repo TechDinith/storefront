@@ -1,3 +1,4 @@
+import { iDialog } from "../../templates/dialog/dialog.interface";
 import { iProducts } from "../../templates/product-details/interface.productdetails";
 
 export interface EnhancedTableToolbarProps {
@@ -39,9 +40,40 @@ export type Order = "asc" | "desc";
 
 export interface iOrderSection {
   sectionName: string;
+  dialogProps: iDialog;
 }
 
 export interface iProductsSection {
   sectionName: string;
   products: iProducts[] | [];
+  dialogProps: iDialog;
+}
+
+export interface iUserSection {
+  sectionName: string;
+  users: iUser[] | [];
+  dialogProps: iDialog;
+}
+export interface iAdminSection {
+  sectionName: string;
+  admins: iAdmin[] | [];
+  dialogProps: iDialog;
+}
+
+export interface iUser {
+  id: string;
+  joinedDate: string;
+  name: string;
+  email: string;
+}
+export interface iAdmin {
+  id: string;
+  assignedDate: string;
+  role: string;
+  email: string;
+}
+
+export interface iNewAdminModal {
+  open: any;
+  setOpen: any;
 }

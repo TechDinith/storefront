@@ -22,6 +22,7 @@ const MainListItems = ({ state }: any) => {
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItemButton>
+
       <ListItemButton
         selected={String("/admin/dashboard/products") === location.pathname}
         component={NavLink}
@@ -33,16 +34,24 @@ const MainListItems = ({ state }: any) => {
         </ListItemIcon>
         <ListItemText primary="Products" />
       </ListItemButton>
+
       <ListItemButton
         selected={String("/admin/dashboard/users") === location.pathname}
+        component={NavLink}
+        to="/admin/dashboard/users"
+        state={state}
       >
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Users" />
       </ListItemButton>
+
       <ListItemButton
         selected={String("/admin/dashboard/admins") === location.pathname}
+        component={NavLink}
+        to="/admin/dashboard/admins"
+        state={state}
       >
         <ListItemIcon>
           <AdminPanelSettingsIcon />

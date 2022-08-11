@@ -7,8 +7,9 @@ import PaletteIcon from "@mui/icons-material/Palette";
 import TableCell from "@mui/material/TableCell";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { iDialog } from "../dialog/dialog.interface";
 
 const dynamicCells = (row: any, labelId?: string) => {
   let elements: any[] = [];
@@ -86,7 +87,11 @@ const dynamicCells = (row: any, labelId?: string) => {
   return elements;
 };
 
-const dynamicCell = (row: any, handleCurrentProduct: any) => {
+const dynamicCell = (
+  row: any,
+  handleCurrentProduct: any,
+  handleDelete: any
+) => {
   let element: any;
   if (row.field !== "id" && row.field !== "isColor") {
     element =
@@ -137,18 +142,45 @@ const dynamicCell = (row: any, handleCurrentProduct: any) => {
       );
   } else if (row.field === "isColor") {
     element = (
-      <IconButton
-        color="secondary"
-        onClick={() => handleCurrentProduct(row.row)}
-      >
-        <EditIcon />
-      </IconButton>
+      <Box display="flex">
+        <IconButton
+          color="secondary"
+          onClick={() => handleCurrentProduct(row.row)}
+        >
+          <EditIcon />
+        </IconButton>
+        <IconButton color="error" onClick={() => handleDelete(row.id)}>
+          <DeleteIcon />
+        </IconButton>
+      </Box>
     );
   }
 
   return element;
 };
 
-export { dynamicCell };
+const dynamicCellMembers = (row: any, handleDelete: any, admin?: string) => {
+  let element: any;
+
+  if (row.field === "id") {
+    element = (
+      <Box display="flex">
+        <Tooltip title="Only Pedros-Admins can Delete Admins!">
+          <IconButton
+            color="error"
+            disabled={admin === "admin" ? true : false || false}
+            onClick={() => handleDelete(row.id)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    );
+  } else element = row.value;
+
+  return element;
+};
+
+export { dynamicCell, dynamicCellMembers };
 
 export default dynamicCells;
