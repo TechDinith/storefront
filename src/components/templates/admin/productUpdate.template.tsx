@@ -136,6 +136,7 @@ export default function ProductUpdateModal({
     // navigate("/admin/dashboard", {
     //   state: { id: params.id, email: data.email },
     // });
+    modalProps.setOpenModal(false);
   };
 
   return (

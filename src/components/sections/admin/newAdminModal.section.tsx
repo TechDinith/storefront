@@ -11,6 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import { useState } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -28,8 +29,13 @@ const formSchema = Yup.object().shape({
 });
 
 export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
-  const handleClose = () => setOpen(false);
+  const [childOpen, setChildOpen] = useState<boolean>(false);
+  const [adminLink, setAdminLink] = useState<string>("");
 
+  const handleClose = () => {
+    setOpen(false);
+    setChildOpen(false);
+  };
   const formOptions = { resolver: yupResolver(formSchema), defaultValues: {} };
 
   const {
@@ -40,6 +46,8 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
 
   const onSubmit: SubmitHandler<any> = (data) => {
     console.log("data", data);
+    setAdminLink("http://localhost:3000/admin/" + data.email);
+    setChildOpen(true);
   };
 
   return (
@@ -101,7 +109,7 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
                   <IconButton
                     sx={{ mt: 3 }}
                     color="error"
-                    onClick={() => setOpen(false)}
+                    onClick={handleClose}
                   >
                     <CloseIcon />
                   </IconButton>
@@ -112,6 +120,49 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
               </form>
             </Grid>
           </Grid>
+          <Modal
+            open={childOpen}
+            onClose={handleClose}
+            sx={{ overflow: "scroll" }}
+          >
+            <Box sx={style}>
+              <Grid container justifyContent="center" color="white">
+                <Grid item xs={12} sm={12} md={12}>
+                  <Typography
+                    color="inherit"
+                    variant="h6"
+                    component="h2"
+                    textAlign="center"
+                  >
+                    Login Link
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12}>
+                  <Typography color="orange" variant="body1" textAlign="center">
+                    {adminLink}
+                  </Typography>
+                  <Typography
+                    color="inherit"
+                    variant="caption"
+                    textAlign="center"
+                  >
+                    Please send this link to the relevant person to use this
+                    link to login
+                  </Typography>
+
+                  <Box width="100%" display="flex" justifyContent="right">
+                    <IconButton
+                      sx={{ mt: 3 }}
+                      color="info"
+                      onClick={handleClose}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Modal>
         </Box>
       </Modal>
     </div>
