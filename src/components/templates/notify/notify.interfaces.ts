@@ -20,3 +20,7 @@ export interface iNotifyProps {
   snackPack: any;
   setSnackPack: any;
 }
+
+export interface iNotifyUseProps {
+  messageProps: iMessage | undefined;
+}

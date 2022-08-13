@@ -1,5 +1,5 @@
 import { iAdminSection } from "./interface.admin.section";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { dynamicCellMembers } from "../../templates/admin/dynamicCells.template";
@@ -10,6 +10,7 @@ import AddIcon from "@mui/icons-material/Add";
 import NewAdminModal from "./newAdminModal.section";
 import { Tooltip } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import { getAdmins } from "../../../auth/firebase/firebase.admin.functions";
 
 // Generate Order Data
 function createData(
@@ -33,12 +34,25 @@ export default function Admins({
 }: iAdminSection) {
   const [open, setOpen] = useState(false);
   const { state }: any = useLocation();
+  const [rows, setRows] = useState<any>();
 
-  let rows = admins.map((admin) => {
-    return createData(admin.id, admin.assignedDate, admin.role, admin.email);
-  });
+  useEffect(() => {
+    getAdmins().then((admins: any) => {
+      let adminData: any = [];
+      admins.forEach((doc: any) => {
+        adminData.push({ ...doc.data(), id: doc.id });
+      });
+      console.log(adminData);
+    });
+  }, []);
 
-  const withoutId = Object.keys(rows[0]);
+  setRows(
+    admins.map((admin) => {
+      return createData(admin.id, admin.assignedDate, admin.role, admin.email);
+    })
+  );
+
+  const withoutId = Object.keys(rows && rows[0]);
 
   const columns: GridColDef[] = withoutId.map((rowKey, i) => {
     return {

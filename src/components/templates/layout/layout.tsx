@@ -15,18 +15,12 @@ import Cart from "../../pages/cart/cart.page";
 import NotFound from "../../pages/notfound/notfound.page";
 import { iMessage, SnackbarMessage } from "../notify/notify.interfaces";
 import Checkout from "../../pages/checkout/checkout.page";
-import { iOpenDialog } from "../dialog/dialog.interface";
 import ResetPasswordPage from "../../pages/resetpassword/resetPassword.page";
 import { iLayout } from "./layout.interface";
 const categories = ["men", "women", "accessories"];
 
-const Layout = ({ products, dialogProps }: iLayout) => {
+const Layout = ({ products, dialogProps, notifyProps }: iLayout) => {
   const [count, setCount] = useState([]);
-  const [snackPack, setSnackPack] = useState<readonly SnackbarMessage[]>([]);
-  const [message, setMessage] = useState<iMessage>({
-    message: "",
-    severity: "info",
-  });
 
   const [auth, setAuth] = useState<any>(null);
 
@@ -42,11 +36,6 @@ const Layout = ({ products, dialogProps }: iLayout) => {
     // setAuth([{ name: "fred morgen", email: "sdsd@sdsd.com", remember: true }]);
   }, []);
 
-  const handleNotificationClick = ({ message, severity }: iMessage) => {
-    setMessage({ message, severity });
-    setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
-  };
-
   return (
     <>
       <Header products={products} />
@@ -61,12 +50,7 @@ const Layout = ({ products, dialogProps }: iLayout) => {
             categories={categories}
             authProps={{ auth, setAuth }}
             countProps={{ setCount, count }}
-            notifyProps={{
-              handleNotificationClick,
-              setSnackPack,
-              snackPack,
-              message,
-            }}
+            notifyProps={notifyProps}
             products={products}
           />
           <Grid container justifyContent="center">
@@ -75,17 +59,7 @@ const Layout = ({ products, dialogProps }: iLayout) => {
 
               <Route
                 path="/"
-                element={
-                  <Home
-                    products={products}
-                    notifyProps={{
-                      message,
-                      handleNotificationClick,
-                      setSnackPack,
-                      snackPack,
-                    }}
-                  />
-                }
+                element={<Home products={products} notifyProps={notifyProps} />}
               />
               <Route path="/about" element={<About />} />
 
@@ -94,12 +68,7 @@ const Layout = ({ products, dialogProps }: iLayout) => {
                 path="/checkout"
                 element={
                   <Checkout
-                    notifyProps={{
-                      message,
-                      handleNotificationClick,
-                      setSnackPack,
-                      snackPack,
-                    }}
+                    notifyProps={notifyProps}
                     authProps={{ auth, setAuth }}
                     countProps={{ setCount, count }}
                   />
@@ -114,12 +83,7 @@ const Layout = ({ products, dialogProps }: iLayout) => {
                 element={
                   <SignUpSide
                     authProps={{ auth, setAuth }}
-                    notifyProps={{
-                      handleNotificationClick,
-                      setSnackPack,
-                      snackPack,
-                      message,
-                    }}
+                    notifyProps={notifyProps}
                   />
                 }
               />
@@ -128,12 +92,7 @@ const Layout = ({ products, dialogProps }: iLayout) => {
                 element={
                   <ResetPasswordPage
                     authProps={{ auth, setAuth }}
-                    notifyProps={{
-                      handleNotificationClick,
-                      setSnackPack,
-                      snackPack,
-                      message,
-                    }}
+                    notifyProps={notifyProps}
                   />
                 }
               />
@@ -144,12 +103,7 @@ const Layout = ({ products, dialogProps }: iLayout) => {
                     authProps={{ auth, setAuth }}
                     dialogProps={dialogProps}
                     countProps={{ setCount, count }}
-                    notifyProps={{
-                      handleNotificationClick,
-                      setSnackPack,
-                      snackPack,
-                      message,
-                    }}
+                    notifyProps={notifyProps}
                   />
                 }
               />
@@ -162,12 +116,7 @@ const Layout = ({ products, dialogProps }: iLayout) => {
                       <Category
                         products={products}
                         countProps={{ setCount, count }}
-                        notifyProps={{
-                          handleNotificationClick,
-                          setSnackPack,
-                          snackPack,
-                          message,
-                        }}
+                        notifyProps={notifyProps}
                       />
                     }
                   />

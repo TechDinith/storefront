@@ -30,6 +30,9 @@ import Admins from "../../sections/admin/admins.section";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Tooltip } from "antd";
+import { completeEmailLink } from "../../../auth/firebase/auth.email.link";
+import { getCurrentAuthUser } from "../../../auth/firebase/firebase.user";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 function Copyright(props: any) {
   return (
@@ -104,6 +107,7 @@ function DashboardContent({
   sectionName,
   products,
   dialogProps,
+  authUser,
 }: iDashboardContent) {
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => {
@@ -111,6 +115,16 @@ function DashboardContent({
   };
 
   const AdminAppbar = () => {
+    const handleLogout = () => {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          console.log("out");
+        })
+        .catch((error) => {
+          console.log("out err", error);
+        });
+    };
     return (
       <AppBar position="absolute" open={open}>
         <Box display="flex" alignItems="center">
@@ -149,15 +163,15 @@ function DashboardContent({
                 <Tooltip
                   title={
                     <Typography variant="caption">
-                      {state.email}
+                      {authUser.email}
                       <br />
-                      {state.role}
+                      {authUser.role}
                     </Typography>
                   }
                 >
                   <AdminPanelSettingsIcon color="action" />
                 </Tooltip>
-                <IconButton>
+                <IconButton onClick={handleLogout}>
                   <LogoutIcon color="error" />
                 </IconButton>
               </Box>
@@ -285,23 +299,33 @@ function DashboardContent({
 export default function Dashboard({ products, dialogProps }: iDashboard) {
   const { state, pathname }: any = useLocation();
   const navigate = useNavigate();
-
   const sectionName = pathname.substring(17);
-
+  const [authUser, setAuthUser] = useState();
+  console.log("state", state);
   useEffect(() => {
-    console.log(state);
-    if (state) {
-      if (state.id !== "1" && state.email !== "admin@admin.com")
-        navigate("/notfound");
-    } else navigate("/notfound");
-  }, [state, navigate]);
+    const auth = getAuth();
 
-  return (
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser({
+          ...user,
+          role: state && state.role && state.role,
+        } as any);
+      } else {
+        navigate("/notfound");
+      }
+    });
+  }, [pathname]);
+
+  return authUser ? (
     <DashboardContent
+      authUser={authUser}
       products={products}
       state={state}
       sectionName={sectionName}
       dialogProps={dialogProps}
     />
+  ) : (
+    <></>
   );
 }

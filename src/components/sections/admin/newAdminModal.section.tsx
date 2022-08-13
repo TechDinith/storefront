@@ -12,6 +12,12 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { useState } from "react";
+import {
+  addAdmin,
+  getAdmins,
+} from "../../../auth/firebase/firebase.admin.functions";
+import { iMessage } from "../../templates/notify/notify.interfaces";
+import NotifyUse from "../../templates/notify/notify.template.use";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,8 +37,11 @@ const formSchema = Yup.object().shape({
 export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
   const [childOpen, setChildOpen] = useState<boolean>(false);
   const [adminLink, setAdminLink] = useState<string>("");
+  const [notify, setNotify] = useState<iMessage>();
+  const [disabled, setDisabled] = useState(false);
 
   const handleClose = () => {
+    setDisabled(false);
     setOpen(false);
     setChildOpen(false);
   };
@@ -46,8 +55,35 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
 
   const onSubmit: SubmitHandler<any> = (data) => {
     console.log("data", data);
-    setAdminLink("http://localhost:3000/admin/" + data.email);
-    setChildOpen(true);
+    setDisabled(true);
+    getAdmins().then((admins: any) => {
+      let exist = false;
+      admins.forEach((doc: any) => {
+        if (Object.values(doc.data()).includes(data.email)) {
+          exist = true;
+          setNotify({
+            message: "Email already exist!",
+            severity: "error",
+          });
+          setDisabled(false);
+        }
+      });
+
+      if (!exist) {
+        addAdmin(data.email, data.role)
+          .then((admin: any) => {
+            setAdminLink("http://localhost:3000/admin/" + admin.id);
+            setChildOpen(true);
+          })
+          .catch((err) => {
+            setNotify({
+              message: err.message,
+              severity: "error",
+            });
+            setDisabled(false);
+          });
+      }
+    });
   };
 
   return (
@@ -93,7 +129,7 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
 
                 <Box my={2}>
                   <Controller
-                    name="category"
+                    name="role"
                     control={control}
                     defaultValue="admin"
                     render={({ field }) => (
@@ -113,7 +149,12 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
                   >
                     <CloseIcon />
                   </IconButton>
-                  <IconButton type="submit" sx={{ mt: 3 }} color="success">
+                  <IconButton
+                    disabled={disabled}
+                    type="submit"
+                    sx={{ mt: 3 }}
+                    color="success"
+                  >
                     <EventAvailableIcon />
                   </IconButton>
                 </Box>
@@ -138,9 +179,14 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <Typography color="orange" variant="body1" textAlign="center">
+                  <Typography
+                    color="orange"
+                    variant="caption"
+                    textAlign="center"
+                  >
                     {adminLink}
                   </Typography>
+                  <br />
                   <Typography
                     color="inherit"
                     variant="caption"
@@ -165,6 +211,7 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
           </Modal>
         </Box>
       </Modal>
+      <NotifyUse messageProps={notify} />
     </div>
   );
 }

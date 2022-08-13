@@ -3,31 +3,34 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Box from "@mui/material/Box/Box";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Avatar, IconButton } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
+import { iAdminLogin } from "./dashboard.interface";
+import NotifyUse from "../../templates/notify/notify.template.use";
+import { iMessage } from "../../templates/notify/notify.interfaces";
+import { signInWIthFirebaseEmailLink } from "../../../auth/firebase/auth.email.link";
 
-export default function AdminLogin() {
+export default function AdminLogin({}: iAdminLogin) {
+  const [notify, setNotify] = useState<iMessage>();
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const params: any = useParams();
   const navigate = useNavigate();
+  const { state }: any = useLocation();
 
   useEffect(() => {
-    if (params.id !== "1") {
+    if (params.id !== "7d6c0b0812448ea062273e795dcca45a1861260b") {
       navigate("/notfound");
     }
   }, [params.id, navigate]);
 
   const formSchema = Yup.object().shape({
-    email: Yup.string()
-      .required("Email is Required!")
-      .test("match", "Unauthorized!", function (email) {
-        return email === "admin@admin.com";
-      }),
+    email: Yup.string().required("Email is Required!"),
   });
 
   const formOptions = { resolver: yupResolver(formSchema) };
@@ -39,10 +42,19 @@ export default function AdminLogin() {
   } = useForm(formOptions);
 
   const onSubmit: SubmitHandler<any> = (data) => {
+    setIsDisabled(true);
     console.log(data);
-    navigate("/admin/dashboard", {
-      state: { id: params.id, email: data.email, role: "pedros-admin" },
-    });
+    signInWIthFirebaseEmailLink(data.email, state && state.role)
+      .then(() => {
+        setNotify({
+          message: "Email Link sent to relevant email address!",
+          severity: "info",
+        });
+      })
+      .catch((error) => {
+        setNotify({ message: error, severity: "error" });
+        setIsDisabled(false);
+      });
   };
 
   return (
@@ -82,7 +94,12 @@ export default function AdminLogin() {
               )}
 
               <Box width="100%" display="flex" justifyContent="right">
-                <IconButton type="submit" sx={{ mt: 3 }} color="success">
+                <IconButton
+                  disabled={isDisabled}
+                  type="submit"
+                  sx={{ mt: 3 }}
+                  color="success"
+                >
                   <LoginIcon />
                 </IconButton>
               </Box>
@@ -90,6 +107,7 @@ export default function AdminLogin() {
           </Grid>
         </Box>
       </Grid>
+      <NotifyUse messageProps={notify} />
     </Grid>
   );
 }
