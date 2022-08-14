@@ -10,6 +10,8 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { iDialog } from "../dialog/dialog.interface";
+import LinkIcon from "@mui/icons-material/Link";
+import copy from "copy-text-to-clipboard";
 
 const dynamicCells = (row: any, labelId?: string) => {
   let elements: any[] = [];
@@ -159,8 +161,20 @@ const dynamicCell = (
   return element;
 };
 
-const dynamicCellMembers = (row: any, handleDelete: any, admin?: string) => {
+const dynamicCellMembers = (
+  row: any,
+  handleDelete: any,
+  admin?: string,
+  setNotify?: any
+) => {
   let element: any;
+  const handleCopy = (copyText: string) => {
+    copy(copyText);
+    setNotify({
+      message: "Link Copied!",
+      severity: "success",
+    });
+  };
 
   if (row.field === "id") {
     element = (
@@ -174,6 +188,17 @@ const dynamicCellMembers = (row: any, handleDelete: any, admin?: string) => {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
+        {admin && (
+          <Tooltip title={"http://localhost:3000/admin/" + row.value}>
+            <IconButton
+              onClick={() =>
+                handleCopy("http://localhost:3000/admin/" + row.value)
+              }
+            >
+              <LinkIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
     );
   } else element = row.value;

@@ -76,4 +76,5 @@ export interface iAdmin {
 export interface iNewAdminModal {
   open: any;
   setOpen: any;
+  setNotify: any;
 }

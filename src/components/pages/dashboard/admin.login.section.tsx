@@ -15,6 +15,9 @@ import { iAdminLogin } from "./dashboard.interface";
 import NotifyUse from "../../templates/notify/notify.template.use";
 import { iMessage } from "../../templates/notify/notify.interfaces";
 import { signInWIthFirebaseEmailLink } from "../../../auth/firebase/auth.email.link";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../../auth/firebase/firebase.config";
+import { getAdmins } from "../../../auth/firebase/firebase.admin.functions";
 
 export default function AdminLogin({}: iAdminLogin) {
   const [notify, setNotify] = useState<iMessage>();
@@ -24,9 +27,30 @@ export default function AdminLogin({}: iAdminLogin) {
   const { state }: any = useLocation();
 
   useEffect(() => {
-    if (params.id !== "7d6c0b0812448ea062273e795dcca45a1861260b") {
-      navigate("/notfound");
-    }
+    getAdmins().then((admins: any) => {
+      let exist = false;
+      admins.forEach((doc: any) => {
+        if (Object.values(doc.data()).includes(params.id)) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        navigate("/notfound");
+      }
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/admin/dashboard", {
+          state: {
+            role: state && state.role && state.role,
+          },
+        });
+      } else {
+        navigate("/notfound");
+      }
+    });
   }, [params.id, navigate]);
 
   const formSchema = Yup.object().shape({

@@ -4,7 +4,7 @@ import { db } from "./firebase.config";
 export const addAdmin = async (email: string, role: string) => {
   try {
     const docRef = await addDoc(collection(db, "admins"), {
-      assignedDate: new Date(),
+      assignedDate: new Date().toLocaleString(),
       email: email,
       role: role,
     });
@@ -18,10 +18,7 @@ export const addAdmin = async (email: string, role: string) => {
 export const getAdmins = async () => {
   try {
     const querySnapshot = await getDocs(collection(db, "admins"));
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
-    });
+
     return querySnapshot;
   } catch (err) {
     return err;

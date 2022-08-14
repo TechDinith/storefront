@@ -34,10 +34,14 @@ const formSchema = Yup.object().shape({
   email: Yup.string().email().required("Email is Required!"),
 });
 
-export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
+export default function NewAdminModal({
+  open,
+  setOpen,
+  setNotify,
+}: iNewAdminModal) {
   const [childOpen, setChildOpen] = useState<boolean>(false);
   const [adminLink, setAdminLink] = useState<string>("");
-  const [notify, setNotify] = useState<iMessage>();
+
   const [disabled, setDisabled] = useState(false);
 
   const handleClose = () => {
@@ -211,7 +215,6 @@ export default function NewAdminModal({ open, setOpen }: iNewAdminModal) {
           </Modal>
         </Box>
       </Modal>
-      <NotifyUse messageProps={notify} />
     </div>
   );
 }

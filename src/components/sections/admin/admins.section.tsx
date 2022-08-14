@@ -11,17 +11,23 @@ import NewAdminModal from "./newAdminModal.section";
 import { Tooltip } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { getAdmins } from "../../../auth/firebase/firebase.admin.functions";
+import { iMessage } from "../../templates/notify/notify.interfaces";
+import NotifyUse from "../../templates/notify/notify.template.use";
 
 // Generate Order Data
 function createData(
   id: string,
-  assignedDate: string,
+  assignedDate: Date,
   role: string,
   email: string
 ) {
   return {
     id,
-    assignedDate,
+    assignedDate: new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+    }).format(new Date(assignedDate)),
     role,
     email,
   };
@@ -35,46 +41,54 @@ export default function Admins({
   const [open, setOpen] = useState(false);
   const { state }: any = useLocation();
   const [rows, setRows] = useState<any>();
-
-  useEffect(() => {
-    getAdmins().then((admins: any) => {
-      let adminData: any = [];
-      admins.forEach((doc: any) => {
-        adminData.push({ ...doc.data(), id: doc.id });
-      });
-      console.log(adminData);
-    });
-  }, []);
-
-  setRows(
-    admins.map((admin) => {
-      return createData(admin.id, admin.assignedDate, admin.role, admin.email);
-    })
-  );
-
-  const withoutId = Object.keys(rows && rows[0]);
-
-  const columns: GridColDef[] = withoutId.map((rowKey, i) => {
-    return {
-      field: rowKey,
-      flex: 1,
-      minWidth: 120,
-      headerName:
-        rowKey === "id" ? "Delete" : (rowKey.toLocaleUpperCase() as any),
-      renderCell: (params: GridRenderCellParams<any>) =>
-        dynamicCellMembers(params, handleDelete, state.role),
-    };
-  });
-
-  const handleDelete = (prodId: string) => {
-    dialogProps?.setOpenDialog({ value: true, id: prodId });
-  };
+  const [notify, setNotify] = useState<iMessage>();
 
   const handleRemove = () => {
     const newAdmins = admins.filter(
       (admin: any) => admin.id !== dialogProps.openDialog.id
     );
     console.log(newAdmins);
+  };
+
+  useEffect(() => {
+    let adminData: any = [];
+    getAdmins().then((admins: any) => {
+      admins.forEach((doc: any) => {
+        adminData.push({ ...doc.data(), id: doc.id });
+      });
+
+      setRows(
+        adminData.map((admin: any) => {
+          return createData(
+            admin.id,
+            admin.assignedDate,
+            admin.role,
+            admin.email
+          );
+        })
+      );
+    });
+  }, [open, dialogProps.openDialog, handleRemove]);
+  console.log(rows);
+
+  const withoutId = rows && Object.keys(rows[0]);
+
+  const columns: GridColDef[] =
+    rows &&
+    withoutId.map((rowKey: string, i: number) => {
+      return {
+        field: rowKey,
+        flex: 1,
+        minWidth: 120,
+        headerName:
+          rowKey === "id" ? "Delete" : (rowKey.toLocaleUpperCase() as any),
+        renderCell: (params: GridRenderCellParams<any>) =>
+          dynamicCellMembers(params, handleDelete, state.role, setNotify),
+      };
+    });
+
+  const handleDelete = (prodId: string) => {
+    dialogProps?.setOpenDialog({ value: true, id: prodId });
   };
 
   return (
@@ -104,20 +118,22 @@ export default function Admins({
               </Button>
             </Tooltip>
 
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              autoHeight
-              disableSelectionOnClick
-              experimentalFeatures={{ newEditingApi: true }}
-            />
+            {rows && (
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                autoHeight
+                disableSelectionOnClick
+                experimentalFeatures={{ newEditingApi: true }}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      <NewAdminModal open={open} setOpen={setOpen} />
+      <NewAdminModal setNotify={setNotify} open={open} setOpen={setOpen} />
       <AlertDialog
         attributes={{
           title: "Lorem ipsum?",
@@ -132,6 +148,7 @@ export default function Admins({
         }
         setOpenDialog={dialogProps?.setOpenDialog}
       />
+      <NotifyUse messageProps={notify} />
     </>
   );
 }
