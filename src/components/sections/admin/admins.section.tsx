@@ -1,5 +1,5 @@
 import { iAdminSection } from "./interface.admin.section";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { dynamicCellMembers } from "../../templates/admin/dynamicCells.template";
@@ -10,7 +10,10 @@ import AddIcon from "@mui/icons-material/Add";
 import NewAdminModal from "./newAdminModal.section";
 import { Tooltip } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import { getAdmins } from "../../../auth/firebase/firebase.admin.functions";
+import {
+  deleteAdmins,
+  getAdmins,
+} from "../../../auth/firebase/firebase.admin.functions";
 import { iMessage } from "../../templates/notify/notify.interfaces";
 import NotifyUse from "../../templates/notify/notify.template.use";
 import Box from "@mui/material/Box";
@@ -43,9 +46,12 @@ export default function Admins({
   const [rows, setRows] = useState<any>();
   const [notify, setNotify] = useState<iMessage>();
 
-  const handleRemove = () => {
-    console.log(authUser);
-  };
+  const handleRemove = useCallback(() => {
+    deleteAdmins(dialogProps.openDialog.id as string).then((notification) =>
+      setNotify(notification)
+    );
+    dialogProps.setOpenDialog({ value: false, id: "" });
+  }, [dialogProps.openDialog, notify]);
 
   useEffect(() => {
     let adminData: any = [];
@@ -68,7 +74,7 @@ export default function Admins({
   }, [open, dialogProps.openDialog, handleRemove]);
 
   const withoutId = rows && Object.keys(rows[0]);
-  //handle delete
+
   const columns: GridColDef[] =
     rows &&
     withoutId.map((rowKey: string, i: number) => {
@@ -83,9 +89,12 @@ export default function Admins({
       };
     });
 
-  const handleDelete = (prodId: string) => {
-    dialogProps?.setOpenDialog({ value: true, id: prodId });
-  };
+  const handleDelete = useCallback(
+    (prodId: string) => {
+      dialogProps?.setOpenDialog({ value: true, id: prodId });
+    },
+    [dialogProps?.openDialog]
+  );
 
   return (
     <>

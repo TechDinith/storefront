@@ -1,5 +1,13 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  getDocs,
+  query,
+  where,
+  doc,
+} from "firebase/firestore";
 import { db, auth } from "./firebase.config";
 
 export const addAdmin = async (email: string, role: string) => {
@@ -58,5 +66,15 @@ export const logInAdmins = async (email: string) => {
       const errorMessage = error.message;
 
       return { errorCode, errorMessage };
+    });
+};
+
+export const deleteAdmins = async (id: string) => {
+  return await deleteDoc(doc(db, "admins", id))
+    .then(() => {
+      return { message: "User Deleted!", severity: "success" };
+    })
+    .catch((err) => {
+      return { message: err.message, severity: "error" };
     });
 };
