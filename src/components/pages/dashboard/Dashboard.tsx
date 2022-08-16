@@ -33,6 +33,11 @@ import { Tooltip } from "antd";
 import { completeEmailLink } from "../../../auth/firebase/auth.email.link";
 import { getCurrentAuthUser } from "../../../auth/firebase/firebase.user";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../../auth/firebase/firebase.config";
+import {
+  getAdmins,
+  getAdminsByUid,
+} from "../../../auth/firebase/firebase.admin.functions";
 
 function Copyright(props: any) {
   return (
@@ -272,14 +277,7 @@ function DashboardContent({
                     path="/admins"
                     element={
                       <Admins
-                        admins={[
-                          {
-                            id: "1",
-                            role: "pedros-admin",
-                            email: "test@test.com",
-                            assignedDate: new Date().toDateString(),
-                          },
-                        ]}
+                        authUser={authUser}
                         dialogProps={dialogProps}
                         sectionName={sectionName}
                       />
@@ -301,16 +299,17 @@ export default function Dashboard({ products, dialogProps }: iDashboard) {
   const navigate = useNavigate();
   const sectionName = pathname.substring(17);
   const [authUser, setAuthUser] = useState();
-  console.log("state", state);
-  useEffect(() => {
-    const auth = getAuth();
 
-    onAuthStateChanged(auth, (user) => {
+  useEffect(() => {
+    onAuthStateChanged(auth, (user: any) => {
       if (user) {
-        setAuthUser({
-          ...user,
-          role: state && state.role && state.role,
-        } as any);
+        getAdminsByUid(user.uid).then((doc) => {
+          if (doc.authId) {
+            setAuthUser({
+              ...doc,
+            } as any);
+          }
+        });
       } else {
         navigate("/notfound");
       }

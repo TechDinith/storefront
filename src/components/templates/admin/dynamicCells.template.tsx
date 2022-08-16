@@ -9,7 +9,6 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { iDialog } from "../dialog/dialog.interface";
 import LinkIcon from "@mui/icons-material/Link";
 import copy from "copy-text-to-clipboard";
 
@@ -180,13 +179,15 @@ const dynamicCellMembers = (
     element = (
       <Box display="flex">
         <Tooltip title="Only Pedros-Admins can Delete Admins!">
-          <IconButton
-            color="error"
-            disabled={admin === "admin" ? true : false || false}
-            onClick={() => handleDelete(row.id)}
-          >
-            <DeleteIcon />
-          </IconButton>
+          <Box component="span">
+            <IconButton
+              color="error"
+              disabled={admin === "admin" ? true : false || false}
+              onClick={() => handleDelete(row.id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Box>
         </Tooltip>
         {admin && (
           <Tooltip title={"http://localhost:3000/admin/" + row.value}>

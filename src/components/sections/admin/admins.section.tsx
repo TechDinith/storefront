@@ -13,6 +13,7 @@ import { useLocation } from "react-router-dom";
 import { getAdmins } from "../../../auth/firebase/firebase.admin.functions";
 import { iMessage } from "../../templates/notify/notify.interfaces";
 import NotifyUse from "../../templates/notify/notify.template.use";
+import Box from "@mui/material/Box";
 
 // Generate Order Data
 function createData(
@@ -35,19 +36,15 @@ function createData(
 
 export default function Admins({
   sectionName,
-  admins,
   dialogProps,
+  authUser,
 }: iAdminSection) {
   const [open, setOpen] = useState(false);
-  const { state }: any = useLocation();
   const [rows, setRows] = useState<any>();
   const [notify, setNotify] = useState<iMessage>();
 
   const handleRemove = () => {
-    const newAdmins = admins.filter(
-      (admin: any) => admin.id !== dialogProps.openDialog.id
-    );
-    console.log(newAdmins);
+    console.log(authUser);
   };
 
   useEffect(() => {
@@ -69,10 +66,9 @@ export default function Admins({
       );
     });
   }, [open, dialogProps.openDialog, handleRemove]);
-  console.log(rows);
 
   const withoutId = rows && Object.keys(rows[0]);
-
+  //handle delete
   const columns: GridColDef[] =
     rows &&
     withoutId.map((rowKey: string, i: number) => {
@@ -83,7 +79,7 @@ export default function Admins({
         headerName:
           rowKey === "id" ? "Delete" : (rowKey.toLocaleUpperCase() as any),
         renderCell: (params: GridRenderCellParams<any>) =>
-          dynamicCellMembers(params, handleDelete, state.role, setNotify),
+          dynamicCellMembers(params, handleDelete, authUser.role, setNotify),
       };
     });
 
@@ -108,14 +104,16 @@ export default function Admins({
         <div style={{ display: "flex", height: "100%" }}>
           <div style={{ flexGrow: 1 }}>
             <Tooltip title="Only Pedros-Admins can Add new Admins!">
-              <Button
-                startIcon={<AddIcon />}
-                sx={{ mb: 1 }}
-                onClick={() => setOpen(true)}
-                disabled={state.role === "admin" ? true : false}
-              >
-                New Admin
-              </Button>
+              <Box component="span">
+                <Button
+                  startIcon={<AddIcon />}
+                  sx={{ mb: 1 }}
+                  onClick={() => setOpen(true)}
+                  disabled={authUser.role === "admin" ? true : false}
+                >
+                  New Admin
+                </Button>
+              </Box>
             </Tooltip>
 
             {rows && (

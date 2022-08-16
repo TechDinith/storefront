@@ -56,8 +56,8 @@ export interface iUserSection {
 }
 export interface iAdminSection {
   sectionName: string;
-  admins: iAdmin[] | [];
   dialogProps: iDialog;
+  authUser: iAdmin;
 }
 
 export interface iUser {
@@ -71,6 +71,7 @@ export interface iAdmin {
   assignedDate: string;
   role: string;
   email: string;
+  authId: string;
 }
 
 export interface iNewAdminModal {

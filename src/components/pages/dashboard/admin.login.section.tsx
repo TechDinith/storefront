@@ -14,10 +14,12 @@ import LoginIcon from "@mui/icons-material/Login";
 import { iAdminLogin } from "./dashboard.interface";
 import NotifyUse from "../../templates/notify/notify.template.use";
 import { iMessage } from "../../templates/notify/notify.interfaces";
-import { signInWIthFirebaseEmailLink } from "../../../auth/firebase/auth.email.link";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../auth/firebase/firebase.config";
-import { getAdmins } from "../../../auth/firebase/firebase.admin.functions";
+import {
+  getAdmins,
+  logInAdmins,
+} from "../../../auth/firebase/firebase.admin.functions";
 
 export default function AdminLogin({}: iAdminLogin) {
   const [notify, setNotify] = useState<iMessage>();
@@ -27,28 +29,22 @@ export default function AdminLogin({}: iAdminLogin) {
   const { state }: any = useLocation();
 
   useEffect(() => {
-    getAdmins().then((admins: any) => {
-      let exist = false;
-      admins.forEach((doc: any) => {
-        if (Object.values(doc.data()).includes(params.id)) {
-          exist = true;
-        }
-      });
-
-      if (!exist) {
-        navigate("/notfound");
-      }
-    });
-
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigate("/admin/dashboard", {
-          state: {
-            role: state && state.role && state.role,
-          },
-        });
+        console.log(user);
+        navigate("/admin/dashboard");
       } else {
-        navigate("/notfound");
+        getAdmins().then((admins: any) => {
+          let exist = false;
+          admins.forEach((doc: any) => {
+            if (doc.id === params.id) {
+              exist = true;
+            }
+          });
+          if (!exist) {
+            navigate("/notfound");
+          }
+        });
       }
     });
   }, [params.id, navigate]);
@@ -67,18 +63,15 @@ export default function AdminLogin({}: iAdminLogin) {
 
   const onSubmit: SubmitHandler<any> = (data) => {
     setIsDisabled(true);
-    console.log(data);
-    signInWIthFirebaseEmailLink(data.email, state && state.role)
-      .then(() => {
-        setNotify({
-          message: "Email Link sent to relevant email address!",
-          severity: "info",
-        });
-      })
-      .catch((error) => {
-        setNotify({ message: error, severity: "error" });
+
+    logInAdmins(data.email).then((admin: any) => {
+      console.log(admin);
+
+      if (admin.errorCode === "auth/user-not-found") {
+        setNotify({ message: "Unauthorized!", severity: "error" });
         setIsDisabled(false);
-      });
+      }
+    });
   };
 
   return (
