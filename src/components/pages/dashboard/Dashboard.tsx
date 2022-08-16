@@ -25,8 +25,8 @@ import {
 } from "react-router-dom";
 import { iDashboard, iDashboardContent } from "./dashboard.interface";
 import Products from "../../sections/admin/products.section";
-import Users from "../../sections/admin/users.section";
-import Admins from "../../sections/admin/admins.section";
+import Users from "../../sections/admin/users/users.section";
+import Admins from "../../sections/admin/admins/admins.section";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Tooltip } from "antd";

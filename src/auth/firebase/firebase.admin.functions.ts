@@ -72,7 +72,7 @@ export const logInAdmins = async (email: string) => {
 export const deleteAdmins = async (id: string) => {
   return await deleteDoc(doc(db, "admins", id))
     .then(() => {
-      return { message: "User Deleted!", severity: "success" };
+      return { message: "Admin Deleted!", severity: "success" };
     })
     .catch((err) => {
       return { message: err.message, severity: "error" };

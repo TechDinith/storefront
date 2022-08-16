@@ -1,21 +1,21 @@
-import { iAdminSection } from "./interface.admin.section";
+import { iAdminSection } from "../interface.admin.section";
 import { useCallback, useEffect, useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { dynamicCellMembers } from "../../templates/admin/dynamicCells.template";
+import { dynamicCellMembers } from "../../../templates/admin/dynamicCells.template";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import AlertDialog from "../../templates/dialog/dialog.template";
+import AlertDialog from "../../../templates/dialog/dialog.template";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import NewAdminModal from "./newAdminModal.section";
+import NewAdminModal from "../newAdminModal.section";
 import { Tooltip } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import {
   deleteAdmins,
   getAdmins,
-} from "../../../auth/firebase/firebase.admin.functions";
-import { iMessage } from "../../templates/notify/notify.interfaces";
-import NotifyUse from "../../templates/notify/notify.template.use";
+} from "../../../../auth/firebase/firebase.admin.functions";
+import { iMessage } from "../../../templates/notify/notify.interfaces";
+import NotifyUse from "../../../templates/notify/notify.template.use";
 import Box from "@mui/material/Box";
 
 // Generate Order Data
