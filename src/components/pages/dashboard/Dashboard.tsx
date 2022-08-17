@@ -30,14 +30,9 @@ import Admins from "../../sections/admin/admins/admins.section";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Tooltip } from "antd";
-import { completeEmailLink } from "../../../auth/firebase/auth.email.link";
-import { getCurrentAuthUser } from "../../../auth/firebase/firebase.user";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../auth/firebase/firebase.config";
-import {
-  getAdmins,
-  getAdminsByUid,
-} from "../../../auth/firebase/firebase.admin.functions";
+import { getAdminsByUid } from "../../../auth/firebase/firebase.admin.functions";
 
 function Copyright(props: any) {
   return (
@@ -260,14 +255,6 @@ function DashboardContent({
                     path="/users"
                     element={
                       <Users
-                        users={[
-                          {
-                            id: "1",
-                            name: "Fred",
-                            email: "test@test.com",
-                            joinedDate: new Date().toDateString(),
-                          },
-                        ]}
                         dialogProps={dialogProps}
                         sectionName={sectionName}
                       />

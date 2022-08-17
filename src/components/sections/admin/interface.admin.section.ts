@@ -51,7 +51,6 @@ export interface iProductsSection {
 
 export interface iUserSection {
   sectionName: string;
-  users: iUser[] | [];
   dialogProps: iDialog;
 }
 export interface iAdminSection {

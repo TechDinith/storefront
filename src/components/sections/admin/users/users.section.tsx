@@ -7,7 +7,7 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import AlertDialog from "../../../templates/dialog/dialog.template";
 import { iMessage } from "../../../templates/notify/notify.interfaces";
 import {
-  deleteUser,
+  deleteAUser,
   getUsers,
 } from "../../../../auth/firebase/firebase.users.functions";
 import NotifyUse from "../../../templates/notify/notify.template.use";
@@ -27,16 +27,12 @@ function createData(
   };
 }
 
-export default function Users({
-  sectionName,
-  users,
-  dialogProps,
-}: iUserSection) {
+export default function Users({ sectionName, dialogProps }: iUserSection) {
   const [rows, setRows] = useState<any>();
   const [notify, setNotify] = useState<iMessage>();
 
   const handleRemove = useCallback(() => {
-    deleteUser(dialogProps.openDialog.id as string).then((notification) =>
+    deleteAUser(dialogProps.openDialog.id as string).then((notification) =>
       setNotify(notification)
     );
     dialogProps.setOpenDialog({ value: false, id: "" });
@@ -57,7 +53,7 @@ export default function Users({
       );
     });
   }, [dialogProps.openDialog, handleRemove]);
-  console.log(rows);
+
   const withoutId = rows && Object.keys(rows[0]);
 
   const columns: GridColDef[] =
@@ -75,8 +71,8 @@ export default function Users({
     });
 
   const handleDelete = useCallback(
-    (prodId: string) => {
-      dialogProps?.setOpenDialog({ value: true, id: prodId });
+    (userId: string) => {
+      dialogProps?.setOpenDialog({ value: true, id: userId });
     },
     [dialogProps?.openDialog]
   );

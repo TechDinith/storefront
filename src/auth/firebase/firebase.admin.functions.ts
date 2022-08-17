@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { deleteUser, signInWithEmailAndPassword } from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -7,6 +7,7 @@ import {
   query,
   where,
   doc,
+  getDoc,
 } from "firebase/firestore";
 import { db, auth } from "./firebase.config";
 
@@ -69,12 +70,30 @@ export const logInAdmins = async (email: string) => {
     });
 };
 
+export const getAdminById = async (id: string) => {
+  const docRef = doc(db, "admins", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return { data: docSnap.data() };
+  } else {
+    return { err: "No such doc" };
+  }
+};
+
 export const deleteAdmins = async (id: string) => {
-  return await deleteDoc(doc(db, "admins", id))
-    .then(() => {
-      return { message: "Admin Deleted!", severity: "success" };
-    })
-    .catch((err) => {
-      return { message: err.message, severity: "error" };
-    });
+  return await getAdminById(id).then((userDoc: any) => {
+    if (userDoc.data.authId === auth.currentUser!.uid) {
+      const user = auth.currentUser;
+      return { message: "You can't delete Yourself!", severity: "error" };
+    } else {
+      return deleteDoc(doc(db, "admins", id))
+        .then(() => {
+          return { message: "Admin Deleted!", severity: "success" };
+        })
+        .catch((err) => {
+          return { message: err.message, severity: "error" };
+        });
+    }
+  });
 };

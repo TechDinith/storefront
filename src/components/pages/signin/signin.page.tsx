@@ -6,7 +6,7 @@ import { iSignIn } from "./signin.interface";
 
 export default function SignInSide({ authProps }: iSignIn) {
   const fields = ["email", "password"];
-
+  //handle delete if user deleted by the admin
   return (
     <Grid item xs={10} mt="4%">
       <Grid container>
