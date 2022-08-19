@@ -68,6 +68,7 @@ export default function ProductUpdateModal({
   ];
 
   const [fileList, setFileList] = useState<any>([]);
+  const [urlList, setUrlList] = useState<any>([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -94,6 +95,8 @@ export default function ProductUpdateModal({
                   },
                 ]
           );
+
+          setUrlList(prodById.urlList);
         });
       }
     }, 10);
@@ -149,6 +152,7 @@ export default function ProductUpdateModal({
             })),
       category: data.category,
       enteredOn: new Date().toLocaleString(),
+      urlList: urlList,
     };
 
     updateProduct(product.id, OrganizedProduct).then((res) => {
@@ -218,7 +222,6 @@ export default function ProductUpdateModal({
                         onChange={(e) => setColors(e.target.checked)}
                         color="warning"
                         value={colors}
-                        // defaultChecked={colors}
                         checked={colors}
                       />
                     }
@@ -226,6 +229,7 @@ export default function ProductUpdateModal({
                   />
                 </Box>
                 <ImageUpload
+                  urlProps={{ urlList, setUrlList }}
                   colors={colors}
                   fileProps={{ fileList, setFileList }}
                 />

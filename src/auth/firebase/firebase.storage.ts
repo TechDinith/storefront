@@ -15,14 +15,13 @@ export const uploadImagesToStorage = async (file: any) => {
 
   const imageName = file.uid + "." + uploadedType[1];
   const fileRef = ref(imagesRef, imageName);
-
-  return await uploadBytes(fileRef, file)
-    .then((snapshot) => {
-      return { status: "ok", res: snapshot };
-    })
-    .catch((err) => {
-      return { status: "error", res: err };
-    });
+  try {
+    const snapshot = await uploadBytes(fileRef, file);
+    const url = await getDownloadURL(ref(imagesRef, snapshot.metadata.name));
+    return { status: "ok", res: url };
+  } catch (err) {
+    return { status: "error", res: err };
+  }
 };
 
 export const deleteImageFromStorage = (file: any) => {

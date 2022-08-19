@@ -18,4 +18,6 @@ export interface iCategory {
   orderedOn?: string;
   addedOn?: string;
   quantity?: string;
+  urlList?: any;
+  prodId?: string;
 }

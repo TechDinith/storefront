@@ -20,6 +20,8 @@ export interface iCart {
   desc: string;
   category: string;
   quantity?: string;
+  urlList?: any;
+  prodId?: string;
 }
 
 export interface iProdDetails {
@@ -44,4 +46,6 @@ export interface iProducts {
   desc: string;
   category: string;
   enteredOn: string;
+  urlList?: any;
+  prodId?: string;
 }

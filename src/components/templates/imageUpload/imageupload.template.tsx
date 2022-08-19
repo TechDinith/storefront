@@ -17,7 +17,7 @@ const getBase64 = (file: any) =>
     reader.onerror = (error) => reject(error);
   });
 
-const ImageUpload = ({ colors, fileProps }: iUploadImage) => {
+const ImageUpload = ({ colors, fileProps, urlProps }: iUploadImage) => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -25,6 +25,7 @@ const ImageUpload = ({ colors, fileProps }: iUploadImage) => {
   useEffect(() => {
     console.log("filelistimg", fileProps.fileList);
     fileProps.setFileList(fileProps.fileList);
+    urlProps.setUrlList(urlProps.urlList);
   }, [fileProps]);
 
   const handleCancel = () => setPreviewVisible(false);
@@ -47,15 +48,35 @@ const ImageUpload = ({ colors, fileProps }: iUploadImage) => {
 
   const handleImageUpload = useCallback(
     async ({ file, onSuccess, onError }: any) => {
-      await uploadImagesToStorage(file).then((data) =>
-        data.status === "ok" ? onSuccess("ok") : onError(data.res)
-      );
+      await uploadImagesToStorage(file).then((data) => {
+        if (data.status === "ok") {
+          console.log("urlProps.urlList", urlProps.urlList);
+          console.log(data);
+          urlProps.setUrlList([
+            ...urlProps.urlList,
+            {
+              id: file.uid,
+              name: file.uid + "." + file.type.split("/")[1],
+              url: data.res,
+            },
+          ]);
+          onSuccess("ok");
+        } else {
+          onError(data.res);
+        }
+      });
     },
     [fileProps.fileList]
   );
 
   const handleRemove = useCallback(
     (file: any) => {
+      urlProps.setUrlList(
+        urlProps.urlList.filter(
+          (currentFiles: any) => currentFiles.id !== file.uid
+        )
+      );
+      console.log(urlProps.urlList);
       deleteImageFromStorage(file);
     },
     [fileProps.fileList]

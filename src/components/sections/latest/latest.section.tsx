@@ -30,16 +30,19 @@ const Latest = ({ setNotify, latestProducts }: iLatestProps) => {
         direction="row"
         sx={{ display: { xs: "none", sm: "flex" } }}
       >
-        {latest.map((item, i) => (
-          <Grid item xs={4} key={i}>
-            <ProDetails
-              setNotify={setNotify}
-              preview={false}
-              cart={item}
-              latest={true}
-            />
-          </Grid>
-        ))}
+        {latest.map(
+          (item, i) =>
+            i < 6 && (
+              <Grid item xs={4} key={i}>
+                <ProDetails
+                  setNotify={setNotify}
+                  preview={false}
+                  cart={item}
+                  latest={true}
+                />
+              </Grid>
+            )
+        )}
       </Grid>
     </>
   );

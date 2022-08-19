@@ -55,7 +55,6 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
     setNotify,
   ]);
 
-  //modifie selected items for alll the pages
   return (
     <>
       <Quote bgImage={wideabout} />

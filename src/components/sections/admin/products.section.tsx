@@ -59,7 +59,8 @@ export default function Products({
 
   useEffect(() => {
     getProducts().then((res) => {
-      if (res.status === "success") {
+      if (res.status === "success" && res.data.docs.length) {
+        console.log(res.data);
         let rawRows: any[] = [];
         res.data.forEach((doc: any) =>
           rawRows.push({ ...doc.data(), id: doc.id })
@@ -101,7 +102,7 @@ export default function Products({
             productColors
           );
         });
-        const withoutId = Object.keys(rows[0]);
+        const withoutId = rows && Object.keys(rows[0]);
         withoutId.shift();
 
         setColumns(
@@ -160,6 +161,7 @@ export default function Products({
   const handleNewProduct = useCallback(() => {
     setOpenNewModal(true);
   }, []);
+
   return (
     <>
       <Toolbar>

@@ -28,33 +28,35 @@ const ProDetails = ({
   const { state }: any = useLocation();
 
   const [selectedProduct, setSelectedProduct] = useState({
-    id: cart.id,
+    id: isCart ? cart.prodId : cart.colors ? cart.colors[0].id : cart.id,
     image: isCart
       ? cart.image
       : cart.image
-      ? cart.image.image
+      ? cart.urlList[0].name
       : cart.colors
-      ? cart.colors[0].image
+      ? cart.urlList[0].name
       : null,
-    color: cart.colors ? cart.colors[0] : "transparent",
+    color: isCart ? cart.colors : cart.colors ? cart.colors[0] : "transparent",
     url: isCart
-      ? cart.colors && cart.colors[0].url
+      ? cart.urlList
       : cart.image
-      ? cart.image.url
-      : cart.colors && cart.colors[0].url,
+      ? cart.urlList[0].url
+      : cart.colors && cart.urlList[0].url,
   });
   const [quantity, setQuantity] = useState("1");
 
   const handleAddToCart = () => {
     let cartItem = {
       id: selectedProduct.id,
+      prodId: cart.id,
       image: selectedProduct.image,
       category: cart.category,
       isColor: cart.isColor,
       name: cart.name,
       price: cart.price,
       addedOn: new Date().toLocaleString(),
-      colors: [selectedProduct],
+      colors: selectedProduct.color,
+      urlList: selectedProduct.url,
       orderedOn: cart.orderedOn,
       desc: cart.desc,
       quantity: quantity,
@@ -191,10 +193,7 @@ const ProDetails = ({
         isCart ? (
           <>
             <Box display="flex" justifyContent={"center"}>
-              {cart.colors &&
-                cart.colors.map((item: any, i: number) => (
-                  <CircleIcon key={i} sx={{ color: item.color }} />
-                ))}
+              {cart.colors && <CircleIcon sx={{ color: cart.colors }} />}
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center">
               <Typography variant="body1" color="white" textAlign="center">
@@ -228,7 +227,7 @@ const ProDetails = ({
                           id: item.id,
                           image: item.image,
                           color: item.color,
-                          url: item.url,
+                          url: cart.urlList[i].url,
                         })
                       }
                     >

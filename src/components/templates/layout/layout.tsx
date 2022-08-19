@@ -10,7 +10,7 @@ import Contact from "../../pages/contact/contact.page";
 import SignInSide from "../../pages/signin/signin.page";
 import SignUpSide from "../../pages/signup/signup.page";
 import Category from "../../pages/category/category.page";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Cart from "../../pages/cart/cart.page";
 import NotFound from "../../pages/notfound/notfound.page";
 import Checkout from "../../pages/checkout/checkout.page";
@@ -21,6 +21,9 @@ import { getProducts } from "../../../auth/firebase/firebase.products.functions"
 import NotifyUse from "../notify/notify.template.use";
 import { iMessage } from "../notify/notify.interfaces";
 import { handleImageUrl } from "../../../auth/firebase/firebase.storage";
+import { async } from "@firebase/util";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../auth/firebase/firebase.config";
 
 const categories = ["men", "women", "accessories"];
 
@@ -37,9 +40,6 @@ const Layout = ({ dialogProps }: iLayout) => {
         ? JSON.parse(typeof localCart === "string" ? localCart : "")
         : null
     );
-
-    //replace with async
-    // setAuth([{ name: "fred morgen", email: "sdsd@sdsd.com", remember: true }]);
   }, []);
 
   useEffect(() => {
@@ -50,97 +50,12 @@ const Layout = ({ dialogProps }: iLayout) => {
           rawRows.push({ ...doc.data(), id: doc.id })
         );
 
-        rawRows.map((product: any) => {
-          if (product.image === null) {
-            product.colors.map((color: any) => {
-              handleImageUrl(color.image).then((url) => {
-                color["url"] = url;
-              });
-              return;
-            });
-          }
-
-          if (product.image !== null) {
-            handleImageUrl(product.image).then((url) => {
-              product["image"] = { image: product.image, url: url };
-            });
-          }
-          return;
-        });
-
         setProducts(rawRows);
       }
     });
-
-    //replace with async
-    // const products = [
-    //   {
-    //     id: "1",
-    //     image: "prod1.jpg",
-    //     isColor: false,
-    //     name: "Sample Item 1",
-    //     price: "1500.5",
-    //     category: "men",
-    //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
-    //     enteredOn: new Date(),
-    //   },
-    //   {
-    //     id: "2",
-    //     image: "prod2.jpg",
-    //     isColor: false,
-    //     name: "Sample Item 2",
-    //     price: 1400.5,
-    //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
-    //     category: "men",
-    //     enteredOn: new Date(),
-    //   },
-    //   {
-    //     id: "3",
-    //     image: "prod3.jpg",
-    //     isColor: false,
-    //     name: "Sample Item 3",
-    //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
-    //     price: "1540.5",
-    //     category: "women",
-    //     enteredOn: new Date(),
-    //   },
-    //   {
-    //     id: "4",
-    //     image: "prod4.jpg",
-    //     isColor: false,
-    //     name: "Sample Item 4",
-    //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
-    //     price: "1504.5",
-    //     category: "women",
-    //     enteredOn: new Date(),
-    //   },
-    //   {
-    //     id: "5",
-    //     image: null,
-    //     isColor: true,
-    //     name: "Sample Item 5",
-    //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
-    //     price: "150.5",
-    //     colors: [
-    //       { id: "7", image: "prod5-black.jpg", color: "black" },
-    //       { id: "8", image: "prod5-red.jpg", color: "red" },
-    //       { id: "9", image: "prod5-white.jpg", color: "white" },
-    //     ],
-    //     category: "women",
-    //     enteredOn: new Date(),
-    //   },
-    //   {
-    //     id: "6",
-    //     image: "prod6.jpg",
-    //     category: "women",
-    //     isColor: false,
-    //     name: "Sample Item 6",
-    //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, rem aliquid, deleniti suscipit aliquam excepturi odit voluptas id est ratione eius perspiciatis, odio vel ullam fugiat voluptate quaerat eos temporibus.",
-    //     price: "1500",
-    //     enteredOn: new Date(),
-    //   },
-    // ] as any;
   }, []);
+
+  //check admin logins at the admin panel
 
   return (
     <>
@@ -162,6 +77,7 @@ const Layout = ({ dialogProps }: iLayout) => {
                 path="/"
                 element={<Home products={products} setNotify={setNotify} />}
               />
+
               <Route path="/about" element={<About />} />
               {/* send email */}
               <Route path="/contact" element={<Contact />} />

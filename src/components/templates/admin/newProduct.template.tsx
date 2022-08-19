@@ -62,6 +62,7 @@ export default function NewProductModal({
   ];
 
   const [fileList, setFileList] = useState<any>([]);
+  const [urlList, setUrlList] = useState<any>([]);
 
   const handleClose = () => modalProps.setOpenNewModal(false);
 
@@ -71,7 +72,6 @@ export default function NewProductModal({
     handleSubmit,
     formState: { errors },
     control,
-    reset,
   } = useForm(formOptions);
 
   const onSubmit: SubmitHandler<any> = (data) => {
@@ -100,7 +100,9 @@ export default function NewProductModal({
             })),
       category: data.category,
       enteredOn: new Date().toLocaleString(),
+      urlList: urlList,
     };
+
     addProduct(OrganizedProduct).then((res) => {
       if (res.status === "success") {
         setNotify({ message: "Product Added!", severity: res.status });
@@ -176,6 +178,7 @@ export default function NewProductModal({
                 <ImageUpload
                   colors={colors}
                   fileProps={{ fileList, setFileList }}
+                  urlProps={{ urlList, setUrlList }}
                 />
                 {colors && (
                   <Box my={1}>
