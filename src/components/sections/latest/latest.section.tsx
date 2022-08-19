@@ -4,7 +4,7 @@ import SubSlogan from "../subSlogan/subSlogan.section";
 import { useState, useEffect } from "react";
 import { iLatest, iLatestProps } from "./latest.interface";
 
-const Latest = ({ notifyProps, latestProducts }: iLatestProps) => {
+const Latest = ({ setNotify, latestProducts }: iLatestProps) => {
   const [latest, setLatest] = useState<iLatest[]>([]);
   useEffect(() => {
     if (latestProducts) setLatest(latestProducts);
@@ -33,7 +33,7 @@ const Latest = ({ notifyProps, latestProducts }: iLatestProps) => {
         {latest.map((item, i) => (
           <Grid item xs={4} key={i}>
             <ProDetails
-              notifyProps={notifyProps}
+              setNotify={setNotify}
               preview={false}
               cart={item}
               latest={true}

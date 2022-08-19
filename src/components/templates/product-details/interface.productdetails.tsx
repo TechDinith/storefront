@@ -2,7 +2,6 @@ import { iAuthProps } from "../../../auth/auth.interface";
 import { iCategory } from "../../pages/category/category.interfaces";
 import { iLatest } from "../../sections/latest/latest.interface";
 import { iDialog } from "../dialog/dialog.interface";
-import { iNotifyProps } from "../notify/notify.interfaces";
 
 export interface iCount {
   count: any[];
@@ -25,7 +24,7 @@ export interface iCart {
 
 export interface iProdDetails {
   authProps?: iAuthProps;
-  notifyProps: iNotifyProps;
+  setNotify: any;
   countProps?: iCount;
   dialogProps?: iDialog;
   cart: iCart | iCategory | iLatest;

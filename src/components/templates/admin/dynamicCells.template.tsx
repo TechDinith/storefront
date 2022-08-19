@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import LinkIcon from "@mui/icons-material/Link";
 import copy from "copy-text-to-clipboard";
+import { handleImageUrl } from "../../../auth/firebase/firebase.storage";
 
 const dynamicCells = (row: any, labelId?: string) => {
   let elements: any[] = [];
@@ -102,16 +103,14 @@ const dynamicCell = (
           month: "long",
           day: "2-digit",
         }).format(new Date(row.value))
-      ) : row.field === "image" && typeof row.value === "object" ? (
+      ) : row.field === "image" &&
+        row.value.length !== 1 &&
+        typeof row.value === "object" ? (
         <Tooltip
           title={
             <Image.PreviewGroup>
               {row.value.map((image: string, i: number) => (
-                <Image
-                  width="40%"
-                  key={i}
-                  src={require(`../../../images/${image}`)}
-                />
+                <Image width="40%" key={i} src={image} />
               ))}
             </Image.PreviewGroup>
           }
@@ -119,8 +118,12 @@ const dynamicCell = (
           <CollectionsIcon />
         </Tooltip>
       ) : row.field === "image" ? (
-        <Image width="30%" src={require(`../../../images/${row.value}`)} />
-      ) : row.field === "colors" && typeof row.value === "object" ? (
+        <>
+          <Image width="30%" src={row.value} />
+        </>
+      ) : row.field === "colors" &&
+        row.value !== null &&
+        typeof row.value === "object" ? (
         <Tooltip
           title={
             <Box display="flex">

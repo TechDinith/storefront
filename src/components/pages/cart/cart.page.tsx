@@ -11,18 +11,14 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Quote from "../../templates/quote/quote.section";
 
-const Cart = ({
-  countProps,
-  notifyProps,
-  dialogProps,
-  authProps,
-}: iCartPage) => {
+const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
   const [cart, setCart] = useState<iCart[]>([]);
   const [checkouts, setCheckouts] = useState<null | iCart[]>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
+
     if (localCart === null) {
       setTimeout(() => {
         authProps?.setAuth(authProps.auth ? authProps.auth : null);
@@ -51,8 +47,15 @@ const Cart = ({
           : authProps.auth
       );
     }
-  }, [countProps.count, dialogProps?.openDialog, navigate, authProps]);
+  }, [
+    countProps.count,
+    dialogProps?.openDialog,
+    navigate,
+    authProps,
+    setNotify,
+  ]);
 
+  //modifie selected items for alll the pages
   return (
     <>
       <Quote bgImage={wideabout} />
@@ -145,15 +148,15 @@ const Cart = ({
                       </Typography>
                     </>
                   )}
+
                   <ProDetails
                     dialogProps={dialogProps}
-                    notifyProps={notifyProps}
+                    setNotify={setNotify}
                     isCart={true}
                     preview={true}
                     cart={item}
                     countProps={countProps}
                   />
-                  ;
                 </Grid>
               ))}
           </Grid>

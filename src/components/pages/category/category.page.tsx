@@ -12,7 +12,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import Quote from "../../templates/quote/quote.section";
 
-const Category = ({ countProps, notifyProps, products }: iCategories) => {
+const Category = ({ countProps, setNotify, products }: iCategories) => {
   const [categories, setCategories] = useState<iCategory[]>([]);
   const [openSearchResult, setOpenSearchResult] = useState(false);
 
@@ -91,7 +91,7 @@ const Category = ({ countProps, notifyProps, products }: iCategories) => {
                               handleClickCloseSearchResult={
                                 handleClickCloseSearchResult
                               }
-                              notifyProps={notifyProps}
+                              setNotify={setNotify}
                               countProps={countProps}
                               preview={false}
                               cart={item}
@@ -105,7 +105,7 @@ const Category = ({ countProps, notifyProps, products }: iCategories) => {
                 {item.category === category ? (
                   <Grid item xs={10} sm={4}>
                     <ProDetails
-                      notifyProps={notifyProps}
+                      setNotify={setNotify}
                       countProps={countProps}
                       preview={true}
                       cart={item}

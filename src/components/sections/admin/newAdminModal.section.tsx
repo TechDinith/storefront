@@ -14,6 +14,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { useState } from "react";
 import {
   addAdmin,
+  createAdminAuth,
   getAdmins,
 } from "../../../auth/firebase/firebase.admin.functions";
 import { iMessage } from "../../templates/notify/notify.interfaces";
@@ -77,6 +78,7 @@ export default function NewAdminModal({
         addAdmin(data.email, data.role)
           .then((admin: any) => {
             setAdminLink("http://localhost:3000/admin/" + admin.id);
+
             setChildOpen(true);
           })
           .catch((err) => {

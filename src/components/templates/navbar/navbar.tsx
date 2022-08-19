@@ -32,7 +32,7 @@ const navItems = ["Home", "Categories", "About", "Contact"];
 
 const Navbar = ({
   countProps,
-  notifyProps,
+  setNotify,
   authProps,
   products,
   categories,
@@ -397,7 +397,7 @@ const Navbar = ({
                     }}
                     color="secondary"
                     onClick={() =>
-                      notifyProps.handleNotificationClick({
+                     setNotify({
                         message: "Cart Is Empty",
                         severity: "info",
                       })
@@ -509,7 +509,7 @@ const Navbar = ({
                     }}
                     color="secondary"
                     onClick={() =>
-                      notifyProps.handleNotificationClick({
+                      setNotify({
                         message: "Cart Is Empty",
                         severity: "info",
                       })
@@ -525,7 +525,7 @@ const Navbar = ({
       </AppBar>
       <Box component="nav">
         <Drawer
-          //   container={container}
+        
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -543,11 +543,7 @@ const Navbar = ({
           {drawer}
         </Drawer>
       </Box>
-      <ConsecutiveSnackbars
-        message={notifyProps.message}
-        setSnackPack={notifyProps.setSnackPack}
-        snackPack={notifyProps.snackPack}
-      />
+     
     </>
   );
 };

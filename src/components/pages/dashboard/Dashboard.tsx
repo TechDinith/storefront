@@ -105,7 +105,6 @@ const Drawer: any = styled(MuiDrawer, {
 function DashboardContent({
   state,
   sectionName,
-  products,
   dialogProps,
   authUser,
 }: iDashboardContent) {
@@ -245,7 +244,6 @@ function DashboardContent({
                     path="/products"
                     element={
                       <Products
-                        products={products}
                         dialogProps={dialogProps}
                         sectionName={sectionName}
                       />
@@ -281,7 +279,7 @@ function DashboardContent({
   );
 }
 
-export default function Dashboard({ products, dialogProps }: iDashboard) {
+export default function Dashboard({ dialogProps }: iDashboard) {
   const { state, pathname }: any = useLocation();
   const navigate = useNavigate();
   const sectionName = pathname.substring(17);
@@ -306,7 +304,6 @@ export default function Dashboard({ products, dialogProps }: iDashboard) {
   return authUser ? (
     <DashboardContent
       authUser={authUser}
-      products={products}
       state={state}
       sectionName={sectionName}
       dialogProps={dialogProps}

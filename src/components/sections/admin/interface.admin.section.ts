@@ -45,7 +45,6 @@ export interface iOrderSection {
 
 export interface iProductsSection {
   sectionName: string;
-  products: iProducts[] | [];
   dialogProps: iDialog;
 }
 

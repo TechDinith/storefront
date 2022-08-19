@@ -1,7 +1,5 @@
-import { iNotifyProps } from "../../templates/notify/notify.interfaces";
-
 export interface iLatestProps {
-  notifyProps: iNotifyProps;
+  setNotify: any;
   latestProducts: iLatest[];
 }
 

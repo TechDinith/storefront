@@ -13,13 +13,12 @@ import { Fragment, useEffect, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { iCheckoutPage } from "./checkoutPage.interface";
-import ConsecutiveSnackbars from "../../templates/notify/notify.template";
 
 const steps = ["Delivery address", "Payment details", "Review your order"];
 
 export default function Checkout({
   authProps,
-  notifyProps,
+  setNotify,
   countProps,
 }: iCheckoutPage) {
   const [activeStep, setActiveStep] = useState(0);
@@ -77,7 +76,7 @@ export default function Checkout({
   }
 
   const handlePlaceOrder = () => {
-    const orderedOn = new Date();
+    const orderedOn = new Date().toLocaleString();
 
     //database order for admins
     const order = {
@@ -109,11 +108,12 @@ export default function Checkout({
       };
     });
 
+    console.log(upadtedItems);
     const updatedCart = [...filteredProducts, ...upadtedItems];
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    countProps.setCount(updatedCart);
+    // localStorage.setItem("cart", JSON.stringify(updatedCart));
+    // countProps.setCount(updatedCart);
 
-    notifyProps.handleNotificationClick({
+    setNotify({
       message: "Your order will be delivered soon!",
       severity: "success",
     });
@@ -130,9 +130,9 @@ export default function Checkout({
         : authProps.auth
     );
 
-    setTimeout(() => {
-      navigate(-1);
-    }, 100);
+    // setTimeout(() => {
+    //   navigate(-1);
+    // }, 100);
   };
 
   return (
@@ -199,11 +199,6 @@ export default function Checkout({
           )}
         </Fragment>
       </Paper>
-      <ConsecutiveSnackbars
-        message={notifyProps.message}
-        setSnackPack={notifyProps.setSnackPack}
-        snackPack={notifyProps.snackPack}
-      />
     </Container>
   );
 }

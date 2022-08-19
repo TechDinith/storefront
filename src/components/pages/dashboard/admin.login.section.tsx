@@ -17,8 +17,11 @@ import { iMessage } from "../../templates/notify/notify.interfaces";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../auth/firebase/firebase.config";
 import {
+  createAdminAuth,
+  deleteCurrentAdmin,
   getAdmins,
   logInAdmins,
+  updateAdmin,
 } from "../../../auth/firebase/firebase.admin.functions";
 
 export default function AdminLogin({}: iAdminLogin) {
@@ -26,12 +29,10 @@ export default function AdminLogin({}: iAdminLogin) {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const params: any = useParams();
   const navigate = useNavigate();
-  const { state }: any = useLocation();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
         navigate("/admin/dashboard");
       } else {
         getAdmins().then((admins: any) => {
@@ -42,7 +43,17 @@ export default function AdminLogin({}: iAdminLogin) {
             }
           });
           if (!exist) {
-            navigate("/notfound");
+            let email = window.prompt(
+              "Please provide your email for confirmation"
+            );
+
+            logInAdmins(email as string).then((admin: any) => {
+              if (admin.errorCode === "auth/user-not-found") {
+                navigate("/notfound");
+              } else {
+                deleteCurrentAdmin();
+              }
+            });
           }
         });
       }
@@ -65,10 +76,14 @@ export default function AdminLogin({}: iAdminLogin) {
     setIsDisabled(true);
 
     logInAdmins(data.email).then((admin: any) => {
-      console.log(admin);
-
       if (admin.errorCode === "auth/user-not-found") {
-        setNotify({ message: "Unauthorized!", severity: "error" });
+        createAdminAuth(data.email).then((authAdmin: any) => {
+          if (authAdmin.uid) {
+            updateAdmin(params.id, { authId: authAdmin.uid });
+          } else {
+            setNotify({ message: "Unauthorized!", severity: "error" });
+          }
+        });
         setIsDisabled(false);
       }
     });

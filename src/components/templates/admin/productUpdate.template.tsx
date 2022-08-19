@@ -15,6 +15,10 @@ import { Fragment, useEffect, useState } from "react";
 import { iUpdateProduct } from "./admin.template.interface";
 import CloseIcon from "@mui/icons-material/Close";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import {
+  getProductById,
+  updateProduct,
+} from "../../../auth/firebase/firebase.products.functions";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,24 +43,27 @@ const formSchema = Yup.object().shape({
 export default function ProductUpdateModal({
   modalProps,
   product,
+  setNotify,
 }: iUpdateProduct) {
   const [colors, setColors] = useState(false);
+
   console.log(product);
+
   const fields = [
     {
       name: "Name",
       id: "name",
-      defaultValue: product !== null ? product.name : "",
+      defaultValue: product && product !== null ? product.name : "",
     },
     {
       name: "Price",
       id: "price",
-      defaultValue: product !== null ? product.price : "",
+      defaultValue: product && product !== null ? product.price : "",
     },
     {
       name: "Description",
       id: "desc",
-      defaultValue: product !== null ? product.desc : "",
+      defaultValue: product && product !== null ? product.desc : "",
     },
   ];
 
@@ -64,37 +71,42 @@ export default function ProductUpdateModal({
 
   useEffect(() => {
     setTimeout(() => {
-      console.log("ran list", product);
-      if (product !== null) {
-        setFileList(
-          product.isColor
-            ? product.colors.map((pro: any, i: number) => ({
-                uid: math.random(),
-                name: product.image[i],
-                url: require(`../../../images/${product.image[i]}`),
-                status: "done",
-              }))
-            : [
-                {
-                  uid: product.id,
-                  name: product.image,
-                  url: require(`../../../images/${product.image}`),
+      if (product && product !== null) {
+        getProductById(product.id).then((prod) => {
+          const prodById = prod.data.data();
+          console.log("pro", prodById);
+          setFileList(
+            prodById.isColor
+              ? prodById.colors.map((pro: any, i: number) => ({
+                  uid: pro.id,
+                  name: pro.image,
+                  url: product.image[i],
+                  type: "image/jpeg",
                   status: "done",
-                },
-              ]
-        );
+                }))
+              : [
+                  {
+                    uid: prodById.image.slice(0, -5),
+                    name: prodById.image,
+                    url: product.image[0],
+                    type: "image/jpeg",
+                    status: "done",
+                  },
+                ]
+          );
+        });
       }
     }, 10);
 
-    setColors(product !== null ? product.isColor : false);
-    if (product !== null) {
+    setColors(product && product !== null ? product.isColor : false);
+    if (product && product !== null) {
       reset({
         name: product.name,
         price: product.price,
         desc: product.desc,
       });
     }
-  }, [product]);
+  }, [product, modalProps]);
 
   const handleClose = () => modalProps.setOpenModal(false);
 
@@ -108,15 +120,21 @@ export default function ProductUpdateModal({
   } = useForm(formOptions);
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    const colorList = colors ? data.colors.split(",") : colors;
-    console.log("data", colorList);
+    const colorList = colors
+      ? typeof data.colors === "object"
+        ? data.colors
+        : data.colors.split(",")
+      : colors;
+    console.log("col", colorList);
     const fileWithColorList = fileList.map((file: any, i: number) => ({
       ...file,
       color: colors ? colorList[i] : colorList,
     }));
-
+    console.log("file", fileList);
     const OrganizedProduct = {
-      image: !colors ? fileList[0].name : null,
+      image: !colors
+        ? fileList[0].uid + "." + fileList[0].type.split("/")[1]
+        : null,
       isColor: colors,
       name: data.name,
       desc: data.desc,
@@ -126,16 +144,21 @@ export default function ProductUpdateModal({
           ? null
           : fileWithColorList.map((file: any) => ({
               id: file.uid,
-              image: file.name,
+              image: file.uid + "." + file.type.split("/")[1],
               color: file.color,
             })),
       category: data.category,
-      enteredOn: new Date(),
+      enteredOn: new Date().toLocaleString(),
     };
-    console.log("organized prod", OrganizedProduct);
-    // navigate("/admin/dashboard", {
-    //   state: { id: params.id, email: data.email },
-    // });
+
+    updateProduct(product.id, OrganizedProduct).then((res) => {
+      if (res.status === "success") {
+        setNotify({ message: "Product Updated!", severity: res.status });
+      } else {
+        setNotify({ message: res.data, severity: res.status });
+      }
+    });
+
     modalProps.setOpenModal(false);
   };
 
@@ -231,12 +254,14 @@ export default function ProductUpdateModal({
                   <Controller
                     name="category"
                     control={control}
-                    defaultValue={product !== null ? product.category : "men"}
+                    defaultValue={
+                      product && product !== null ? product.category : "men"
+                    }
                     render={({ field }) => (
                       <TextField fullWidth select label="Category" {...field}>
                         <MenuItem value="men">Men</MenuItem>
                         <MenuItem value="women">Women</MenuItem>
-                        <MenuItem value="acc">Accessories</MenuItem>
+                        <MenuItem value="accessories">Accessories</MenuItem>
                       </TextField>
                     )}
                   />

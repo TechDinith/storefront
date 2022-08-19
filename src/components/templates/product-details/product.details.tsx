@@ -10,7 +10,6 @@ import { iProdDetails } from "./interface.productdetails";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StartIcon from "@mui/icons-material/Start";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import ConsecutiveSnackbars from "../notify/notify.template";
 import AlertDialog from "../dialog/dialog.template";
 import Paper from "@mui/material/Paper";
 import InventoryIcon from "@mui/icons-material/Inventory";
@@ -19,7 +18,7 @@ import TextField from "@mui/material/TextField";
 const ProDetails = ({
   cart,
   countProps,
-  notifyProps,
+  setNotify,
   isCart,
   preview,
   latest,
@@ -29,9 +28,20 @@ const ProDetails = ({
   const { state }: any = useLocation();
 
   const [selectedProduct, setSelectedProduct] = useState({
-    id: cart.image ? cart.id : cart.colors ? cart.colors[0].id : null,
-    image: cart.image ? cart.image : cart.colors ? cart.colors[0].image : null,
+    id: cart.id,
+    image: isCart
+      ? cart.image
+      : cart.image
+      ? cart.image.image
+      : cart.colors
+      ? cart.colors[0].image
+      : null,
     color: cart.colors ? cart.colors[0] : "transparent",
+    url: isCart
+      ? cart.colors && cart.colors[0].url
+      : cart.image
+      ? cart.image.url
+      : cart.colors && cart.colors[0].url,
   });
   const [quantity, setQuantity] = useState("1");
 
@@ -43,8 +53,8 @@ const ProDetails = ({
       isColor: cart.isColor,
       name: cart.name,
       price: cart.price,
-      addedOn: new Date(),
-      colors: [{ imgae: selectedProduct.image, color: selectedProduct.color }],
+      addedOn: new Date().toLocaleString(),
+      colors: [selectedProduct],
       orderedOn: cart.orderedOn,
       desc: cart.desc,
       quantity: quantity,
@@ -58,7 +68,7 @@ const ProDetails = ({
         : false;
 
     if (countProps?.count !== null && isMatch.includes(true)) {
-      notifyProps.handleNotificationClick({
+      setNotify({
         message: "Item Already Added!",
         severity: "info",
       });
@@ -74,7 +84,7 @@ const ProDetails = ({
         );
       }
 
-      notifyProps.handleNotificationClick({
+      setNotify({
         message: "Item Added!",
         severity: "success",
       });
@@ -98,12 +108,12 @@ const ProDetails = ({
     if (cartItems.length) {
       localStorage.setItem("cart", JSON.stringify(cartItems));
       countProps!.setCount(cartItems);
-      notifyProps.handleNotificationClick({
+      setNotify({
         message: "Item Removed!",
         severity: "info",
       });
     } else {
-      notifyProps.handleNotificationClick({
+      setNotify({
         message: "Cart is Empty!",
         severity: "error",
       });
@@ -114,9 +124,10 @@ const ProDetails = ({
 
     setTimeout(() => {
       window.location.reload();
-    }, 10);
+    }, 2);
   };
-
+  console.log("cart", cart);
+  console.log("selected", selectedProduct);
   return (
     <Box
       justifyContent="center"
@@ -132,20 +143,35 @@ const ProDetails = ({
               <RemoveCircleOutlineIcon fontSize="large" color="error" />
             </IconButton>
             <Image
-              key={selectedProduct.image}
-              src={require(`../../../images/${selectedProduct.image}`)}
-              alt={selectedProduct.image}
+              key={
+                selectedProduct.image
+                  ? selectedProduct.image
+                  : selectedProduct.color.image
+              }
+              src={selectedProduct.url}
+              alt={
+                selectedProduct.image
+                  ? selectedProduct.image
+                  : selectedProduct.color.image
+              }
               preview={preview}
             />
-            ;
           </>
         </Box>
       ) : (
         <>
           <Image
-            src={require(`../../../images/${selectedProduct.image}`)}
-            alt={selectedProduct.image}
-            key={selectedProduct.image}
+            key={
+              selectedProduct.image
+                ? selectedProduct.image
+                : selectedProduct.color.image
+            }
+            src={selectedProduct.url}
+            alt={
+              selectedProduct.image
+                ? selectedProduct.image
+                : selectedProduct.color.image
+            }
             preview={preview}
           />
         </>
@@ -202,6 +228,7 @@ const ProDetails = ({
                           id: item.id,
                           image: item.image,
                           color: item.color,
+                          url: item.url,
                         })
                       }
                     >
@@ -335,11 +362,7 @@ const ProDetails = ({
           <ShoppingCartCheckoutIcon sx={{ mr: "4%" }} /> Lorem ipsum
         </Button>
       ) : null}
-      <ConsecutiveSnackbars
-        message={notifyProps.message}
-        setSnackPack={notifyProps.setSnackPack}
-        snackPack={notifyProps.snackPack}
-      />
+
       <AlertDialog
         attributes={{
           title: "Lorem ipsum?",

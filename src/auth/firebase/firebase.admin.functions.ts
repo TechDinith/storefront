@@ -1,4 +1,8 @@
-import { deleteUser, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -8,6 +12,7 @@ import {
   where,
   doc,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db, auth } from "./firebase.config";
 
@@ -25,6 +30,29 @@ export const addAdmin = async (email: string, role: string) => {
   }
 };
 
+export const updateAdmin = async (refId: string, data: any) => {
+  const adminRef = doc(db, "admins", refId);
+
+  await updateDoc(adminRef, data)
+    .then(() => console.log("updated"))
+    .catch((err) => console.log(err));
+};
+
+export const createAdminAuth = async (email: string) => {
+  const password = "Pedros@2022";
+
+  return await createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      return user;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      return { errorCode, errorMessage };
+    });
+};
+
 export const getAdmins = async () => {
   try {
     const querySnapshot = await getDocs(collection(db, "admins"));
@@ -34,6 +62,7 @@ export const getAdmins = async () => {
     return err;
   }
 };
+
 export const getAdminsByUid = async (id: string) => {
   try {
     // Create a reference to the cities collection
@@ -96,4 +125,16 @@ export const deleteAdmins = async (id: string) => {
         });
     }
   });
+};
+
+export const deleteCurrentAdmin = async () => {
+  const user = auth.currentUser;
+
+  return await deleteUser(user as any)
+    .then(() => {
+      // console.log("del");
+    })
+    .catch((error) => {
+      // console.log(error);
+    });
 };
