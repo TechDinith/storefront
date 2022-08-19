@@ -26,7 +26,7 @@ const ProDetails = ({
   handleClickCloseSearchResult,
 }: iProdDetails) => {
   const { state }: any = useLocation();
-
+  //modify review
   const [selectedProduct, setSelectedProduct] = useState({
     id: isCart ? cart.prodId : cart.colors ? cart.colors[0].id : cart.id,
     image: isCart
