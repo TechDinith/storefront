@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ResetPasswordPage({
   authProps,
-  notifyProps,
+  setNotify,
 }: iResetPasswordPage) {
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ export default function ResetPasswordPage({
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <ResetPassword authProps={authProps} notifyProps={notifyProps} />
+          <ResetPassword authProps={authProps} setNotify={setNotify} />
         </Grid>
       </Grid>
     </Grid>

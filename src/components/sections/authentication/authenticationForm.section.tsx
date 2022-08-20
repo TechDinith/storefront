@@ -10,10 +10,11 @@ import Link from "@mui/material/Link";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Grid from "@mui/material/Grid";
 import { iAuthentication } from "./authentication.interface";
-import ConsecutiveSnackbars from "../../templates/notify/notify.template";
 import { useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { capitalize } from "@mui/material/utils";
+import { signupUsers } from "../../../auth/firebase/firebase.users.functions";
+import { status } from "../../../auth/auth.interface";
 
 interface IFormInput {
   email: string;
@@ -25,7 +26,8 @@ interface IFormInput {
 const AuthenticationForm = ({
   fields,
   btnText,
-  notifyProps,
+  setNotify,
+  isSignUp,
   authProps,
 }: iAuthentication) => {
   const navigate = useNavigate();
@@ -38,14 +40,35 @@ const AuthenticationForm = ({
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
+    if (isSignUp) {
+      signupUsers({
+        email: data.email,
+        password: data.password,
+        name: data!.name!,
+      }).then((res) => {
+        console.log(res);
+
+        if (res.status === status.success) {
+          setNotify({
+            message: "Registration Successful!",
+            severity: res.status,
+          });
+        } else {
+          setNotify({
+            message: res.data.errorMessage,
+            severity: res.status,
+          });
+        }
+      });
+    } else {
+    }
+
+    //auth props are not needed since auth state observer will implement soon
     // authProps.setAuth([data]);
-    notifyProps?.handleNotificationClick({
-      message: "Registration Successful!",
-      severity: "success",
-    });
-    // setTimeout(() => {
-    //   navigate(-1);
-    // }, 100);
+
+    setTimeout(() => {
+      navigate(-1);
+    }, 100);
   };
 
   return (
@@ -172,11 +195,6 @@ const AuthenticationForm = ({
           </Grid>
         </Box>
       </Box>
-      <ConsecutiveSnackbars
-        message={notifyProps?.message}
-        setSnackPack={notifyProps?.setSnackPack}
-        snackPack={notifyProps?.snackPack}
-      />
     </>
   );
 };

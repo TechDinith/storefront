@@ -4,7 +4,7 @@ import AuthenticationForm from "../../sections/authentication/authenticationForm
 import simg1 from "../../../images/simg1.jpg";
 import { iSignUp } from "./signup.interface";
 
-export default function SignUpSide({ notifyProps, authProps }: iSignUp) {
+export default function SignUpSide({ setNotify, authProps }: iSignUp) {
   const fields = ["name", "email", "password"];
 
   return (
@@ -24,8 +24,9 @@ export default function SignUpSide({ notifyProps, authProps }: iSignUp) {
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <AuthenticationForm
+            isSignUp={true}
             authProps={authProps}
-            notifyProps={notifyProps}
+            setNotify={setNotify}
             fields={fields}
             btnText="Sign Up"
           />

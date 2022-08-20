@@ -1,4 +1,9 @@
-import { deleteUser, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -9,21 +14,23 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import { iSignUpUser, status } from "../auth.interface";
 import { db, auth } from "./firebase.config";
 
-// export const addUser = async (email: string, role: string) => {
-//   try {
-//     const docRef = await addDoc(collection(db, "admins"), {
-//       assignedDate: new Date().toLocaleString(),
-//       email: email,
-//       role: role,
-//     });
+export const addUser = async (email: string, name: string, id: string) => {
+  try {
+    const docRef = await addDoc(collection(db, "users"), {
+      joinedDate: new Date().toLocaleString(),
+      email: email,
+      name: name,
+      authId: id,
+    });
 
-//     return docRef;
-//   } catch (e) {
-//     return e;
-//   }
-// };
+    return docRef;
+  } catch (e) {
+    return e;
+  }
+};
 
 export const getUsers = async () => {
   try {
@@ -66,29 +73,57 @@ export const getUserById = async (id: string) => {
   }
 };
 
-// export const logInAdmins = async (email: string) => {
-//   const password = "Pedros@2022";
+export const logInUsers = async (email: string, password: string) => {
+  return await signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      return user;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
 
-//   return await signInWithEmailAndPassword(auth, email, password)
-//     .then((userCredential) => {
-//       const user = userCredential.user;
-//       return user;
-//     })
-//     .catch((error) => {
-//       const errorCode = error.code;
-//       const errorMessage = error.message;
+      return { errorCode, errorMessage };
+    });
+};
 
-//       return { errorCode, errorMessage };
-//     });
-// };
+export const signupUsers = async ({ email, password, name }: iSignUpUser) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const user = userCredential.user;
+
+    await updateProfile(auth.currentUser as any, {
+      displayName: name,
+    })
+      .then(() => {
+        addUser(email, name, user.uid).then((res) => console.log(res));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    console.log(auth.currentUser);
+    return { status: status.success, data: user };
+  } catch (error: any) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    return { status: status.error, data: { errorCode, errorMessage } as any };
+  }
+};
 
 export const deleteAUser = async (id: string) => {
   return await getUserById(id).then((userDoc: any) => {
+    //modification needed if authid not in the users table this should delete the user
     if (userDoc.data.authId === auth.currentUser!.uid) {
-      const user = auth.currentUser;
-      return { message: "Your account is Banned!", severity: "error" };
+      // const user = auth.currentUser;
+      // return { message: "Your account is Banned!", severity: "error" };
     } else {
-      return deleteDoc(doc(db, "users", "1212"))
+      return deleteDoc(doc(db, "users", id))
         .then(() => {
           return { message: "User Deleted!", severity: "success" };
         })

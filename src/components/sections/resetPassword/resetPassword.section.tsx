@@ -14,7 +14,7 @@ import { iResetPassword } from "./resetPassword.section.interface";
 
 export default function ResetPassword({
   authProps,
-  notifyProps,
+  setNotify,
 }: iResetPassword) {
   const formSchema = Yup.object().shape({
     email: Yup.string()
@@ -41,7 +41,7 @@ export default function ResetPassword({
   const onSubmit = (data: any) => {
     //reset auth password in the database acording to email
     console.log(data);
-    notifyProps.handleNotificationClick({
+    setNotify({
       message: "Password Changed!",
       severity: "success",
     });
@@ -179,11 +179,6 @@ export default function ResetPassword({
           </Grid>
         </Box>
       </Box>
-      <ConsecutiveSnackbars
-        message={notifyProps?.message}
-        setSnackPack={notifyProps?.setSnackPack}
-        snackPack={notifyProps?.snackPack}
-      />
     </>
   );
 }

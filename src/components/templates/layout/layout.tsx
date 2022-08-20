@@ -95,7 +95,7 @@ const Layout = ({ dialogProps }: iLayout) => {
                 path="/login"
                 element={<SignInSide authProps={{ auth, setAuth }} />}
               />
-              {/* <Route
+              <Route
                 path="/signup"
                 element={
                   <SignUpSide
@@ -113,7 +113,7 @@ const Layout = ({ dialogProps }: iLayout) => {
                   />
                 }
               />
-            */}
+
               <Route
                 path="/cart"
                 element={
