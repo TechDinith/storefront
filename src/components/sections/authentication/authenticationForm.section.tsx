@@ -13,7 +13,10 @@ import { iAuthentication } from "./authentication.interface";
 import { useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { capitalize } from "@mui/material/utils";
-import { signupUsers } from "../../../auth/firebase/firebase.users.functions";
+import {
+  logInUsers,
+  signupUsers,
+} from "../../../auth/firebase/firebase.users.functions";
 import { status } from "../../../auth/auth.interface";
 
 interface IFormInput {
@@ -49,11 +52,16 @@ const AuthenticationForm = ({
         console.log(res);
 
         if (res.status === status.success) {
+          authProps.setAuthUser(res.data);
           setNotify({
             message: "Registration Successful!",
             severity: res.status,
           });
+          setTimeout(() => {
+            navigate(-1);
+          }, 100);
         } else {
+          console.log(res);
           setNotify({
             message: res.data.errorMessage,
             severity: res.status,
@@ -61,14 +69,22 @@ const AuthenticationForm = ({
         }
       });
     } else {
+      logInUsers(data.email, data.password).then((res) => {
+        if (res.status === status.success) {
+          console.log(res.data);
+          authProps.setAuthUser(res.data);
+          setTimeout(() => {
+            navigate(-1);
+          }, 100);
+        } else {
+          console.log(res);
+          setNotify({
+            message: "Wrong Password!",
+            severity: res.status,
+          });
+        }
+      });
     }
-
-    //auth props are not needed since auth state observer will implement soon
-    // authProps.setAuth([data]);
-
-    setTimeout(() => {
-      navigate(-1);
-    }, 100);
   };
 
   return (

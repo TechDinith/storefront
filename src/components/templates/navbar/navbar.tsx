@@ -19,13 +19,13 @@ import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import { NavLink, useLocation } from "react-router-dom";
 import Badge from "@mui/material/Badge";
-import ConsecutiveSnackbars from "../notify/notify.template";
 import { iNavbar } from "./navbar.interfaces";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import EmailIcon from "@mui/icons-material/Email";
 import { AccountCircleOutlined } from "@mui/icons-material";
 import Search from "../../sections/search/search.section";
+import { userLogout } from "../../../auth/firebase/firebase.users.functions";
 
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
@@ -52,7 +52,8 @@ const Navbar = ({
   }, []);
 
   const handleSignOut = () => {
-    authProps.setAuth(null);
+    userLogout();
+    authProps.setAuthUser();
     setAnchorEl(null);
   };
 
@@ -283,7 +284,7 @@ const Navbar = ({
               })}
             </Menu>
           </Box>
-          {authProps.auth && authProps.auth[0] && authProps.auth[0].email ? (
+          {authProps.authUser ? (
             <Box
               sx={{
                 display: "flex",
@@ -332,12 +333,12 @@ const Navbar = ({
                   <Box sx={{ p: 2, display: "flex" }}>
                     <Stack spacing={0.5}>
                       <Typography color="white">
-                        <b>{authProps.auth[0].name || "test name"}</b>
+                        <b>{authProps.authUser.displayName}</b>
                       </Typography>
                       <Box display="flex" sx={{ alignItems: "center" }}>
                         <EmailIcon sx={{ color: "grey[500]", mr: "2%" }} />{" "}
                         <Typography variant="body2" color="text.secondary">
-                          {authProps.auth[0].email}
+                          {authProps.authUser.email}
                         </Typography>
                       </Box>
                     </Stack>
@@ -397,7 +398,7 @@ const Navbar = ({
                     }}
                     color="secondary"
                     onClick={() =>
-                     setNotify({
+                      setNotify({
                         message: "Cart Is Empty",
                         severity: "info",
                       })
@@ -525,7 +526,6 @@ const Navbar = ({
       </AppBar>
       <Box component="nav">
         <Drawer
-        
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -543,7 +543,6 @@ const Navbar = ({
           {drawer}
         </Drawer>
       </Box>
-     
     </>
   );
 };

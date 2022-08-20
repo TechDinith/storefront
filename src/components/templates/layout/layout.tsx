@@ -10,7 +10,7 @@ import Contact from "../../pages/contact/contact.page";
 import SignInSide from "../../pages/signin/signin.page";
 import SignUpSide from "../../pages/signup/signup.page";
 import Category from "../../pages/category/category.page";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Cart from "../../pages/cart/cart.page";
 import NotFound from "../../pages/notfound/notfound.page";
 import Checkout from "../../pages/checkout/checkout.page";
@@ -20,20 +20,24 @@ import { iProducts } from "../product-details/interface.productdetails";
 import { getProducts } from "../../../auth/firebase/firebase.products.functions";
 import NotifyUse from "../notify/notify.template.use";
 import { iMessage } from "../notify/notify.interfaces";
-import { handleImageUrl } from "../../../auth/firebase/firebase.storage";
-import { async } from "@firebase/util";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../../auth/firebase/firebase.config";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "../../../auth/firebase/firebase.config";
 
 const categories = ["men", "women", "accessories"];
 
 const Layout = ({ dialogProps }: iLayout) => {
   const [count, setCount] = useState([]);
   const [products, setProducts] = useState<iProducts[] | [] | any>([]);
-  const [auth, setAuth] = useState<any>(null);
+  const [authUser, setAuthUser] = useState<User>();
   const [notify, setNotify] = useState<iMessage>();
 
   useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+      }
+    });
+
     let localCart = localStorage.getItem("cart");
     setCount(
       localCart
@@ -64,7 +68,7 @@ const Layout = ({ dialogProps }: iLayout) => {
         <Grid container justifyContent="center">
           <Navbar
             categories={categories}
-            authProps={{ auth, setAuth }}
+            authProps={{ authUser, setAuthUser }}
             countProps={{ setCount, count }}
             setNotify={setNotify}
             products={products}
@@ -86,20 +90,25 @@ const Layout = ({ dialogProps }: iLayout) => {
                 element={
                   <Checkout
                     setNotify={setNotify}
-                    authProps={{ auth, setAuth }}
+                    authProps={{ authUser, setAuthUser }}
                     countProps={{ setCount, count }}
                   />
                 }
               />
               <Route
                 path="/login"
-                element={<SignInSide authProps={{ auth, setAuth }} />}
+                element={
+                  <SignInSide
+                    setNotify={setNotify}
+                    authProps={{ authUser, setAuthUser }}
+                  />
+                }
               />
               <Route
                 path="/signup"
                 element={
                   <SignUpSide
-                    authProps={{ auth, setAuth }}
+                    authProps={{ authUser, setAuthUser }}
                     setNotify={setNotify}
                   />
                 }
@@ -108,7 +117,7 @@ const Layout = ({ dialogProps }: iLayout) => {
                 path="/reset"
                 element={
                   <ResetPasswordPage
-                    authProps={{ auth, setAuth }}
+                    authProps={{ authUser, setAuthUser }}
                     setNotify={setNotify}
                   />
                 }
@@ -118,7 +127,7 @@ const Layout = ({ dialogProps }: iLayout) => {
                 path="/cart"
                 element={
                   <Cart
-                    authProps={{ auth, setAuth }}
+                    authProps={{ authUser, setAuthUser }}
                     dialogProps={dialogProps}
                     countProps={{ setCount, count }}
                     setNotify={setNotify}

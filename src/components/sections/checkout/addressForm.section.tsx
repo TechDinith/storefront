@@ -20,7 +20,7 @@ export default function AddressForm({
       id: "firstname",
       required: true,
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.firstname) ||
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.firstname) ||
         "",
     },
     {
@@ -28,7 +28,7 @@ export default function AddressForm({
       id: "lastname",
       required: true,
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.lastname) ||
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.lastname) ||
         "",
     },
     {
@@ -36,7 +36,7 @@ export default function AddressForm({
       id: "address",
       required: true,
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.address) ||
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.address) ||
         "",
     },
     {
@@ -46,42 +46,47 @@ export default function AddressForm({
       pattern:
         /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\d)\d{6}$/,
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.phone) || "",
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.phone) ||
+        "",
     },
     {
       name: "Email",
       id: "email",
       type: "email",
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.email) || "",
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.email) ||
+        "",
     },
     {
       name: "City",
       id: "city",
       required: true,
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.city) || "",
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.city) ||
+        "",
     },
     {
       name: "State/Province/Region",
       id: "area",
       required: true,
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.area) || "",
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.area) ||
+        "",
     },
     {
       name: "Zip / Postal code",
       id: "zip",
       required: true,
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.zip) || "",
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.zip) ||
+        "",
     },
     {
       name: "Country",
       id: "country",
       disabled: true,
       defaultValue:
-        (authProps.auth && authProps.auth[0].order.deliveryDetails.country) ||
+        // (authProps.auth && authProps.auth[0].order.deliveryDetails.country) ||
         "Sri Lanka",
     },
   ];

@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import {
@@ -74,17 +75,22 @@ export const getUserById = async (id: string) => {
 };
 
 export const logInUsers = async (email: string, password: string) => {
-  return await signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      return user;
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-      return { errorCode, errorMessage };
-    });
+    const user = userCredential.user;
+
+    return { status: status.success, data: user };
+  } catch (error: any) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    return { status: status.error, data: { errorCode, errorMessage } as any };
+  }
 };
 
 export const signupUsers = async ({ email, password, name }: iSignUpUser) => {
@@ -107,7 +113,6 @@ export const signupUsers = async ({ email, password, name }: iSignUpUser) => {
         console.log(error);
       });
 
-    console.log(auth.currentUser);
     return { status: status.success, data: user };
   } catch (error: any) {
     const errorCode = error.code;
@@ -132,4 +137,14 @@ export const deleteAUser = async (id: string) => {
         });
     }
   });
+};
+
+export const userLogout = () => {
+  signOut(auth)
+    .then(() => {
+      console.log("out");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };

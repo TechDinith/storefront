@@ -21,7 +21,7 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
 
     if (localCart === null) {
       setTimeout(() => {
-        authProps?.setAuth(authProps.auth ? authProps.auth : null);
+        authProps?.setAuthUser(authProps.authUser ? authProps.authUser : null);
         setCart([]);
         setCheckouts(null);
         navigate(-1);
@@ -34,18 +34,18 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
       );
 
       //should sent to the database too and replace the current cart of the user
-      authProps?.setAuth(
-        authProps.auth
-          ? [
-              {
-                ...authProps?.auth[0],
-                cart: localCart
-                  ? JSON.parse(typeof localCart === "string" ? localCart : "")
-                  : [],
-              },
-            ]
-          : authProps.auth
-      );
+      // authProps?.setAuth(
+      //   authProps.auth
+      //     ? [
+      //         {
+      //           ...authProps?.auth[0],
+      //           cart: localCart
+      //             ? JSON.parse(typeof localCart === "string" ? localCart : "")
+      //             : [],
+      //         },
+      //       ]
+      //     : authProps.auth
+      // );
     }
   }, [
     countProps.count,

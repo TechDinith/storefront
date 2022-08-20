@@ -13,8 +13,8 @@ export default function ResetPasswordPage({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authProps.auth && authProps.auth[0]) navigate("/");
-  }, [authProps.auth, navigate]);
+    if (authProps.authUser) navigate(-1);
+  }, [authProps.authUser, navigate]);
 
   return (
     <Grid item xs={10} mt="4%">

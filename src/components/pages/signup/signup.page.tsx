@@ -3,10 +3,16 @@ import Grid from "@mui/material/Grid";
 import AuthenticationForm from "../../sections/authentication/authenticationForm.section";
 import simg1 from "../../../images/simg1.jpg";
 import { iSignUp } from "./signup.interface";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
+const fields = ["name", "email", "password"];
 export default function SignUpSide({ setNotify, authProps }: iSignUp) {
-  const fields = ["name", "email", "password"];
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (authProps.authUser) navigate(1);
+  }, [authProps.authUser, navigate]);
   return (
     <Grid item xs={10} mt="4%">
       <Grid container>

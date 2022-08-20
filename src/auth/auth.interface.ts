@@ -1,6 +1,8 @@
+import { User } from "firebase/auth";
+
 export interface iAuthProps {
-  auth: any[] | null | [];
-  setAuth: any;
+  authUser: User | null | undefined;
+  setAuthUser: any;
 }
 
 export interface iSignUpUser {

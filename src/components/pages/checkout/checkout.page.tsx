@@ -133,17 +133,17 @@ export default function Checkout({
       }
     });
 
-    authProps?.setAuth(
-      authProps.auth
-        ? [
-            {
-              ...authProps?.auth[0],
-              cart: updatedCart,
-              order: order,
-            },
-          ]
-        : authProps.auth
-    );
+    // authProps?.setAuth(
+    //   authProps.auth
+    //     ? [
+    //         {
+    //           ...authProps?.auth[0],
+    //           cart: updatedCart,
+    //           order: order,
+    //         },
+    //       ]
+    //     : authProps.auth
+    // );
 
     setTimeout(() => {
       navigate("/cart");
