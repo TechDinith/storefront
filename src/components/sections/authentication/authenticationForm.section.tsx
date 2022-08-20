@@ -38,14 +38,14 @@ const AuthenticationForm = ({
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
-    authProps.setAuth([data]);
+    // authProps.setAuth([data]);
     notifyProps?.handleNotificationClick({
       message: "Registration Successful!",
       severity: "success",
     });
-    setTimeout(() => {
-      navigate(-1);
-    }, 100);
+    // setTimeout(() => {
+    //   navigate(-1);
+    // }, 100);
   };
 
   return (

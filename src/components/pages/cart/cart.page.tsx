@@ -106,6 +106,7 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
                 <Grid item xs={10} sm={4} key={i}>
                   {checkouts !== null ? (
                     <Checkbox
+                      disabled={Boolean(item.orderedOn)}
                       onChange={(e) =>
                         e.target.checked === true
                           ? setCheckouts([...checkouts, item])

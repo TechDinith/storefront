@@ -20,8 +20,8 @@ export default function Review({ products, deliveryDetails }: iReview) {
           <ListItem key={i} sx={{ py: 1, px: 0 }}>
             <ListItemText
               primary={
-                product.colors[0].color !== "transparent"
-                  ? product.name + "-" + product.colors[0].color
+                product.colors !== "transparent"
+                  ? product.name + "-" + product.colors
                   : product.name
               }
               secondary={

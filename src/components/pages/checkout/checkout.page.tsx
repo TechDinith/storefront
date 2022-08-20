@@ -13,6 +13,7 @@ import { Fragment, useEffect, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { iCheckoutPage } from "./checkoutPage.interface";
+import { addOrder } from "../../../auth/firebase/firebase.orders.functions";
 
 const steps = ["Delivery address", "Payment details", "Review your order"];
 
@@ -83,7 +84,10 @@ export default function Checkout({
       deliveryDetails: deliveryDetails,
       products: state.checkouts,
       total: state.checkouts
-        .map((items: any) => parseFloat(items["price"]))
+        .map(
+          (items: any) =>
+            parseFloat(items["price"]) * parseInt(items["quantity"])
+        )
         .reduce((a: any, b: any) => a + b),
       orderedOn: orderedOn,
     };
@@ -101,6 +105,8 @@ export default function Checkout({
       }
     });
 
+    console.log(order);
+
     const upadtedItems = state.checkouts.map((item: any) => {
       return {
         ...item,
@@ -110,12 +116,21 @@ export default function Checkout({
 
     console.log(upadtedItems);
     const updatedCart = [...filteredProducts, ...upadtedItems];
-    // localStorage.setItem("cart", JSON.stringify(updatedCart));
-    // countProps.setCount(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    countProps.setCount(updatedCart);
 
-    setNotify({
-      message: "Your order will be delivered soon!",
-      severity: "success",
+    addOrder(order).then((res) => {
+      if (res.status === "success") {
+        setNotify({
+          message: "Your order will be delivered soon!",
+          severity: "success",
+        });
+      } else {
+        setNotify({
+          message: res.data,
+          severity: res.status,
+        });
+      }
     });
 
     authProps?.setAuth(
@@ -130,9 +145,9 @@ export default function Checkout({
         : authProps.auth
     );
 
-    // setTimeout(() => {
-    //   navigate(-1);
-    // }, 100);
+    setTimeout(() => {
+      navigate("/cart");
+    }, 100);
   };
 
   return (
