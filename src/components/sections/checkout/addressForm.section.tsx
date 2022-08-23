@@ -17,6 +17,7 @@ export default function AddressForm({
   authProps,
 }: iAddressForm) {
   const [fields, setFields] = useState<any[]>();
+
   useEffect(() => {
     if (authProps.authUser) {
       getOrderByUid(authProps.authUser.uid).then((orders) => {

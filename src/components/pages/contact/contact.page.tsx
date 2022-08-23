@@ -7,7 +7,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import CallIcon from "@mui/icons-material/Call";
 import Quote from "../../templates/quote/quote.section";
 
-const Contact = () => {
+const Contact = ({ setNotify }: any) => {
   return (
     <>
       <Quote bgImage={wideabout} />
@@ -20,7 +20,7 @@ const Contact = () => {
 
       <Grid container justifyContent="center" alignItems="center" spacing={2}>
         <Grid item xs={10} mr="1%" mb="1%" px="2%">
-          <ContactForm />
+          <ContactForm setNotify={setNotify} />
         </Grid>
         <Grid item xs={10} mr="1%" mb="1%" px="2%">
           <Box>

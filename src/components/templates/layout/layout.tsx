@@ -134,7 +134,10 @@ const Layout = ({ dialogProps }: iLayout) => {
 
               <Route path="/about" element={<About />} />
               {/* send email */}
-              <Route path="/contact" element={<Contact />} />
+              <Route
+                path="/contact"
+                element={<Contact setNotify={setNotify} />}
+              />
               <Route
                 path="/checkout"
                 element={

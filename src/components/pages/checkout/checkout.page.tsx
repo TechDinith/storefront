@@ -15,6 +15,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { iCheckoutPage } from "./checkoutPage.interface";
 import { addOrder } from "../../../auth/firebase/firebase.orders.functions";
 import { updateCart } from "../../../auth/firebase/firebase.cart.functions";
+import UseEmail from "../../../auth/Email/useEmail";
+import { status } from "../../../auth/auth.interface";
 
 const steps = ["Delivery address", "Payment details", "Review your order"];
 
@@ -32,10 +34,14 @@ export default function Checkout({
     if (state !== null) {
       if (state.checkouts && state.checkouts.length) {
       } else {
-        navigate(-1);
+        navigate("/");
       }
     } else navigate(-1);
   }, [navigate, state]);
+
+  const { sendEmail } = UseEmail(
+    "https://public.herotofu.com/v1/0baadf70-2310-11ed-a969-f1ede4dc5ccf"
+  );
 
   const onSubmit: SubmitHandler<any> = (data) => {
     setDeliveryDetails(data);
@@ -119,10 +125,42 @@ export default function Checkout({
 
     addOrder(order).then((res) => {
       if (res.status === "success") {
-        setNotify({
-          message: "Your order will be delivered soon!",
-          severity: "success",
+        const organizedOrder = {
+          orderedDate: order.orderedOn,
+          name:
+            order.deliveryDetails.firstname +
+            " " +
+            order.deliveryDetails.lastname,
+          shipTo:
+            order.deliveryDetails.address +
+            ", " +
+            order.deliveryDetails.area +
+            ", " +
+            order.deliveryDetails.city +
+            ", " +
+            order.deliveryDetails.country +
+            " ," +
+            order.deliveryDetails.zip,
+          contacts:
+            order.deliveryDetails.email + ", " + order.deliveryDetails.phone,
+          products: order.products.map((product: any) =>
+            product.color === "transparent"
+              ? product.name
+              : product.name + "-" + product.colors
+          ),
+          paymentMethod: "Cashon delevery!",
+          totalAmount: order.total,
+        };
+
+        sendEmail(organizedOrder).then((res) => {
+          if (res.status === status.success) {
+            setNotify({
+              message: "Your order will be delivered soon!",
+              severity: "success",
+            });
+          }
         });
+
         if (authProps.authUser?.uid) {
           upadtedItems.map((item: any) => {
             updateCart(item.id, item);
