@@ -14,6 +14,7 @@ import AlertDialog from "../dialog/dialog.template";
 import Paper from "@mui/material/Paper";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import TextField from "@mui/material/TextField";
+import { deleteCartItem } from "../../../auth/firebase/firebase.cart.functions";
 
 const ProDetails = ({
   cart,
@@ -24,6 +25,7 @@ const ProDetails = ({
   latest,
   dialogProps,
   handleClickCloseSearchResult,
+  authProps,
 }: iProdDetails) => {
   const { state }: any = useLocation();
 
@@ -64,6 +66,7 @@ const ProDetails = ({
       orderedOn: cart.orderedOn,
       desc: cart.desc,
       quantity: quantity,
+      authId: authProps?.authUser?.uid,
     };
 
     let isMatch: any =
@@ -114,26 +117,28 @@ const ProDetails = ({
     if (cartItems.length) {
       localStorage.setItem("cart", JSON.stringify(cartItems));
       countProps!.setCount(cartItems);
+      //hamdle delete
+
       setNotify({
         message: "Item Removed!",
         severity: "info",
       });
     } else {
+      localStorage.removeItem("cart");
       setNotify({
         message: "Cart is Empty!",
         severity: "error",
       });
-      localStorage.removeItem("cart");
       countProps!.setCount(null);
     }
-    dialogProps?.setOpenDialog({ value: false, id: "" });
 
-    setTimeout(() => {
-      window.location.reload();
-    }, 2);
+    deleteCartItem(
+      authProps?.authUser?.uid as string,
+      dialogProps?.openDialog.id as string
+    );
+    dialogProps?.setOpenDialog({ value: false, id: "" });
   };
-  console.log("cart", cart);
-  console.log("selected", selectedProduct);
+
   return (
     <Box
       justifyContent="center"

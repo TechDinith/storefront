@@ -14,6 +14,7 @@ import { SubmitHandler } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { iCheckoutPage } from "./checkoutPage.interface";
 import { addOrder } from "../../../auth/firebase/firebase.orders.functions";
+import { updateCart } from "../../../auth/firebase/firebase.cart.functions";
 
 const steps = ["Delivery address", "Payment details", "Review your order"];
 
@@ -81,6 +82,7 @@ export default function Checkout({
 
     //database order for admins
     const order = {
+      authId: authProps.authUser?.uid || null,
       deliveryDetails: deliveryDetails,
       products: state.checkouts,
       total: state.checkouts
@@ -125,6 +127,15 @@ export default function Checkout({
           message: "Your order will be delivered soon!",
           severity: "success",
         });
+        if (authProps.authUser?.uid) {
+          upadtedItems.map((item: any) => {
+            updateCart(item.id, item);
+          });
+        }
+
+        setTimeout(() => {
+          navigate("/cart");
+        }, 100);
       } else {
         setNotify({
           message: res.data,
@@ -132,22 +143,6 @@ export default function Checkout({
         });
       }
     });
-
-    // authProps?.setAuth(
-    //   authProps.auth
-    //     ? [
-    //         {
-    //           ...authProps?.auth[0],
-    //           cart: updatedCart,
-    //           order: order,
-    //         },
-    //       ]
-    //     : authProps.auth
-    // );
-
-    setTimeout(() => {
-      navigate("/cart");
-    }, 100);
   };
 
   return (

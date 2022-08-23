@@ -289,10 +289,12 @@ export default function Dashboard({ dialogProps }: iDashboard) {
     onAuthStateChanged(auth, (user: any) => {
       if (user) {
         getAdminsByUid(user.uid).then((doc) => {
-          if (doc.authId) {
+          if (doc && doc.authId) {
             setAuthUser({
               ...doc,
             } as any);
+          } else {
+            navigate("/notfound");
           }
         });
       } else {

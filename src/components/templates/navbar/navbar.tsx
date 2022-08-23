@@ -349,9 +349,9 @@ const Navbar = ({
                 </MenuItem>
               </Menu>
 
-              {countProps.count ? (
+              {countProps.count && countProps.count.length > 0 ? (
                 <Badge
-                  badgeContent={countProps.count ? countProps.count.length : 0}
+                  badgeContent={countProps.count.length}
                   color="primary"
                   sx={{
                     mx: "1%",
@@ -461,9 +461,9 @@ const Navbar = ({
                 SignUp
               </Button>
 
-              {countProps.count ? (
+              {countProps.count && countProps.count.length > 0 ? (
                 <Badge
-                  badgeContent={countProps.count ? countProps.count.length : 0}
+                  badgeContent={countProps.count.length}
                   color="primary"
                   sx={{
                     mx: "1%",

@@ -18,6 +18,11 @@ import {
   signupUsers,
 } from "../../../auth/firebase/firebase.users.functions";
 import { status } from "../../../auth/auth.interface";
+import {
+  deleteCartItemForAuthPages,
+  processCart,
+} from "../../../auth/firebase/firebase.cart.functions";
+import { auth } from "../../../auth/firebase/firebase.config";
 
 interface IFormInput {
   email: string;
@@ -57,9 +62,22 @@ const AuthenticationForm = ({
             message: "Registration Successful!",
             severity: res.status,
           });
-          setTimeout(() => {
-            navigate(-1);
-          }, 100);
+
+          let localCart = localStorage.getItem("cart");
+
+          const jsonCart = localCart
+            ? JSON.parse(typeof localCart === "string" ? localCart : "")
+            : [];
+
+          processCart(jsonCart).then((res) => {
+            if (res.status === status.success) {
+              setTimeout(() => {
+                navigate(-1);
+              }, 100);
+            } else {
+              console.log(res);
+            }
+          });
         } else {
           console.log(res);
           setNotify({
@@ -73,9 +91,21 @@ const AuthenticationForm = ({
         if (res.status === status.success) {
           console.log(res.data);
           authProps.setAuthUser(res.data);
-          setTimeout(() => {
-            navigate(-1);
-          }, 100);
+          let localCart = localStorage.getItem("cart");
+
+          const jsonCart = localCart
+            ? JSON.parse(typeof localCart === "string" ? localCart : "")
+            : [];
+
+          processCart(jsonCart).then((res) => {
+            if (res.status === status.success) {
+              setTimeout(() => {
+                navigate(-1);
+              }, 100);
+            } else {
+              console.log(res);
+            }
+          });
         } else {
           console.log(res);
           setNotify({

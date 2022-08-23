@@ -22,6 +22,7 @@ export interface iCart {
   quantity?: string;
   urlList?: any;
   prodId?: string;
+  authId?: string;
 }
 
 export interface iProdDetails {

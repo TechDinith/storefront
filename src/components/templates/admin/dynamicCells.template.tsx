@@ -11,13 +11,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import LinkIcon from "@mui/icons-material/Link";
 import copy from "copy-text-to-clipboard";
-import { handleImageUrl } from "../../../auth/firebase/firebase.storage";
 
 const dynamicCells = (row: any, labelId?: string) => {
   let elements: any[] = [];
   let uniqueKey = 0;
+  console.log(row);
   for (let x in row) {
-    if (x !== "id" && x !== "isColor") {
+    if (x !== "id") {
       elements = [
         ...elements,
         uniqueKey === 1 ? (
@@ -28,19 +28,19 @@ const dynamicCells = (row: any, labelId?: string) => {
             scope="row"
             padding="none"
           >
-            {row[x]}
+            {new Intl.DateTimeFormat("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "2-digit",
+            }).format(new Date(row[x]))}
           </TableCell>
-        ) : x === "image" && typeof row[x] === "object" ? (
+        ) : x === "image" && row[x].length > 1 && typeof row[x] === "object" ? (
           <TableCell key={uniqueKey} align="center">
             <Tooltip
               title={
                 <Image.PreviewGroup>
                   {row[x].map((image: string, i: number) => (
-                    <Image
-                      width="40%"
-                      key={i}
-                      src={require(`../../../images/${image}`)}
-                    />
+                    <Image width="40%" key={i} src={image} />
                   ))}
                 </Image.PreviewGroup>
               }
@@ -50,31 +50,21 @@ const dynamicCells = (row: any, labelId?: string) => {
           </TableCell>
         ) : x === "image" ? (
           <TableCell key={uniqueKey} align="center">
-            <Image width="30%" src={require(`../../../images/${row[x]}`)} />
+            {row[x].map((image: string, i: number) => (
+              <Image key={i} width="30%" src={image} />
+            ))}
           </TableCell>
-        ) : x === "colors" && typeof row[x] === "object" ? (
+        ) : x === "deliveredDate" && row[x] !== null ? (
           <TableCell key={uniqueKey} align="center">
-            <Tooltip
-              title={
-                <Box display="flex">
-                  {row[x].map((color: string, i: number) => (
-                    <CircleIcon key={i} sx={{ color: color }} />
-                  ))}
-                </Box>
-              }
-            >
-              <PaletteIcon />
-            </Tooltip>
+            {new Intl.DateTimeFormat("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "2-digit",
+            }).format(new Date(row[x]))}
           </TableCell>
-        ) : x === "colors" ? (
+        ) : x === "deliveredDate" ? (
           <TableCell key={uniqueKey} align="center">
-            None
-          </TableCell>
-        ) : x === "desc" ? (
-          <TableCell key={uniqueKey} align="left">
-            <Tooltip title={row[x]}>
-              <DescriptionIcon />
-            </Tooltip>
+            Not Delivered!
           </TableCell>
         ) : (
           <TableCell key={uniqueKey} align="left">

@@ -1,103 +1,85 @@
 import { useEffect, useState } from "react";
+import { status } from "../../../auth/auth.interface";
+import { getOrders } from "../../../auth/firebase/firebase.orders.functions";
 import DataTable from "../../templates/admin/dataTable.template";
 import { iOrder, iOrderSection } from "./interface.admin.section";
-
-// Generate Order Data
 function createData(
   id: string,
-  date: string,
+  orderedDate: string,
+  deliveredDate: string | null,
   name: string,
+  products: any[],
+  image: any[],
+  contacts: string,
   shipTo: string,
-  products: string,
   paymentMethod: string,
-  amount: number
-): iOrder {
-  return { id, date, name, shipTo, products, paymentMethod, amount };
+  totalAmount: number
+) {
+  return {
+    id,
+    orderedDate,
+    deliveredDate,
+    name,
+    products,
+    image,
+    contacts,
+    shipTo,
+    paymentMethod,
+    totalAmount,
+  };
 }
-
-const rows = [
-  createData(
-    "0",
-    "16 Mar, 2019",
-    "Elvis Presley",
-    "Tupelo, MS",
-    "Sample Item 1,Sample Item 1,Sample Item 1,Sample Item 1,Sample Item 1,Sample Item 1,",
-    "VISA ⠀•••• 3719",
-    312.44
-  ),
-  createData(
-    "1",
-    "16 Mar, 2019",
-    "Paul McCartney",
-    "London, UK",
-    "Sample Item 2",
-    "VISA ⠀•••• 2574",
-    866.99
-  ),
-  createData(
-    "2",
-    "16 Mar, 2019",
-    "Tom Scholz",
-    "Boston, MA",
-    "Sample Item 3",
-    "MC ⠀•••• 1253",
-    100.81
-  ),
-  createData(
-    "3",
-    "16 Mar, 2019",
-    "Michael Jackson",
-    "Gary, IN",
-    "Sample Item 4",
-    "AMEX ⠀•••• 2000",
-    654.39
-  ),
-  createData(
-    "4",
-    "15 Mar, 2019",
-    "Bruce Springsteen",
-    "Long Branch, NJ",
-    "Sample Item 5",
-    "VISA ⠀•••• 5919",
-    212.79
-  ),
-  createData(
-    "5",
-    "15 Mar, 2019",
-    "Bruce Springsteen",
-    "Long Branch, NJ",
-    "Sample Item 5",
-    "VISA ⠀•••• 5919",
-    212.79
-  ),
-  createData(
-    "6",
-    "15 Mar, 2019",
-    "Bruce Springsteen",
-    "Long Branch, NJ",
-    "Sample Item 5",
-    "VISA ⠀•••• 5919",
-    212.79
-  ),
-  createData(
-    "7",
-    "15 Mar, 2019",
-    "Bruce Springsteen",
-    "Long Branch, NJ",
-    "Sample Item 5",
-    "VISA ⠀•••• 5919",
-    212.79
-  ),
-];
-
 const Orders = ({ sectionName, dialogProps }: iOrderSection) => {
-  const [orderList, setOrderList] = useState<any[]>();
+  const [orderList, setOrderList] = useState<any[]>([]);
 
   useEffect(() => {
-    if (rows) setOrderList(rows);
-  }, []);
+    getOrders().then((res) => {
+      if (res.status === status.success) {
+        let rows: any[] = [];
+        res.data.forEach((order: any) => {
+          const organizedOrder = {
+            id: order.id,
+            orderedDate: order.data().orderedOn,
+            deliveredDate: order.data().deliveredDate
+              ? order.data().deliveredDate
+              : null,
+            name:
+              order.data().deliveryDetails.firstname +
+              " " +
+              order.data().deliveryDetails.lastname,
+            shipTo:
+              order.data().deliveryDetails.address +
+              ", " +
+              order.data().deliveryDetails.area +
+              ", " +
+              order.data().deliveryDetails.city +
+              ", " +
+              order.data().deliveryDetails.country +
+              " ," +
+              order.data().deliveryDetails.zip,
+            contacts:
+              order.data().deliveryDetails.email +
+              ", " +
+              order.data().deliveryDetails.phone,
+            products: order
+              .data()
+              .products.map((product: any) =>
+                product.color === "transparent"
+                  ? product.name
+                  : product.name + "-" + product.colors
+              ),
+            paymentMethod: "Cashon delevery!",
+            image: order.data().products.map((product: any) => product.urlList),
+            totalAmount: order.data().total,
+          };
 
-  return orderList ? (
+          rows.push(organizedOrder);
+        });
+        if (rows) setOrderList(rows);
+      }
+    });
+  }, [sectionName]);
+
+  return orderList.length > 0 ? (
     <DataTable sectionName={sectionName} rows={orderList} />
   ) : (
     <p>Loading</p>

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Navbar from "../navbar/navbar";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Header from "../header/header";
 import Home from "../../pages/home/home.page";
 import Footer from "../footer/footer.template";
@@ -22,6 +22,8 @@ import NotifyUse from "../notify/notify.template.use";
 import { iMessage } from "../notify/notify.interfaces";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "../../../auth/firebase/firebase.config";
+import { getCart } from "../../../auth/firebase/firebase.cart.functions";
+import { status } from "../../../auth/auth.interface";
 
 const categories = ["men", "women", "accessories"];
 
@@ -30,21 +32,29 @@ const Layout = ({ dialogProps }: iLayout) => {
   const [products, setProducts] = useState<iProducts[] | [] | any>([]);
   const [authUser, setAuthUser] = useState<User>();
   const [notify, setNotify] = useState<iMessage>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setAuthUser(user);
+        getCart().then((res) => {
+          if (res.status === status.success) {
+            let cart: any[] = [];
+            res.data.docs.map((item: any) => {
+              if (item.data().authId === user.uid) {
+                cart.push(item.data());
+              }
+            });
+
+            localStorage.removeItem("cart");
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            setAuthUser(user);
+          }
+        });
       }
     });
-
-    let localCart = localStorage.getItem("cart");
-    setCount(
-      localCart
-        ? JSON.parse(typeof localCart === "string" ? localCart : "")
-        : null
-    );
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     getProducts().then((res) => {
@@ -59,7 +69,18 @@ const Layout = ({ dialogProps }: iLayout) => {
     });
   }, []);
 
+  useEffect(() => {
+    let localCart = localStorage.getItem("cart");
+    setCount(
+      localCart
+        ? JSON.parse(typeof localCart === "string" ? localCart : "")
+        : null
+    );
+  }, [authUser]);
+
   //check admin logins at the admin panel
+  //delete user if deleted by the admin
+  //order
 
   return (
     <>

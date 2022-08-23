@@ -41,7 +41,7 @@ export const getOrders = async () => {
   }
 };
 
-//   export const getProductById = async (refId: string) => {
+//   export const getOrderById = async (refId: string) => {
 //     try {
 //       const docRef = doc(db, "products", refId);
 //       const docSnap = await getDoc(docRef);

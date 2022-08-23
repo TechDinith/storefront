@@ -16,7 +16,6 @@ import { EnhancedTableHead } from "../../templates/admin/enchancedTabledHead.tem
 import { EnhancedTableToolbar } from "../../templates/admin/enchancedTableToolbar.template";
 import { iOrder, Order } from "../../sections/admin/interface.admin.section";
 import { iDataTable } from "./admin.template.interface";
-import { iProducts } from "../product-details/interface.productdetails";
 import dynamicCells from "./dynamicCells.template";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -57,9 +56,11 @@ function stableSort<T>(
 }
 
 export default function DataTable({ rows, sectionName }: iDataTable) {
+  console.log(rows);
+
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof iOrder | keyof iProducts>(
-    "date" || "enteredOn"
+  const [orderBy, setOrderBy] = useState<keyof iOrder>(
+    "deliveredDate" || "enteredOn"
   );
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
@@ -68,7 +69,7 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof iOrder | keyof iProducts
+    property: keyof iOrder
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -150,7 +151,10 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isDelivered = isSelected(row.id as string);
+                  const isDelivered =
+                    row.deliveredDate !== null
+                      ? true
+                      : isSelected(row.id as string);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (

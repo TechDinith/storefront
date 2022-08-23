@@ -1,5 +1,4 @@
 import { iDialog } from "../../templates/dialog/dialog.interface";
-import { iProducts } from "../../templates/product-details/interface.productdetails";
 
 export interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -8,12 +7,15 @@ export interface EnhancedTableToolbarProps {
 
 export interface iOrder {
   id: string;
-  date: string;
+  orderedDate: string;
+  deliveredDate: string | null;
   name: string;
+  products: any[];
+  image: any[];
+  contacts: string;
   shipTo: string;
-  products: string;
   paymentMethod: string;
-  amount: number;
+  totalAmount: number;
 }
 
 export interface HeadCell {

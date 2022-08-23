@@ -10,6 +10,7 @@ import { iCartPage } from "./cart.interfaces";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Quote from "../../templates/quote/quote.section";
+import { processCart } from "../../../auth/firebase/firebase.cart.functions";
 
 const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
   const [cart, setCart] = useState<iCart[]>([]);
@@ -21,31 +22,24 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
 
     if (localCart === null) {
       setTimeout(() => {
-        authProps?.setAuthUser(authProps.authUser ? authProps.authUser : null);
         setCart([]);
         setCheckouts(null);
         navigate(-1);
       }, 100);
     } else {
+      if (authProps?.authUser) {
+        const jsonCart = localCart
+          ? JSON.parse(typeof localCart === "string" ? localCart : "")
+          : [];
+
+        processCart(jsonCart);
+      }
+
       setCart(
         localCart
           ? JSON.parse(typeof localCart === "string" ? localCart : "")
           : []
       );
-
-      //should sent to the database too and replace the current cart of the user
-      // authProps?.setAuth(
-      //   authProps.auth
-      //     ? [
-      //         {
-      //           ...authProps?.auth[0],
-      //           cart: localCart
-      //             ? JSON.parse(typeof localCart === "string" ? localCart : "")
-      //             : [],
-      //         },
-      //       ]
-      //     : authProps.auth
-      // );
     }
   }, [
     countProps.count,
@@ -156,6 +150,7 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
                     preview={true}
                     cart={item}
                     countProps={countProps}
+                    authProps={authProps}
                   />
                 </Grid>
               ))}
