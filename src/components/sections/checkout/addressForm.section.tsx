@@ -85,25 +85,19 @@ export default function AddressForm({
               name: "First name",
               id: "firstname",
               required: true,
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.firstname) ||
-                "",
+              defaultValue: "",
             },
             {
               name: "Last name",
               id: "lastname",
               required: true,
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.lastname) ||
-                "",
+              defaultValue: "",
             },
             {
               name: "Address",
               id: "address",
               required: true,
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.address) ||
-                "",
+              defaultValue: "",
             },
             {
               name: "Phone",
@@ -111,54 +105,40 @@ export default function AddressForm({
               required: true,
               pattern:
                 /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\d)\d{6}$/,
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.phone) ||
-                "",
+              defaultValue: "",
             },
             {
               name: "Email",
               id: "email",
               type: "email",
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.email) ||
-                "",
+              defaultValue: "",
             },
             {
               name: "City",
               id: "city",
               required: true,
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.city) ||
-                "",
+              defaultValue: "",
             },
             {
               name: "State/Province/Region",
               id: "area",
               required: true,
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.area) ||
-                "",
+              defaultValue: "",
             },
             {
               name: "Zip / Postal code",
               id: "zip",
               required: true,
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.zip) ||
-                "",
+              defaultValue: "",
             },
             {
               name: "Country",
               id: "country",
               disabled: true,
-              defaultValue:
-                // (authProps.auth && authProps.auth[0].order.deliveryDetails.country) ||
-                "Sri Lanka",
+              defaultValue: "Sri Lanka",
             },
           ]);
         }
-
-        console.log(orders);
       });
     } else {
       setFields([
@@ -166,25 +146,19 @@ export default function AddressForm({
           name: "First name",
           id: "firstname",
           required: true,
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.firstname) ||
-            "",
+          defaultValue: "",
         },
         {
           name: "Last name",
           id: "lastname",
           required: true,
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.lastname) ||
-            "",
+          defaultValue: "",
         },
         {
           name: "Address",
           id: "address",
           required: true,
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.address) ||
-            "",
+          defaultValue: "",
         },
         {
           name: "Phone",
@@ -192,53 +166,41 @@ export default function AddressForm({
           required: true,
           pattern:
             /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\d)\d{6}$/,
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.phone) ||
-            "",
+          defaultValue: "",
         },
         {
           name: "Email",
           id: "email",
           type: "email",
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.email) ||
-            "",
+          defaultValue: "",
         },
         {
           name: "City",
           id: "city",
           required: true,
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.city) ||
-            "",
+          defaultValue: "",
         },
         {
           name: "State/Province/Region",
           id: "area",
           required: true,
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.area) ||
-            "",
+          defaultValue: "",
         },
         {
           name: "Zip / Postal code",
           id: "zip",
           required: true,
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.zip) ||
-            "",
+          defaultValue: "",
         },
         {
           name: "Country",
           id: "country",
           disabled: true,
-          defaultValue:
-            // (authProps.auth && authProps.auth[0].order.deliveryDetails.country) ||
-            "Sri Lanka",
+          defaultValue: "Sri Lanka",
         },
       ]);
     }
-  }, []);
+  }, [authProps.authUser]);
 
   const {
     control,

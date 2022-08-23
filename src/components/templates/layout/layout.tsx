@@ -51,10 +51,10 @@ const Layout = ({ dialogProps }: iLayout) => {
               if (currentAdmin) {
                 signOut(auth)
                   .then(() => {
-                    console.log("out");
+                    // console.log("out");
                   })
                   .catch((error) => {
-                    console.log("out err", error);
+                    // console.log("out err", error);
                   });
               } else {
                 deleteCartItemsByUid(user.uid).then(() => {
@@ -74,6 +74,7 @@ const Layout = ({ dialogProps }: iLayout) => {
                   if (item.data().authId === user.uid) {
                     cart.push(item.data());
                   }
+                  return false;
                 });
 
                 localStorage.removeItem("cart");
@@ -86,7 +87,7 @@ const Layout = ({ dialogProps }: iLayout) => {
         });
       }
     });
-  }, [navigate, auth.currentUser]);
+  }, [navigate]);
 
   useEffect(() => {
     getProducts().then((res) => {

@@ -30,9 +30,9 @@ import Admins from "../../sections/admin/admins/admins.section";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Tooltip } from "antd";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../auth/firebase/firebase.config";
 import { getAdminsByUid } from "../../../auth/firebase/firebase.admin.functions";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 function Copyright(props: any) {
   return (
@@ -117,10 +117,10 @@ function DashboardContent({
     const handleLogout = () => {
       signOut(auth)
         .then(() => {
-          console.log("out");
+          // console.log("out");
         })
         .catch((error) => {
-          console.log("out err", error);
+          // console.log("out err", error);
         });
     };
     return (
@@ -300,7 +300,7 @@ export default function Dashboard({ dialogProps }: iDashboard) {
         navigate("/notfound");
       }
     });
-  }, [pathname]);
+  }, [pathname, navigate]);
 
   return authUser ? (
     <DashboardContent

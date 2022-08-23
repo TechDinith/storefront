@@ -64,8 +64,6 @@ export default function DataTable({
   sectionName,
   dialogProps,
 }: iDataTable) {
-  console.log(rows);
-
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof iOrder>(
     "deliveredDate" || "enteredOn"
@@ -134,16 +132,15 @@ export default function DataTable({
       deleteOrder(orderId as string).then((notification) =>
         setNotify(notification)
       );
+      return false;
     });
     dialogProps.setOpenDialog({ value: false, id: "" });
-  }, [dialogProps.openDialog, notify]);
+  }, [dialogProps, selected]);
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  console.log(selected);
 
   return (
     <Box sx={{ width: "100%" }}>

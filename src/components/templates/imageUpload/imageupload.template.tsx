@@ -23,10 +23,9 @@ const ImageUpload = ({ colors, fileProps, urlProps }: iUploadImage) => {
   const [previewTitle, setPreviewTitle] = useState("");
 
   useEffect(() => {
-    console.log("filelistimg", fileProps.fileList);
     fileProps.setFileList(fileProps.fileList);
     urlProps.setUrlList(urlProps.urlList);
-  }, [fileProps]);
+  }, [fileProps, urlProps]);
 
   const handleCancel = () => setPreviewVisible(false);
 
@@ -50,8 +49,6 @@ const ImageUpload = ({ colors, fileProps, urlProps }: iUploadImage) => {
     async ({ file, onSuccess, onError }: any) => {
       await uploadImagesToStorage(file).then((data) => {
         if (data.status === "ok") {
-          console.log("urlProps.urlList", urlProps.urlList);
-          console.log(data);
           urlProps.setUrlList([
             ...urlProps.urlList,
             {
@@ -66,7 +63,7 @@ const ImageUpload = ({ colors, fileProps, urlProps }: iUploadImage) => {
         }
       });
     },
-    [fileProps.fileList]
+    [urlProps]
   );
 
   const handleRemove = useCallback(
@@ -76,10 +73,10 @@ const ImageUpload = ({ colors, fileProps, urlProps }: iUploadImage) => {
           (currentFiles: any) => currentFiles.id !== file.uid
         )
       );
-      console.log(urlProps.urlList);
+
       deleteImageFromStorage(file);
     },
-    [fileProps.fileList]
+    [urlProps]
   );
 
   const uploadButton = (

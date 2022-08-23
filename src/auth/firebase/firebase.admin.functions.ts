@@ -34,8 +34,12 @@ export const updateAdmin = async (refId: string, data: any) => {
   const adminRef = doc(db, "admins", refId);
 
   await updateDoc(adminRef, data)
-    .then(() => console.log("updated"))
-    .catch((err) => console.log(err));
+    .then(() => {
+      //  console.log("updated")
+    })
+    .catch((err) => {
+      //  console.log(err)
+    });
 };
 
 export const createAdminAuth = async (email: string) => {
@@ -113,7 +117,7 @@ export const getAdminById = async (id: string) => {
 export const deleteAdmins = async (id: string) => {
   return await getAdminById(id).then((userDoc: any) => {
     if (userDoc.data.authId === auth.currentUser!.uid) {
-      const user = auth.currentUser;
+      // const user = auth.currentUser;
       return { message: "You can't delete Yourself!", severity: "error" };
     } else {
       return deleteDoc(doc(db, "admins", id))

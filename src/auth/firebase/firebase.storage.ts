@@ -34,10 +34,10 @@ export const deleteImageFromStorage = (file: any) => {
 
     deleteObject(desertRef)
       .then(() => {
-        console.log("imageName", imageName);
+        // console.log("imageName", imageName);
       })
       .catch((error) => {
-        console.log("err", error);
+        // console.log("err", error);
       });
   } else {
     const imageName = "images/products/" + file;
@@ -46,10 +46,10 @@ export const deleteImageFromStorage = (file: any) => {
 
     deleteObject(desertRef)
       .then(() => {
-        console.log("imageName", imageName);
+        // console.log("imageName", imageName);
       })
       .catch((error) => {
-        console.log("err", error);
+        // console.log("err", error);
       });
   }
 };
@@ -59,7 +59,7 @@ export const handleImageUrl = async (imageName: string) => {
     const url = await getDownloadURL(ref(imagesRef, imageName));
     return url;
   } catch (error) {
-    console.log("error", error);
+    // console.log("error", error);
     return "images/acc.jpg";
   }
 };

@@ -57,10 +57,16 @@ export default function Products({
   const [products, setProducts] = useState<any[]>();
   const [columns, setColumns] = useState<GridColDef[]>();
 
+  const handleDelete = useCallback(
+    (prodId: string) => {
+      dialogProps?.setOpenDialog({ value: true, id: prodId });
+    },
+    [dialogProps]
+  );
+
   useEffect(() => {
     getProducts().then((res) => {
       if (res.status === "success" && res.data.docs.length) {
-        console.log(res.data);
         let rawRows: any[] = [];
         res.data.forEach((doc: any) =>
           rawRows.push({ ...doc.data(), id: doc.id })
@@ -124,15 +130,11 @@ export default function Products({
         setProducts(rows);
       }
     });
-  }, [notify, openModal, openNewModal, dialogProps.openDialog]);
+  }, [notify, openModal, openNewModal, dialogProps.openDialog, handleDelete]);
 
   const handleCurrentProduct = (crruentProd: any) => {
     setCurrentProduct(crruentProd);
     setOpenModal(true);
-  };
-
-  const handleDelete = (prodId: string) => {
-    dialogProps?.setOpenDialog({ value: true, id: prodId });
   };
 
   const handleRemove = () => {
@@ -148,7 +150,6 @@ export default function Products({
         );
         dialogProps.setOpenDialog(false);
       } else {
-        console.log("prod", prod);
         deleteImageFromStorage(prod.data.data().image);
         deleteProduct(dialogProps.openDialog.id as string).then((res) =>
           setNotify(res)

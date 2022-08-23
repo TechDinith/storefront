@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   deleteUser,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -107,10 +108,12 @@ export const signupUsers = async ({ email, password, name }: iSignUpUser) => {
       displayName: name,
     })
       .then(() => {
-        addUser(email, name, user.uid).then((res) => console.log(res));
+        addUser(email, name, user.uid).then((res) => {
+          // console.log(res)
+        });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
 
     return { status: status.success, data: user };
@@ -134,10 +137,10 @@ export const deleteAUser = async (id: string) => {
 export const userLogout = () => {
   signOut(auth)
     .then(() => {
-      console.log("out");
+      // console.log("out");
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
     });
 };
 
@@ -146,9 +149,23 @@ export const deleteCurrentUser = async () => {
 
   return await deleteUser(user as any)
     .then(() => {
-      console.log("del");
+      // console.log("del");
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
+    });
+};
+
+export const resetPassword = async (email: string) => {
+  return sendPasswordResetEmail(auth, email, {
+    url: "http://localhost:3000/login",
+  })
+    .then(() => {
+      return { status: status.success, data: "Password reset email sent!" };
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      // const errorMessage = error.message;
+      return { status: status.error, data: errorCode };
     });
 };

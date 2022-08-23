@@ -14,11 +14,8 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { useState } from "react";
 import {
   addAdmin,
-  createAdminAuth,
   getAdmins,
 } from "../../../auth/firebase/firebase.admin.functions";
-import { iMessage } from "../../templates/notify/notify.interfaces";
-import NotifyUse from "../../templates/notify/notify.template.use";
 
 const style = {
   position: "absolute" as "absolute",
@@ -59,7 +56,6 @@ export default function NewAdminModal({
   } = useForm(formOptions);
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log("data", data);
     setDisabled(true);
     getAdmins().then((admins: any) => {
       let exist = false;

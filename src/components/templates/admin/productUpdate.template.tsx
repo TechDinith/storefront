@@ -31,8 +31,6 @@ const style = {
   width: { xs: "90%", sm: "70%", md: "40%" },
 };
 
-const math = Math;
-
 const formSchema = Yup.object().shape({
   name: Yup.string().required("Name is Required!"),
   price: Yup.number().required("Price is Required!"),
@@ -46,8 +44,6 @@ export default function ProductUpdateModal({
   setNotify,
 }: iUpdateProduct) {
   const [colors, setColors] = useState(false);
-
-  console.log(product);
 
   const fields = [
     {
@@ -75,7 +71,6 @@ export default function ProductUpdateModal({
       if (product && product !== null) {
         getProductById(product.id).then((prod) => {
           const prodById = prod.data.data();
-          console.log("pro", prodById);
           setFileList(
             prodById.isColor
               ? prodById.colors.map((pro: any, i: number) => ({
@@ -128,12 +123,12 @@ export default function ProductUpdateModal({
         ? data.colors
         : data.colors.split(",")
       : colors;
-    console.log("col", colorList);
+
     const fileWithColorList = fileList.map((file: any, i: number) => ({
       ...file,
       color: colors ? colorList[i] : colorList,
     }));
-    console.log("file", fileList);
+
     const OrganizedProduct = {
       image: !colors
         ? fileList[0].uid + "." + fileList[0].type.split("/")[1]

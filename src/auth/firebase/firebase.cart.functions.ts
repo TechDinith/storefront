@@ -67,7 +67,6 @@ export const deleteCartItem = async (authId: string, id: string) => {
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((docs) => {
-      console.log(docs.data());
       if (docs.data().id === id) {
         deleteDoc(doc(db, "cart", id));
       }
@@ -78,7 +77,6 @@ export const deleteCartItem = async (authId: string, id: string) => {
     }, 100);
     return { message: "Cart Item Deleted!", severity: "success" };
   } catch (err: any) {
-    console.log(err);
     return { message: err.message, severity: "error" };
   }
 };
@@ -96,7 +94,6 @@ export const deleteCartItemForAuthPages = async (
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((docs) => {
-      console.log(docs.data());
       if (docs.data().id === id) {
         deleteDoc(doc(db, "cart", id));
       }
@@ -104,7 +101,6 @@ export const deleteCartItemForAuthPages = async (
 
     return { message: "Cart Item Deleted!", severity: "success" };
   } catch (err: any) {
-    console.log(err);
     return { message: err.message, severity: "error" };
   }
 };
@@ -119,13 +115,11 @@ export const deleteCartItemsByUid = async (authId: string) => {
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((docs) => {
-      console.log(docs.id);
       deleteDoc(doc(db, "cart", docs.id));
     });
 
     return { message: "Cart Item Deleted!", severity: "success" };
   } catch (err: any) {
-    console.log(err);
     return { message: err.message, severity: "error" };
   }
 };
@@ -135,6 +129,7 @@ export const processCart = async (data: iCart[]) => {
     data.map((item) => {
       item["authId"] = auth.currentUser?.uid;
       setDoc(doc(db, "cart", item.id), item, { merge: true });
+      return false;
     });
     return { status: status.success };
   } catch (err) {

@@ -17,6 +17,7 @@ const ContactForm = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
+  //handle contact form
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
   };

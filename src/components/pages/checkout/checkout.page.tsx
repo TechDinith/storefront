@@ -38,7 +38,6 @@ export default function Checkout({
   }, [navigate, state]);
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log(data);
     setDeliveryDetails(data);
     if (activeStep === 0) {
       setActiveStep(activeStep + 1);
@@ -100,14 +99,12 @@ export default function Checkout({
     let filteredProducts: any[] = [];
     jsonCart.map((item: any) => {
       if (state.checkouts.some((checkout: any) => checkout.id === item.id)) {
-        return;
+        return false;
       } else {
         filteredProducts.push(item);
         return item;
       }
     });
-
-    console.log(order);
 
     const upadtedItems = state.checkouts.map((item: any) => {
       return {
@@ -116,7 +113,6 @@ export default function Checkout({
       };
     });
 
-    console.log(upadtedItems);
     const updatedCart = [...filteredProducts, ...upadtedItems];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     countProps.setCount(updatedCart);
@@ -130,6 +126,7 @@ export default function Checkout({
         if (authProps.authUser?.uid) {
           upadtedItems.map((item: any) => {
             updateCart(item.id, item);
+            return false;
           });
         }
 

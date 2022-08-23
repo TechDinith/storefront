@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Layout from "./components/templates/layout/layout";
 import {
   ThemeProvider,
@@ -6,13 +6,11 @@ import {
   responsiveFontSizes,
 } from "@mui/material/styles";
 import { Route, Routes } from "react-router-dom";
-import SandBox from "./components/templates/sandbox/sandbox";
 import AdminLogin from "./components/pages/dashboard/admin.login.section";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Dashboard from "./components/pages/dashboard/Dashboard";
 import { iOpenDialog } from "./components/templates/dialog/dialog.interface";
-import Landing from "./components/pages/landing/landing.page";
 
 let theme = createTheme({
   palette: {
@@ -42,8 +40,6 @@ function App() {
             path="/admin/dashboard/*"
             element={<Dashboard dialogProps={{ openDialog, setOpenDialog }} />}
           />
-          <Route path="/admin/landing" element={<Landing />} />
-          <Route path="/sand" element={<SandBox />} />
           <Route
             path="/notfound"
             element={

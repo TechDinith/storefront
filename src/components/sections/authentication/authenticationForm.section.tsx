@@ -11,23 +11,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Grid from "@mui/material/Grid";
 import { iAuthentication } from "./authentication.interface";
 import { useNavigate } from "react-router-dom";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { capitalize } from "@mui/material/utils";
 import {
-  deleteCurrentUser,
   getUserByUid,
   logInUsers,
   signupUsers,
 } from "../../../auth/firebase/firebase.users.functions";
 import { status } from "../../../auth/auth.interface";
-import {
-  deleteCartItemsByUid,
-  processCart,
-} from "../../../auth/firebase/firebase.cart.functions";
-import { auth } from "../../../auth/firebase/firebase.config";
-import { getAdminsByUid } from "../../../auth/firebase/firebase.admin.functions";
-import { signOut } from "firebase/auth";
-
+import { processCart } from "../../../auth/firebase/firebase.cart.functions";
 interface IFormInput {
   email: string;
   password: string;
@@ -43,6 +35,7 @@ const AuthenticationForm = ({
   authProps,
 }: iAuthentication) => {
   const navigate = useNavigate();
+  const [disabled, setDisabled] = useState(false);
 
   const {
     control,
@@ -51,15 +44,13 @@ const AuthenticationForm = ({
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+    setDisabled(true);
     if (isSignUp) {
       signupUsers({
         email: data.email,
         password: data.password,
         name: data!.name!,
       }).then((res) => {
-        console.log(res);
-
         if (res.status === status.success) {
           authProps.setAuthUser(res.data);
           setNotify({
@@ -76,14 +67,14 @@ const AuthenticationForm = ({
           processCart(jsonCart).then((res) => {
             if (res.status === status.success) {
               setTimeout(() => {
-                navigate(-1);
+                navigate("/");
               }, 100);
             } else {
-              console.log(res);
+              // console.log(res);
             }
           });
         } else {
-          console.log(res);
+          setDisabled(false);
           setNotify({
             message: res.data.errorMessage,
             severity: res.status,
@@ -93,8 +84,6 @@ const AuthenticationForm = ({
     } else {
       logInUsers(data.email, data.password).then((res) => {
         if (res.status === status.success) {
-          console.log(res.data);
-
           getUserByUid(res.data.uid).then((currentUser) => {
             if (!currentUser) {
             } else {
@@ -108,16 +97,16 @@ const AuthenticationForm = ({
               processCart(jsonCart).then((res) => {
                 if (res.status === status.success) {
                   setTimeout(() => {
-                    navigate(1);
+                    navigate("/");
                   }, 100);
                 } else {
-                  console.log(res);
+                  // console.log(res);
                 }
               });
             }
           });
         } else {
-          console.log(res);
+          setDisabled(false);
           if (res.data.errorCode === "auth/user-not-found") {
             setNotify({
               message: "You are not Registered!",
@@ -230,7 +219,13 @@ const AuthenticationForm = ({
                 label="Remember me"
               />
             </Box>
-            <Button type="submit" variant="contained" fullWidth color="info">
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              color="info"
+              disabled={disabled}
+            >
               {btnText}
             </Button>
           </form>
