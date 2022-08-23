@@ -122,27 +122,31 @@ export const signupUsers = async ({ email, password, name }: iSignUpUser) => {
 };
 
 export const deleteAUser = async (id: string) => {
-  return await getUserById(id).then((userDoc: any) => {
-    //modification needed if authid not in the users table this should delete the user
-    if (userDoc.data.authId === auth.currentUser!.uid) {
-      // const user = auth.currentUser;
-      // return { message: "Your account is Banned!", severity: "error" };
-    } else {
-      return deleteDoc(doc(db, "users", id))
-        .then(() => {
-          return { message: "User Deleted!", severity: "success" };
-        })
-        .catch((err) => {
-          return { message: err.message, severity: "error" };
-        });
-    }
-  });
+  return deleteDoc(doc(db, "users", id))
+    .then(() => {
+      return { message: "User Deleted!", severity: "success" };
+    })
+    .catch((err) => {
+      return { message: err.message, severity: "error" };
+    });
 };
 
 export const userLogout = () => {
   signOut(auth)
     .then(() => {
       console.log("out");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const deleteCurrentUser = async () => {
+  const user = auth.currentUser;
+
+  return await deleteUser(user as any)
+    .then(() => {
+      console.log("del");
     })
     .catch((error) => {
       console.log(error);

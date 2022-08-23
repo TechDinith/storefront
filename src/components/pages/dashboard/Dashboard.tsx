@@ -115,7 +115,6 @@ function DashboardContent({
 
   const AdminAppbar = () => {
     const handleLogout = () => {
-      const auth = getAuth();
       signOut(auth)
         .then(() => {
           console.log("out");

@@ -20,10 +20,18 @@ import { iProducts } from "../product-details/interface.productdetails";
 import { getProducts } from "../../../auth/firebase/firebase.products.functions";
 import NotifyUse from "../notify/notify.template.use";
 import { iMessage } from "../notify/notify.interfaces";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "../../../auth/firebase/firebase.config";
-import { getCart } from "../../../auth/firebase/firebase.cart.functions";
+import {
+  deleteCartItemsByUid,
+  getCart,
+} from "../../../auth/firebase/firebase.cart.functions";
 import { status } from "../../../auth/auth.interface";
+import {
+  deleteCurrentUser,
+  getUserByUid,
+} from "../../../auth/firebase/firebase.users.functions";
+import { getAdminsByUid } from "../../../auth/firebase/firebase.admin.functions";
 
 const categories = ["men", "women", "accessories"];
 
@@ -37,24 +45,48 @@ const Layout = ({ dialogProps }: iLayout) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        getCart().then((res) => {
-          if (res.status === status.success) {
-            let cart: any[] = [];
-            res.data.docs.map((item: any) => {
-              if (item.data().authId === user.uid) {
-                cart.push(item.data());
+        getUserByUid(user.uid).then((currentUser) => {
+          if (!currentUser) {
+            getAdminsByUid(user.uid).then((currentAdmin) => {
+              if (currentAdmin) {
+                signOut(auth)
+                  .then(() => {
+                    console.log("out");
+                  })
+                  .catch((error) => {
+                    console.log("out err", error);
+                  });
+              } else {
+                deleteCartItemsByUid(user.uid).then(() => {
+                  deleteCurrentUser();
+                  setNotify({
+                    message: "Your Account is Banned!",
+                    severity: "error",
+                  });
+                });
               }
             });
+          } else {
+            getCart().then((res) => {
+              if (res.status === status.success) {
+                let cart: any[] = [];
+                res.data.docs.map((item: any) => {
+                  if (item.data().authId === user.uid) {
+                    cart.push(item.data());
+                  }
+                });
 
-            localStorage.removeItem("cart");
-            localStorage.setItem("cart", JSON.stringify(cart));
+                localStorage.removeItem("cart");
+                localStorage.setItem("cart", JSON.stringify(cart));
 
-            setAuthUser(user);
+                setAuthUser(user);
+              }
+            });
           }
         });
       }
     });
-  }, [navigate]);
+  }, [navigate, auth.currentUser]);
 
   useEffect(() => {
     getProducts().then((res) => {
@@ -77,10 +109,6 @@ const Layout = ({ dialogProps }: iLayout) => {
         : null
     );
   }, [authUser]);
-
-  //check admin logins at the admin panel
-  //delete user if deleted by the admin
-  //order
 
   return (
     <>

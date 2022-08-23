@@ -11,7 +11,7 @@ export default function SignUpSide({ setNotify, authProps }: iSignUp) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authProps.authUser) navigate(1);
+    if (authProps.authUser) navigate("/");
   }, [authProps.authUser, navigate]);
   return (
     <Grid item xs={10} mt="4%">

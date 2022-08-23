@@ -26,6 +26,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import { AccountCircleOutlined } from "@mui/icons-material";
 import Search from "../../sections/search/search.section";
 import { userLogout } from "../../../auth/firebase/firebase.users.functions";
+import { capitalize } from "@mui/material";
 
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
@@ -133,7 +134,7 @@ const Navbar = ({
                         }
                         onClick={handleDrawerToggle}
                       >
-                        <ListItemText primary={item} />
+                        <ListItemText primary={capitalize(item)} />
                       </ListItemButton>
                     </ListItem>
                   ))}

@@ -54,10 +54,11 @@ export default function Users({ sectionName, dialogProps }: iUserSection) {
     });
   }, [dialogProps.openDialog, handleRemove]);
 
-  const withoutId = rows && Object.keys(rows[0]);
+  const withoutId = rows && rows.length > 0 && Object.keys(rows[0]);
 
   const columns: GridColDef[] =
     rows &&
+    rows.length > 0 &&
     withoutId.map((rowKey: string, i: number) => {
       return {
         field: rowKey,
@@ -93,7 +94,7 @@ export default function Users({ sectionName, dialogProps }: iUserSection) {
       <div style={{ height: 400, width: "100%" }}>
         <div style={{ display: "flex", height: "100%" }}>
           <div style={{ flexGrow: 1 }}>
-            {rows ? (
+            {rows && rows.length > 0 ? (
               <DataGrid
                 rows={rows}
                 columns={columns}

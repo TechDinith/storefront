@@ -14,15 +14,19 @@ import { useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { capitalize } from "@mui/material/utils";
 import {
+  deleteCurrentUser,
+  getUserByUid,
   logInUsers,
   signupUsers,
 } from "../../../auth/firebase/firebase.users.functions";
 import { status } from "../../../auth/auth.interface";
 import {
-  deleteCartItemForAuthPages,
+  deleteCartItemsByUid,
   processCart,
 } from "../../../auth/firebase/firebase.cart.functions";
 import { auth } from "../../../auth/firebase/firebase.config";
+import { getAdminsByUid } from "../../../auth/firebase/firebase.admin.functions";
+import { signOut } from "firebase/auth";
 
 interface IFormInput {
   email: string;
@@ -90,28 +94,41 @@ const AuthenticationForm = ({
       logInUsers(data.email, data.password).then((res) => {
         if (res.status === status.success) {
           console.log(res.data);
-          authProps.setAuthUser(res.data);
-          let localCart = localStorage.getItem("cart");
 
-          const jsonCart = localCart
-            ? JSON.parse(typeof localCart === "string" ? localCart : "")
-            : [];
-
-          processCart(jsonCart).then((res) => {
-            if (res.status === status.success) {
-              setTimeout(() => {
-                navigate(-1);
-              }, 100);
+          getUserByUid(res.data.uid).then((currentUser) => {
+            if (!currentUser) {
             } else {
-              console.log(res);
+              authProps.setAuthUser(res.data);
+              let localCart = localStorage.getItem("cart");
+
+              const jsonCart = localCart
+                ? JSON.parse(typeof localCart === "string" ? localCart : "")
+                : [];
+
+              processCart(jsonCart).then((res) => {
+                if (res.status === status.success) {
+                  setTimeout(() => {
+                    navigate(1);
+                  }, 100);
+                } else {
+                  console.log(res);
+                }
+              });
             }
           });
         } else {
           console.log(res);
-          setNotify({
-            message: "Wrong Password!",
-            severity: res.status,
-          });
+          if (res.data.errorCode === "auth/user-not-found") {
+            setNotify({
+              message: "You are not Registered!",
+              severity: res.status,
+            });
+          } else {
+            setNotify({
+              message: "Wrong Password!",
+              severity: res.status,
+            });
+          }
         }
       });
     }

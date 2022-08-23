@@ -5,8 +5,11 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
+import { status } from "../auth.interface";
 import { db } from "./firebase.config";
 
 export const addOrder = async (data: any) => {
@@ -41,16 +44,25 @@ export const getOrders = async () => {
   }
 };
 
-//   export const getOrderById = async (refId: string) => {
-//     try {
-//       const docRef = doc(db, "products", refId);
-//       const docSnap = await getDoc(docRef);
+export const getOrderByUid = async (id: string) => {
+  try {
+    // Create a reference to the cities collection
+    const adminRef = collection(db, "orders");
 
-//       return { status: "success", data: docSnap };
-//     } catch (err: any) {
-//       return { status: "error", data: err.message };
-//     }
-//   };
+    // Create a query against the collection.
+    const q = query(adminRef, where("authId", "==", id));
+
+    const querySnapshot = await getDocs(q);
+    let user: any;
+    querySnapshot.forEach((doc) => {
+      user = doc.data();
+    });
+
+    return { status: status.success, data: user };
+  } catch (err) {
+    return { status: status.error, data: err };
+  }
+};
 
 export const deleteOrder = async (id: string) => {
   try {

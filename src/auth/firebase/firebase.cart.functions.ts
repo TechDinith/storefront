@@ -109,6 +109,27 @@ export const deleteCartItemForAuthPages = async (
   }
 };
 
+export const deleteCartItemsByUid = async (authId: string) => {
+  try {
+    // Create a reference to the cart collection
+    const adminRef = collection(db, "cart");
+
+    // Create a query against the collection.
+    const q = query(adminRef, where("authId", "==", authId));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((docs) => {
+      console.log(docs.id);
+      deleteDoc(doc(db, "cart", docs.id));
+    });
+
+    return { message: "Cart Item Deleted!", severity: "success" };
+  } catch (err: any) {
+    console.log(err);
+    return { message: err.message, severity: "error" };
+  }
+};
+
 export const processCart = async (data: iCart[]) => {
   try {
     data.map((item) => {
