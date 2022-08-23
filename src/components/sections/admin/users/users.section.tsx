@@ -39,7 +39,7 @@ export default function Users({ sectionName, dialogProps }: iUserSection) {
   }, [dialogProps.openDialog, notify]);
 
   useEffect(() => {
-    let userData: any;
+    let userData: any[] = [];
     getUsers().then((users: any) => {
       users.forEach((doc: any) => {
         userData.push({ ...doc.data(), id: doc.id });

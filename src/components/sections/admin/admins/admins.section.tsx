@@ -125,7 +125,7 @@ export default function Admins({
               </Box>
             </Tooltip>
 
-            {rows && (
+            {rows ? (
               <DataGrid
                 rows={rows}
                 columns={columns}
@@ -135,6 +135,10 @@ export default function Admins({
                 disableSelectionOnClick
                 experimentalFeatures={{ newEditingApi: true }}
               />
+            ) : (
+              <Typography variant="body1" color="orange" textAlign="center">
+                No admins yet
+              </Typography>
             )}
           </div>
         </div>

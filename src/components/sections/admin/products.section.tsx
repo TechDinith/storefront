@@ -186,7 +186,7 @@ export default function Products({
             >
               New Product
             </Button>
-            {columns && products && (
+            {columns && products ? (
               <DataGrid
                 rows={products!}
                 columns={columns}
@@ -196,6 +196,10 @@ export default function Products({
                 disableSelectionOnClick
                 experimentalFeatures={{ newEditingApi: true }}
               />
+            ) : (
+              <Typography variant="body1" color="orange" textAlign="center">
+                No Products yet
+              </Typography>
             )}
           </div>
         </div>

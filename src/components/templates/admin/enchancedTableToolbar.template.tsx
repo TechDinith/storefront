@@ -8,14 +8,14 @@ import { alpha } from "@mui/material/styles";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
 export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected, sectionName } = props;
+  const { numSelected, sectionName, dialogProps } = props;
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(numSelected.length > 0 && {
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
@@ -24,14 +24,14 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {numSelected.length > 0 ? (
         <Typography
           sx={{ flex: "1 1 100%" }}
           color="inherit"
           variant="subtitle1"
           component="div"
         >
-          {numSelected} Delivered
+          {numSelected.length} Delivered
         </Typography>
       ) : (
         <Typography
@@ -44,9 +44,13 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           {sectionName}
         </Typography>
       )}
-      {numSelected > 0 ? (
+      {numSelected.length > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton
+            onClick={() =>
+              dialogProps?.setOpenDialog({ value: true, id: numSelected[0] })
+            }
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>

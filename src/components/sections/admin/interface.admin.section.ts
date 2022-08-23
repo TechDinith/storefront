@@ -1,8 +1,9 @@
 import { iDialog } from "../../templates/dialog/dialog.interface";
 
 export interface EnhancedTableToolbarProps {
-  numSelected: number;
+  numSelected: readonly string[];
   sectionName: string;
+  dialogProps: iDialog;
 }
 
 export interface iOrder {

@@ -11,12 +11,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { EnhancedTableHead } from "../../templates/admin/enchancedTabledHead.template";
 import { EnhancedTableToolbar } from "../../templates/admin/enchancedTableToolbar.template";
 import { iOrder, Order } from "../../sections/admin/interface.admin.section";
 import { iDataTable } from "./admin.template.interface";
 import dynamicCells from "./dynamicCells.template";
+import AlertDialog from "../dialog/dialog.template";
+import NotifyUse from "../notify/notify.template.use";
+import { deleteOrder } from "../../../auth/firebase/firebase.orders.functions";
+import { iMessage } from "../notify/notify.interfaces";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -55,7 +59,11 @@ function stableSort<T>(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function DataTable({ rows, sectionName }: iDataTable) {
+export default function DataTable({
+  rows,
+  sectionName,
+  dialogProps,
+}: iDataTable) {
   console.log(rows);
 
   const [order, setOrder] = useState<Order>("asc");
@@ -66,6 +74,7 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [notify, setNotify] = useState<iMessage>();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -120,17 +129,29 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
     setDense(event.target.checked);
   };
 
+  const handleRemove = useCallback(() => {
+    selected.map((orderId) => {
+      deleteOrder(orderId as string).then((notification) =>
+        setNotify(notification)
+      );
+    });
+    dialogProps.setOpenDialog({ value: false, id: "" });
+  }, [dialogProps.openDialog, notify]);
+
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+
+  console.log(selected);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           sectionName={sectionName}
-          numSelected={selected.length}
+          numSelected={selected}
+          dialogProps={dialogProps}
         />
         <TableContainer>
           <Table
@@ -208,6 +229,21 @@ export default function DataTable({ rows, sectionName }: iDataTable) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Small"
       />
+      <AlertDialog
+        attributes={{
+          title: "Lorem ipsum?",
+          content:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, incidunt minus. Molestiae error soluta culpa autem saepe aliquam dolor eius, quibusdam, ipsam corporis quis enim alias eligendi optio. Suscipit, at?",
+          yesBtn: "Lorem ipsum",
+          yesFunction: handleRemove,
+          noBtn: "dolor sit",
+        }}
+        openDialog={
+          dialogProps?.openDialog ? dialogProps?.openDialog : { value: false }
+        }
+        setOpenDialog={dialogProps?.setOpenDialog}
+      />
+      <NotifyUse messageProps={notify} />
     </Box>
   );
 }

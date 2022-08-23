@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { status } from "../../../auth/auth.interface";
 import { getOrders } from "../../../auth/firebase/firebase.orders.functions";
 import DataTable from "../../templates/admin/dataTable.template";
-import { iOrder, iOrderSection } from "./interface.admin.section";
+import { iOrderSection } from "./interface.admin.section";
 function createData(
   id: string,
   orderedDate: string,
@@ -80,9 +80,13 @@ const Orders = ({ sectionName, dialogProps }: iOrderSection) => {
   }, [sectionName]);
 
   return orderList.length > 0 ? (
-    <DataTable sectionName={sectionName} rows={orderList} />
+    <DataTable
+      sectionName={sectionName}
+      dialogProps={dialogProps}
+      rows={orderList}
+    />
   ) : (
-    <p>Loading</p>
+    <p>No Orders yet!</p>
   );
 };
 
