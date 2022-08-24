@@ -1,0 +1,20 @@
+import { iDialog } from "../dialog/dialog.interface";
+import { iProducts } from "../product-details/interface.productdetails";
+
+export interface iDataTable {
+  rows: any[];
+  sectionName: string;
+  dialogProps: iDialog;
+}
+
+export interface iUpdateProduct {
+  modalProps: { openModal: boolean; setOpenModal: any };
+  product?: iProducts | any;
+  setNotify: any;
+}
+
+export interface iNewProduct {
+  modalProps: { openNewModal: boolean; setOpenNewModal: any };
+
+  setNotify: any;
+}

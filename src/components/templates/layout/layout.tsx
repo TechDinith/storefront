@@ -1,96 +1,221 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Navbar from "../navbar/navbar";
-import Slider from "../slider/slider";
-import sImage1 from "../slider/images/simage1.jpg";
-import sImage2 from "../slider/images/simage2.jpg";
-import sImage4 from "../slider/images/simage4.jpg";
-import { Link } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import Header from "../header/header";
+import Home from "../../pages/home/home.page";
+import Footer from "../footer/footer.template";
+import About from "../../pages/about/about.page";
+import Contact from "../../pages/contact/contact.page";
+import SignInSide from "../../pages/signin/signin.page";
+import SignUpSide from "../../pages/signup/signup.page";
+import Category from "../../pages/category/category.page";
+import { useEffect, useState } from "react";
+import Cart from "../../pages/cart/cart.page";
+import NotFound from "../../pages/notfound/notfound.page";
+import Checkout from "../../pages/checkout/checkout.page";
+import ResetPasswordPage from "../../pages/resetpassword/resetPassword.page";
+import { iLayout } from "./layout.interface";
+import { iProducts } from "../product-details/interface.productdetails";
+import { getProducts } from "../../../auth/firebase/firebase.products.functions";
+import NotifyUse from "../notify/notify.template.use";
+import { iMessage } from "../notify/notify.interfaces";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { auth } from "../../../auth/firebase/firebase.config";
+import {
+  deleteCartItemsByUid,
+  getCart,
+} from "../../../auth/firebase/firebase.cart.functions";
+import { status } from "../../../auth/auth.interface";
+import {
+  deleteCurrentUser,
+  getUserByUid,
+} from "../../../auth/firebase/firebase.users.functions";
+import { getAdminsByUid } from "../../../auth/firebase/firebase.admin.functions";
 
-const Item = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(1),
-}));
+const categories = ["men", "women", "accessories"];
 
-const sliderImages = [
-  <img src={sImage1} alt="1" />,
-  <img src={sImage2} alt="2" />,
-  <img src={sImage4} alt="3" />,
-];
+//
+//create new branch before begin production edits
+//
 
-const sliderItems = {
-  items: sliderImages,
-  isButton: true,
-  btnText: "Check it Out",
-};
+const Layout = ({ dialogProps }: iLayout) => {
+  const [count, setCount] = useState([]);
+  const [products, setProducts] = useState<iProducts[] | [] | any>([]);
+  const [authUser, setAuthUser] = useState<User>();
+  const [notify, setNotify] = useState<iMessage>();
+  const navigate = useNavigate();
 
-const Layout = () => {
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        getUserByUid(user.uid).then((currentUser) => {
+          if (!currentUser) {
+            getAdminsByUid(user.uid).then((currentAdmin) => {
+              if (currentAdmin) {
+                signOut(auth)
+                  .then(() => {
+                    // console.log("out");
+                  })
+                  .catch((error) => {
+                    // console.log("out err", error);
+                  });
+              } else {
+                deleteCartItemsByUid(user.uid).then(() => {
+                  deleteCurrentUser();
+                  setNotify({
+                    message: "Your Account is Banned!",
+                    severity: "error",
+                  });
+                });
+              }
+            });
+          } else {
+            getCart().then((res) => {
+              if (res.status === status.success) {
+                let cart: any[] = [];
+                res.data.docs.map((item: any) => {
+                  if (item.data().authId === user.uid) {
+                    cart.push(item.data());
+                  }
+                  return false;
+                });
+
+                localStorage.removeItem("cart");
+                localStorage.setItem("cart", JSON.stringify(cart));
+
+                setAuthUser(user);
+              }
+            });
+          }
+        });
+      }
+    });
+  }, [navigate]);
+
+  useEffect(() => {
+    getProducts().then((res) => {
+      if (res.status === "success") {
+        let rawRows: any[] = [];
+        res.data.forEach((doc: any) =>
+          rawRows.push({ ...doc.data(), id: doc.id })
+        );
+
+        setProducts(rawRows);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    let localCart = localStorage.getItem("cart");
+    setCount(
+      localCart
+        ? JSON.parse(typeof localCart === "string" ? localCart : "")
+        : null
+    );
+  }, [authUser]);
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} justifyContent="center">
-        <Grid container spacing={2} justifyContent="center" m="auto">
-          <Grid item xs={10}>
-            <Navbar />
-          </Grid>
-          <Grid item xs={10} mt="4%">
-            <Slider {...sliderItems} />
-          </Grid>
-          <Grid item xs={5}>
-            <Item>xs=4</Item>
-          </Grid>
-          <Grid item xs={5}>
-            <Item>xs=8</Item>
-          </Grid>
+    <>
+      <Header products={products} />
+      <Box component="main">
+        <Grid container justifyContent="center">
+          <Navbar
+            categories={categories}
+            authProps={{ authUser, setAuthUser }}
+            countProps={{ setCount, count }}
+            setNotify={setNotify}
+            products={products}
+          />
+          <Grid container justifyContent="center">
+            <Routes>
+              <Route path="*" element={<NotFound />} />
 
-          <Grid item xs={3}>
-            <Item>xs=8</Item>
+              <Route
+                path="/"
+                element={<Home products={products} setNotify={setNotify} />}
+              />
+
+              <Route path="/about" element={<About />} />
+              {/* send email */}
+              <Route
+                path="/contact"
+                element={<Contact setNotify={setNotify} />}
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <Checkout
+                    setNotify={setNotify}
+                    authProps={{ authUser, setAuthUser }}
+                    countProps={{ setCount, count }}
+                  />
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <SignInSide
+                    setNotify={setNotify}
+                    authProps={{ authUser, setAuthUser }}
+                  />
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <SignUpSide
+                    authProps={{ authUser, setAuthUser }}
+                    setNotify={setNotify}
+                  />
+                }
+              />
+              <Route
+                path="/reset"
+                element={
+                  <ResetPasswordPage
+                    authProps={{ authUser, setAuthUser }}
+                    setNotify={setNotify}
+                  />
+                }
+              />
+
+              <Route
+                path="/cart"
+                element={
+                  <Cart
+                    authProps={{ authUser, setAuthUser }}
+                    dialogProps={dialogProps}
+                    countProps={{ setCount, count }}
+                    setNotify={setNotify}
+                  />
+                }
+              />
+
+              {categories.map((path, i) => {
+                return (
+                  <Route
+                    key={i}
+                    path={"/" + path.toLowerCase()}
+                    element={
+                      <Category
+                        products={products}
+                        countProps={{ setCount, count }}
+                        setNotify={setNotify}
+                      />
+                    }
+                  />
+                );
+              })}
+            </Routes>
           </Grid>
-          <Grid item xs={3}>
-            <Item>xs=8</Item>
-          </Grid>
-          <Grid item xs={3}>
-            <Item>xs=8</Item>
-          </Grid>
-          <Grid item xs={10}>
-            <Item>xs=8</Item>
-          </Grid>
-          <Grid container justifyContent="center" spacing={2} m="auto">
-            <Grid item xs={3}>
-              <Item>xs=8</Item>
-            </Grid>
-            <Grid item xs={3}>
-              <Item>xs=8</Item>
-            </Grid>
-            <Grid item xs={3}>
-              <Item>xs=8</Item>
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} justifyContent="center" m="auto">
-            <Grid item xs={3}>
-              <Item>xs=8</Item>
-            </Grid>
-            <Grid item xs={3}>
-              <Item>xs=8</Item>
-            </Grid>
-            <Grid item xs={3}>
-              <Item>xs=8</Item>
-            </Grid>
+          <Grid item xs={12} mt="5%" color="white">
+            <Footer />
           </Grid>
         </Grid>
-
-        <Grid container justifyContent="center" m="auto" spacing={2}>
-          <Grid item xs={8}>
-            <Item>xs=8</Item>
-          </Grid>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Item>xs=8</Item>
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
+      <NotifyUse messageProps={notify} />
+    </>
   );
 };
 
