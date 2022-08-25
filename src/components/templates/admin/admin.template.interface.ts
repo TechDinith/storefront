@@ -5,6 +5,7 @@ export interface iDataTable {
   rows: any[];
   sectionName: string;
   dialogProps: iDialog;
+  setOrderList: any;
 }
 
 export interface iUpdateProduct {

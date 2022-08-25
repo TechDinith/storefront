@@ -11,7 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { EnhancedTableHead } from "../../templates/admin/enchancedTabledHead.template";
 import { EnhancedTableToolbar } from "../../templates/admin/enchancedTableToolbar.template";
 import { iOrder, Order } from "../../sections/admin/interface.admin.section";
@@ -19,8 +19,13 @@ import { iDataTable } from "./admin.template.interface";
 import dynamicCells from "./dynamicCells.template";
 import AlertDialog from "../dialog/dialog.template";
 import NotifyUse from "../notify/notify.template.use";
-import { deleteOrder } from "../../../auth/firebase/firebase.orders.functions";
+import {
+  deleteOrder,
+  getOrders,
+  updateOrder,
+} from "../../../auth/firebase/firebase.orders.functions";
 import { iMessage } from "../notify/notify.interfaces";
+import { status } from "../../../auth/auth.interface";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -63,12 +68,15 @@ export default function DataTable({
   rows,
   sectionName,
   dialogProps,
+  setOrderList,
 }: iDataTable) {
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof iOrder>(
     "deliveredDate" || "enteredOn"
   );
-  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [selected, setSelected] = useState<readonly string[]>(
+    rows.filter((row) => row.deliveredDate && row.id).map((item) => item.id)
+  );
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -129,13 +137,174 @@ export default function DataTable({
 
   const handleRemove = useCallback(() => {
     selected.map((orderId) => {
-      deleteOrder(orderId as string).then((notification) =>
-        setNotify(notification)
-      );
+      deleteOrder(orderId as string)
+        .then((notification) => setNotify(notification))
+        .then(() => {
+          getOrders().then((res) => {
+            if (res.status === status.success) {
+              let rows: any[] = [];
+              res.data.forEach((order: any) => {
+                const organizedOrder = {
+                  id: order.id,
+                  orderedDate: order.data().orderedOn,
+                  deliveredDate: order.data().deliveredDate
+                    ? order.data().deliveredDate
+                    : null,
+                  name:
+                    order.data().deliveryDetails.firstname +
+                    " " +
+                    order.data().deliveryDetails.lastname,
+                  shipTo:
+                    order.data().deliveryDetails.address +
+                    ", " +
+                    order.data().deliveryDetails.area +
+                    ", " +
+                    order.data().deliveryDetails.city +
+                    ", " +
+                    order.data().deliveryDetails.country +
+                    " ," +
+                    order.data().deliveryDetails.zip,
+                  contacts:
+                    order.data().deliveryDetails.email +
+                    ", " +
+                    order.data().deliveryDetails.phone,
+                  products: order
+                    .data()
+                    .products.map((product: any) =>
+                      product.color === "transparent"
+                        ? product.name
+                        : product.name + "-" + product.colors
+                    ),
+                  paymentMethod: "Cashon delevery!",
+                  image: order
+                    .data()
+                    .products.map((product: any) => product.urlList),
+                  totalAmount: order.data().total,
+                };
+
+                rows.push(organizedOrder);
+              });
+              if (rows) setOrderList(rows);
+            }
+          });
+        });
       return false;
     });
+
     dialogProps.setOpenDialog({ value: false, id: "" });
   }, [dialogProps, selected]);
+
+  const handleDeliveredDate = (orderId: string, value: boolean) => {
+    if (value) {
+      updateOrder(orderId, {
+        deliveredDate: new Date().toLocaleString(),
+      }).then((res) => {
+        if (res.status === status.success) {
+          getOrders().then((res) => {
+            if (res.status === status.success) {
+              let rows: any[] = [];
+              res.data.forEach((order: any) => {
+                const organizedOrder = {
+                  id: order.id,
+                  orderedDate: order.data().orderedOn,
+                  deliveredDate: order.data().deliveredDate
+                    ? order.data().deliveredDate
+                    : null,
+                  name:
+                    order.data().deliveryDetails.firstname +
+                    " " +
+                    order.data().deliveryDetails.lastname,
+                  shipTo:
+                    order.data().deliveryDetails.address +
+                    ", " +
+                    order.data().deliveryDetails.area +
+                    ", " +
+                    order.data().deliveryDetails.city +
+                    ", " +
+                    order.data().deliveryDetails.country +
+                    " ," +
+                    order.data().deliveryDetails.zip,
+                  contacts:
+                    order.data().deliveryDetails.email +
+                    ", " +
+                    order.data().deliveryDetails.phone,
+                  products: order
+                    .data()
+                    .products.map((product: any) =>
+                      product.color === "transparent"
+                        ? product.name
+                        : product.name + "-" + product.colors
+                    ),
+                  paymentMethod: "Cashon delevery!",
+                  image: order
+                    .data()
+                    .products.map((product: any) => product.urlList),
+                  totalAmount: order.data().total,
+                };
+
+                rows.push(organizedOrder);
+              });
+              if (rows) setOrderList(rows);
+            }
+          });
+        }
+      });
+    } else {
+      updateOrder(orderId, {
+        deliveredDate: null,
+      }).then((res) => {
+        if (res.status === status.success) {
+          getOrders().then((res) => {
+            if (res.status === status.success) {
+              let rows: any[] = [];
+              res.data.forEach((order: any) => {
+                const organizedOrder = {
+                  id: order.id,
+                  orderedDate: order.data().orderedOn,
+                  deliveredDate: order.data().deliveredDate
+                    ? order.data().deliveredDate
+                    : null,
+                  name:
+                    order.data().deliveryDetails.firstname +
+                    " " +
+                    order.data().deliveryDetails.lastname,
+                  shipTo:
+                    order.data().deliveryDetails.address +
+                    ", " +
+                    order.data().deliveryDetails.area +
+                    ", " +
+                    order.data().deliveryDetails.city +
+                    ", " +
+                    order.data().deliveryDetails.country +
+                    " ," +
+                    order.data().deliveryDetails.zip,
+                  contacts:
+                    order.data().deliveryDetails.email +
+                    ", " +
+                    order.data().deliveryDetails.phone,
+                  products: order
+                    .data()
+                    .products.map((product: any) =>
+                      product.color === "transparent"
+                        ? product.name
+                        : product.name + "-" + product.colors
+                    ),
+                  paymentMethod: "Cashon delevery!",
+                  image: order
+                    .data()
+                    .products.map((product: any) => product.urlList),
+                  totalAmount: order.data().total,
+                };
+
+                rows.push(organizedOrder);
+              });
+              if (rows) setOrderList(rows);
+            }
+          });
+        }
+      });
+    }
+  };
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
@@ -169,10 +338,7 @@ export default function DataTable({
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isDelivered =
-                    row.deliveredDate !== null
-                      ? true
-                      : isSelected(row.id as string);
+                  const isDelivered = isSelected(row.id as string);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -191,6 +357,12 @@ export default function DataTable({
                           icon={<InventoryOutlinedIcon />}
                           checkedIcon={<InventoryTwoToneIcon />}
                           checked={isDelivered}
+                          onChange={(e) =>
+                            handleDeliveredDate(
+                              row.id as string,
+                              e.target.checked
+                            )
+                          }
                           inputProps={{
                             "aria-labelledby": labelId,
                           }}
