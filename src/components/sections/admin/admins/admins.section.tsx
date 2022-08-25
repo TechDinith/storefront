@@ -50,7 +50,7 @@ export default function Admins({
       setNotify(notification)
     );
     dialogProps.setOpenDialog({ value: false, id: "" });
-  }, [dialogProps, notify]);
+  }, [dialogProps]);
 
   useEffect(() => {
     let adminData: any = [];

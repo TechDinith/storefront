@@ -36,7 +36,7 @@ export default function Users({ sectionName, dialogProps }: iUserSection) {
       setNotify(notification)
     );
     dialogProps.setOpenDialog({ value: false, id: "" });
-  }, [dialogProps.openDialog, notify]);
+  }, [dialogProps, notify]);
 
   useEffect(() => {
     let userData: any[] = [];
