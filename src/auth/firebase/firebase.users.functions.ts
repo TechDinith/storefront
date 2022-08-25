@@ -158,7 +158,8 @@ export const deleteCurrentUser = async () => {
 
 export const resetPassword = async (email: string) => {
   return sendPasswordResetEmail(auth, email, {
-    url: "http://localhost:3000/login",
+    // url: "http://localhost:3000/login", //local
+    url: "https://test-projects-b10ec.web.app/login", //hosting
   })
     .then(() => {
       return { status: status.success, data: "Password reset email sent!" };

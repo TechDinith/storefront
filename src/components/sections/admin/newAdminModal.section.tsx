@@ -73,7 +73,10 @@ export default function NewAdminModal({
       if (!exist) {
         addAdmin(data.email, data.role)
           .then((admin: any) => {
-            setAdminLink("http://localhost:3000/admin/" + admin.id);
+            // setAdminLink("http://localhost:3000/admin/" + admin.id);//local
+            setAdminLink(
+              "https://test-projects-b10ec.web.app/admin/" + admin.id
+            ); //hosting
 
             setChildOpen(true);
           })

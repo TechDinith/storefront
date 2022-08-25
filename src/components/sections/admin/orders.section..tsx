@@ -60,6 +60,7 @@ const Orders = ({ sectionName, dialogProps }: iOrderSection) => {
       sectionName={sectionName}
       dialogProps={dialogProps}
       rows={orderList}
+      setOrderList={setOrderList}
     />
   ) : (
     <p>No Orders yet!</p>

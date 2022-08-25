@@ -183,10 +183,26 @@ const dynamicCellMembers = (
           </Box>
         </Tooltip>
         {admin && (
-          <Tooltip title={"http://localhost:3000/admin/" + row.value}>
+          // local
+          // <Tooltip title={"http://localhost:3000/admin/" + row.value}>
+          //   <IconButton
+          //     onClick={() =>
+          //       handleCopy("http://localhost:3000/admin/" + row.value)
+          //     }
+          //   >
+          //     <LinkIcon />
+          //   </IconButton>
+          // </Tooltip>
+
+          //hosting
+          <Tooltip
+            title={"https://test-projects-b10ec.web.app/admin/" + row.value}
+          >
             <IconButton
               onClick={() =>
-                handleCopy("http://localhost:3000/admin/" + row.value)
+                handleCopy(
+                  "https://test-projects-b10ec.web.app/admin/" + row.value
+                )
               }
             >
               <LinkIcon />
