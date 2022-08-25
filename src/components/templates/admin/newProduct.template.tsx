@@ -28,8 +28,6 @@ const style = {
   width: { xs: "90%", sm: "70%", md: "40%" },
 };
 
-const math = Math;
-
 const formSchema = Yup.object().shape({
   name: Yup.string().required("Name is Required!"),
   price: Yup.number().required("Price is Required!"),

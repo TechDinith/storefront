@@ -3,31 +3,7 @@ import { status } from "../../../auth/auth.interface";
 import { getOrders } from "../../../auth/firebase/firebase.orders.functions";
 import DataTable from "../../templates/admin/dataTable.template";
 import { iOrderSection } from "./interface.admin.section";
-function createData(
-  id: string,
-  orderedDate: string,
-  deliveredDate: string | null,
-  name: string,
-  products: any[],
-  image: any[],
-  contacts: string,
-  shipTo: string,
-  paymentMethod: string,
-  totalAmount: number
-) {
-  return {
-    id,
-    orderedDate,
-    deliveredDate,
-    name,
-    products,
-    image,
-    contacts,
-    shipTo,
-    paymentMethod,
-    totalAmount,
-  };
-}
+
 const Orders = ({ sectionName, dialogProps }: iOrderSection) => {
   const [orderList, setOrderList] = useState<any[]>([]);
 

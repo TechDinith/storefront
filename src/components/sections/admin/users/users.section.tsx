@@ -52,7 +52,7 @@ export default function Users({ sectionName, dialogProps }: iUserSection) {
           })
       );
     });
-  }, [dialogProps.openDialog, handleRemove]);
+  }, [dialogProps, handleRemove]);
 
   const withoutId = rows && rows.length > 0 && Object.keys(rows[0]);
 
@@ -75,7 +75,7 @@ export default function Users({ sectionName, dialogProps }: iUserSection) {
     (userId: string) => {
       dialogProps?.setOpenDialog({ value: true, id: userId });
     },
-    [dialogProps?.openDialog]
+    [dialogProps]
   );
 
   return (

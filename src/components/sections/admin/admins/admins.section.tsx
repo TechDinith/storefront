@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import NewAdminModal from "../newAdminModal.section";
 import { Tooltip } from "@mui/material";
-import { useLocation } from "react-router-dom";
 import {
   deleteAdmins,
   getAdmins,
@@ -51,7 +50,7 @@ export default function Admins({
       setNotify(notification)
     );
     dialogProps.setOpenDialog({ value: false, id: "" });
-  }, [dialogProps.openDialog, notify]);
+  }, [dialogProps, notify]);
 
   useEffect(() => {
     let adminData: any = [];
@@ -93,7 +92,7 @@ export default function Admins({
     (prodId: string) => {
       dialogProps?.setOpenDialog({ value: true, id: prodId });
     },
-    [dialogProps?.openDialog]
+    [dialogProps]
   );
 
   return (
