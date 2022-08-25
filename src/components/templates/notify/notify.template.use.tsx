@@ -13,12 +13,6 @@ const NotifyUse = ({ messageProps }: iNotifyUseProps) => {
     severity: "info",
   });
 
-  useEffect(() => {
-    if (messageProps) {
-      handleNotificationClick();
-    }
-  }, [messageProps]);
-
   const handleNotificationClick = useCallback(() => {
     setNotiMessage({
       message: messageProps?.message as string,
@@ -29,6 +23,12 @@ const NotifyUse = ({ messageProps }: iNotifyUseProps) => {
       { message: messageProps?.message as string, key: new Date().getTime() },
     ]);
   }, [messageProps]);
+
+  useEffect(() => {
+    if (messageProps) {
+      handleNotificationClick();
+    }
+  }, [messageProps, handleNotificationClick]);
 
   return (
     <ConsecutiveSnackbars

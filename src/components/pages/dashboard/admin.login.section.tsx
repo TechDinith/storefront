@@ -6,12 +6,11 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Box from "@mui/material/Box/Box";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Avatar, IconButton } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
-import { iAdminLogin } from "./dashboard.interface";
 import NotifyUse from "../../templates/notify/notify.template.use";
 import { iMessage } from "../../templates/notify/notify.interfaces";
 import { onAuthStateChanged } from "firebase/auth";
@@ -24,7 +23,7 @@ import {
   updateAdmin,
 } from "../../../auth/firebase/firebase.admin.functions";
 
-export default function AdminLogin({}: iAdminLogin) {
+export default function AdminLogin() {
   const [notify, setNotify] = useState<iMessage>();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const params: any = useParams();
