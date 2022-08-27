@@ -51,7 +51,12 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
 
   return (
     <>
-      <Quote bgImage={wideabout} />
+      <Quote
+        bgImage={wideabout}
+        quote={
+          <p>" The way to get started is to quit talking and begin doing. "</p>
+        }
+      />
 
       <Grid item xs={10} mt="5%" mb="1%">
         <Typography variant="h4" textAlign="center" color="white" mb={1}>
