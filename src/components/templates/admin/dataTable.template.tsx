@@ -11,7 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { EnhancedTableHead } from "../../templates/admin/enchancedTabledHead.template";
 import { EnhancedTableToolbar } from "../../templates/admin/enchancedTableToolbar.template";
 import { iOrder, Order } from "../../sections/admin/interface.admin.section";

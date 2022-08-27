@@ -25,7 +25,7 @@ const MainSlogan = () => {
         to={"/men"}
         sx={{ marginLeft: "auto", marginRight: "auto" }}
       >
-        Lorem ipsum
+        Shop Now
       </Button>
     </Box>
   );

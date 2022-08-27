@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { iQuote } from "./quote.interface";
 
-const Quote = ({ bgImage }: iQuote) => {
+const Quote = ({ bgImage, quote }: iQuote) => {
   return (
     <Grid
       item
@@ -23,7 +23,7 @@ const Quote = ({ bgImage }: iQuote) => {
           fontStyle="oblique"
           sx={{ background: "rgb(0,0,0,0.80)", width: "fit-content" }}
         >
-          " Possimus dignissimos voluptates nulla explicabo at dolore. "
+          {quote}
         </Typography>
       </Box>
     </Grid>

@@ -16,7 +16,7 @@ const Docs = () => {
         color="inherit"
         textTransform="uppercase"
         component={Link}
-        to="#"
+        to="/terms"
       >
         Terms & Conditons
       </Typography>

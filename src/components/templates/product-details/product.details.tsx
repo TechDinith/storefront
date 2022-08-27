@@ -356,7 +356,7 @@ const ProDetails = ({
           component={NavLink}
           to={"/" + cart.category}
         >
-          <StartIcon sx={{ mr: "4%" }} /> Lorem ipsum
+          <StartIcon sx={{ mr: "4%" }} /> Take a Look
         </Button>
       ) : cart.category ? (
         <Button
@@ -367,7 +367,7 @@ const ProDetails = ({
           onClick={handleAddToCart}
           sx={{ mt: 1 }}
         >
-          <ShoppingCartCheckoutIcon sx={{ mr: "4%" }} /> Lorem ipsum
+          <ShoppingCartCheckoutIcon sx={{ mr: "4%" }} /> Add To Cart
         </Button>
       ) : null}
 

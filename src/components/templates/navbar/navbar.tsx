@@ -27,6 +27,8 @@ import { AccountCircleOutlined } from "@mui/icons-material";
 import Search from "../../sections/search/search.section";
 import { userLogout } from "../../../auth/firebase/firebase.users.functions";
 import { capitalize } from "@mui/material";
+import pedros1 from "../../../images/pedros1.png";
+import { Image } from "antd";
 
 const drawerWidth = "35%";
 const navItems = ["Home", "Categories", "About", "Contact"];
@@ -76,8 +78,16 @@ const Navbar = ({
 
   const drawer = (
     <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2, color: "white" }}>
-        <AlternateEmailIcon /> Logo
+      <Typography
+        variant="h6"
+        component="div"
+        sx={{
+          flexGrow: 1,
+          py: 1,
+          color: "white",
+        }}
+      >
+        <Image src={pedros1} preview={false} width="30vw" />
       </Typography>
       <Divider />
       <List>
@@ -188,10 +198,14 @@ const Navbar = ({
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "block" },
+            }}
           >
-            <AlternateEmailIcon /> Logo
+            <Image src={pedros1} preview={false} width="12vw" />
           </Typography>
+
           <Box sx={{ display: { sm: "none", xs: "none", md: "block" } }}>
             {navItems.map((item: string, i: number) => {
               let path = String("/" + item.toLowerCase());
