@@ -2,7 +2,6 @@ import { Image } from "antd";
 import CircleIcon from "@mui/icons-material/Circle";
 import Tooltip from "@mui/material/Tooltip";
 import DescriptionIcon from "@mui/icons-material/Description";
-import CollectionsIcon from "@mui/icons-material/Collections";
 import PaletteIcon from "@mui/icons-material/Palette";
 import TableCell from "@mui/material/TableCell";
 import Box from "@mui/material/Box";

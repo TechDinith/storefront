@@ -32,7 +32,6 @@ import {
   getUserByUid,
 } from "../../../auth/firebase/firebase.users.functions";
 import { getAdminsByUid } from "../../../auth/firebase/firebase.admin.functions";
-import { Typography } from "antd";
 import Terms from "../../pages/terms/terms.page";
 
 const categories = ["men", "women", "accessories"];
