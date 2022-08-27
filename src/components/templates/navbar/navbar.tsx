@@ -16,7 +16,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
-import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import { NavLink, useLocation } from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import { iNavbar } from "./navbar.interfaces";
