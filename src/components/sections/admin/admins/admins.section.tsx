@@ -8,7 +8,8 @@ import AlertDialog from "../../../templates/dialog/dialog.template";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import NewAdminModal from "../newAdminModal.section";
-import { Tooltip } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
 import {
   deleteAdmins,
   getAdmins,
@@ -16,6 +17,16 @@ import {
 import { iMessage } from "../../../templates/notify/notify.interfaces";
 import NotifyUse from "../../../templates/notify/notify.template.use";
 import Box from "@mui/material/Box";
+import * as Yup from "yup";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { IconButton } from "@mui/material";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
+import {
+  addAnnouncement,
+  getAnnouncementById,
+} from "../../../../auth/firebase/firebase.announcement.functions";
+import { status } from "../../../../auth/auth.interface";
 
 // Generate Order Data
 function createData(
@@ -44,6 +55,41 @@ export default function Admins({
   const [open, setOpen] = useState(false);
   const [rows, setRows] = useState<any>();
   const [notify, setNotify] = useState<iMessage>();
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+
+  const formSchema = Yup.object().shape({
+    announcement: Yup.string().required("Announcement is Required!"),
+  });
+
+  const formOptions = { resolver: yupResolver(formSchema) };
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+  } = useForm(formOptions);
+
+  const onSubmit: SubmitHandler<any> = (data) => {
+    setIsDisabled(true);
+    addAnnouncement(data.announcement).then((res) => {
+      if (res.status === status.success) {
+        setNotify({
+          message: "Announcement updated!",
+          severity: res.status,
+        });
+      } else {
+        setNotify({
+          message: res.data,
+          severity: res.status,
+        });
+        setIsDisabled(false);
+      }
+    });
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 2000);
+  };
 
   const handleRemove = useCallback(() => {
     deleteAdmins(dialogProps.openDialog.id as string).then((notification) =>
@@ -69,8 +115,15 @@ export default function Admins({
           );
         })
       );
+      getAnnouncementById().then((announcement) => {
+        if (announcement.status === status.success) {
+          reset({
+            announcement: announcement.data.data().announcement,
+          });
+        }
+      });
     });
-  }, [open, dialogProps.openDialog, handleRemove]);
+  }, [open, dialogProps.openDialog, handleRemove, notify]);
 
   const withoutId = rows && Object.keys(rows[0]);
 
@@ -123,6 +176,41 @@ export default function Admins({
                 </Button>
               </Box>
             </Tooltip>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="announcement"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    margin="normal"
+                    fullWidth
+                    label="Announcement"
+                    autoFocus
+                    variant="standard"
+                    {...field}
+                    error={Boolean(errors["announcement"])}
+                  />
+                )}
+              />
+              {errors["announcement"] && (
+                <Typography color="red" variant="caption">
+                  {errors["announcement"]?.message as any}
+                </Typography>
+              )}
+
+              <Box width="100%" display="flex" justifyContent="right" mb={2}>
+                <IconButton
+                  disabled={authUser.role === "admin" ? true : isDisabled}
+                  type="submit"
+                  sx={{ mt: 3 }}
+                  color="success"
+                >
+                  <NotificationAddIcon />
+                </IconButton>
+              </Box>
+            </form>
 
             {rows ? (
               <DataGrid
