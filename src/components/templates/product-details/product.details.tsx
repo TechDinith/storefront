@@ -337,7 +337,7 @@ const ProDetails = ({
             "Order will receive within 15 days"
           ) : (
             <>
-              <InventoryIcon sx={{ mr: "4%" }} /> Lorem ipsum
+              <InventoryIcon sx={{ mr: "4%" }} /> Checkout
             </>
           )}
         </Button>
@@ -373,12 +373,11 @@ const ProDetails = ({
 
       <AlertDialog
         attributes={{
-          title: "Lorem ipsum?",
-          content:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, incidunt minus. Molestiae error soluta culpa autem saepe aliquam dolor eius, quibusdam, ipsam corporis quis enim alias eligendi optio. Suscipit, at?",
-          yesBtn: "Lorem ipsum",
+          title: "Remove Item?",
+          content: "Are you sure, you want to remove this Item?",
+          yesBtn: "Yes",
           yesFunction: handleRemove,
-          noBtn: "dolor sit",
+          noBtn: "No",
         }}
         openDialog={
           dialogProps?.openDialog ? dialogProps?.openDialog : { value: false }
