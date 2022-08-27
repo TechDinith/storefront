@@ -120,6 +120,8 @@ export default function Products({
               headerName:
                 rowKey === "isColor"
                   ? "Edit / Delete"
+                  : rowKey === "price"
+                  ? "PRICE (Rs.)"
                   : (rowKey.toLocaleUpperCase() as any),
               renderCell: (params: GridRenderCellParams<any>) =>
                 dynamicCell(params, handleCurrentProduct, handleDelete),
@@ -222,12 +224,11 @@ export default function Products({
 
       <AlertDialog
         attributes={{
-          title: "Lorem ipsum?",
-          content:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, incidunt minus. Molestiae error soluta culpa autem saepe aliquam dolor eius, quibusdam, ipsam corporis quis enim alias eligendi optio. Suscipit, at?",
-          yesBtn: "Lorem ipsum",
+          title: "Delete Product?",
+          content: "Are you sure, you want to delete this product?",
+          yesBtn: "Yes",
           yesFunction: handleRemove,
-          noBtn: "dolor sit",
+          noBtn: "No",
         }}
         openDialog={
           dialogProps?.openDialog ? dialogProps?.openDialog : { value: false }

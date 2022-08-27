@@ -12,11 +12,14 @@ import TextField from "@mui/material/TextField";
 import { iResetPassword } from "./resetPassword.section.interface";
 import { resetPassword } from "../../../auth/firebase/firebase.users.functions";
 import { status } from "../../../auth/auth.interface";
+import { useState } from "react";
 
 export default function ResetPassword({
   authProps,
   setNotify,
 }: iResetPassword) {
+  const [disabled, setDisabled] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const formSchema = Yup.object().shape({
@@ -32,6 +35,7 @@ export default function ResetPassword({
   } = useForm(formOptions);
 
   const onSubmit = (data: any) => {
+    setDisabled(true);
     resetPassword(data.email).then((res) => {
       if (res.status === status.success) {
         setNotify({
@@ -43,6 +47,7 @@ export default function ResetPassword({
           navigate("/");
         }, 10);
       } else {
+        setDisabled(false);
         setNotify({
           message: res.data,
           severity: res.status,
@@ -82,6 +87,7 @@ export default function ResetPassword({
                   fullWidth
                   label="Email"
                   autoComplete="email"
+                  helperText="*Please check spam folder also for the email!"
                   autoFocus
                   {...field}
                   error={Boolean(errors.email)}
@@ -100,7 +106,13 @@ export default function ResetPassword({
               </Typography>
             )}
 
-            <Button type="submit" variant="contained" fullWidth color="info">
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              color="info"
+              disabled={disabled}
+            >
               Reset
             </Button>
           </form>

@@ -115,12 +115,11 @@ export default function Users({ sectionName, dialogProps }: iUserSection) {
 
       <AlertDialog
         attributes={{
-          title: "Lorem ipsum?",
-          content:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, incidunt minus. Molestiae error soluta culpa autem saepe aliquam dolor eius, quibusdam, ipsam corporis quis enim alias eligendi optio. Suscipit, at?",
-          yesBtn: "Lorem ipsum",
+          title: "Ban User?",
+          content: "Are you sure, you want to ban this user?",
+          yesBtn: "Yes",
           yesFunction: handleRemove,
-          noBtn: "dolor sit",
+          noBtn: "No",
         }}
         openDialog={
           dialogProps?.openDialog ? dialogProps?.openDialog : { value: false }

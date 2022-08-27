@@ -36,17 +36,11 @@ const dynamicCells = (row: any, labelId?: string) => {
           </TableCell>
         ) : x === "image" && row[x].length > 1 && typeof row[x] === "object" ? (
           <TableCell key={uniqueKey} align="center">
-            <Tooltip
-              title={
-                <Image.PreviewGroup>
-                  {row[x].map((image: string, i: number) => (
-                    <Image width="40%" key={i} src={image} />
-                  ))}
-                </Image.PreviewGroup>
-              }
-            >
-              <CollectionsIcon />
-            </Tooltip>
+            <Image.PreviewGroup>
+              {row[x].map((image: string, i: number) => (
+                <Image width="40%" key={i} src={image} />
+              ))}
+            </Image.PreviewGroup>
           </TableCell>
         ) : x === "image" ? (
           <TableCell key={uniqueKey} align="center">
@@ -96,17 +90,11 @@ const dynamicCell = (
       ) : row.field === "image" &&
         row.value.length !== 1 &&
         typeof row.value === "object" ? (
-        <Tooltip
-          title={
-            <Image.PreviewGroup>
-              {row.value.map((image: string, i: number) => (
-                <Image width="40%" key={i} src={image} />
-              ))}
-            </Image.PreviewGroup>
-          }
-        >
-          <CollectionsIcon />
-        </Tooltip>
+        <Image.PreviewGroup>
+          {row.value.map((image: string, i: number) => (
+            <Image width="40%" key={i} src={image} />
+          ))}
+        </Image.PreviewGroup>
       ) : row.field === "image" ? (
         <>
           <Image width="30%" src={row.value} />
