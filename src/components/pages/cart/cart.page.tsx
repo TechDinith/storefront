@@ -64,7 +64,7 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
               color="primary"
               onClick={() => setCheckouts([])}
             >
-              Select Lorem
+              Select Items
             </Button>
           ) : (
             <>
@@ -77,7 +77,7 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
                   state={{ checkouts: checkouts }}
                   sx={{ mr: 1 }}
                 >
-                  ipsum
+                  Checkout
                 </Button>
               )}
               <Button
@@ -85,7 +85,7 @@ const Cart = ({ countProps, setNotify, dialogProps, authProps }: iCartPage) => {
                 color="error"
                 onClick={() => setCheckouts(null)}
               >
-                Cancel Lorem
+                Cancel Selection
               </Button>
             </>
           )}

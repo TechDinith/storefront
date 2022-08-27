@@ -63,6 +63,23 @@ const Category = ({ countProps, setNotify, products }: iCategories) => {
             ? accwide
             : null
         }
+        quote={
+          category === "men" ? (
+            <p>
+              “ Every man should have a magnifying mirror. If you look good
+              magnified, you are set to go ”
+            </p>
+          ) : category === "women" ? (
+            <p>
+              “ The dress must follow the body of a woman, not the body
+              following the shape of the dress. ”
+            </p>
+          ) : category === "accessories" ? (
+            <p>“ People will stare. Make it worth their while. ”</p>
+          ) : (
+            ""
+          )
+        }
       />
 
       <Grid item xs={10} mt="5%" mb="1%">

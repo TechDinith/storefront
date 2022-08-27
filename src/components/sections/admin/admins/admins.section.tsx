@@ -234,12 +234,11 @@ export default function Admins({
       <NewAdminModal setNotify={setNotify} open={open} setOpen={setOpen} />
       <AlertDialog
         attributes={{
-          title: "Lorem ipsum?",
-          content:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, incidunt minus. Molestiae error soluta culpa autem saepe aliquam dolor eius, quibusdam, ipsam corporis quis enim alias eligendi optio. Suscipit, at?",
-          yesBtn: "Lorem ipsum",
+          title: "Remove Admin?",
+          content: "Are you sure, you want to Remove this admin?",
+          yesBtn: "Yes",
           yesFunction: handleRemove,
-          noBtn: "dolor sit",
+          noBtn: "No",
         }}
         openDialog={
           dialogProps?.openDialog ? dialogProps?.openDialog : { value: false }

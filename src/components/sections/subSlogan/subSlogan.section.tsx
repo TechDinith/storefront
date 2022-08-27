@@ -2,12 +2,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 
-const SubSlogan = ({ path }: { path: string }) => {
+const SubSlogan = ({ path, slogan }: { path: string; slogan: any }) => {
   return (
     <Grid container spacing={2} mb="2%">
       <Grid item xs={8} sm={6}>
         <Typography variant="h6" color="white" sx={{ background: "gray" }}>
-          Lorem Ipsum. <b>SIT Amet</b>
+          {slogan}
         </Typography>
       </Grid>
 

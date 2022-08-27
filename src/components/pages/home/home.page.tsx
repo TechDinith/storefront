@@ -83,7 +83,14 @@ const Home = ({ setNotify, products }: iHome) => {
       <Catogories />
 
       <Grid item xs={10} mt="5%">
-        <SubSlogan path={"/women"} />
+        <SubSlogan
+          slogan={
+            <p>
+              Be a Queen. <b>Take A Look</b>
+            </p>
+          }
+          path={"/women"}
+        />
         <Slider {...sliderItems2} />
       </Grid>
 

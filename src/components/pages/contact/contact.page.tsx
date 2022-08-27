@@ -10,7 +10,10 @@ import Quote from "../../templates/quote/quote.section";
 const Contact = ({ setNotify }: any) => {
   return (
     <>
-      <Quote bgImage={wideabout} />
+      <Quote
+        bgImage={wideabout}
+        quote={<p>" You either know fashion or you don't. "</p>}
+      />
 
       <Grid item xs={10} mt="5%" mb="1%">
         <Typography variant="h4" textAlign="center" color="white">

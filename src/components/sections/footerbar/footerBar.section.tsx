@@ -13,7 +13,7 @@ const FooterBar = () => {
           color="inherit"
           textTransform="uppercase"
         >
-          {new Date().getFullYear()} | Logo All Rights Reserved
+          {new Date().getFullYear()} | Pedros All Rights Reserved
         </Typography>
       </Grid>
 

@@ -17,4 +17,5 @@ export interface iLatest {
   quantity?: string;
   urlList?: any;
   prodId?: string;
+  enteredOn?: string;
 }

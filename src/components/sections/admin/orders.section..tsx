@@ -43,7 +43,7 @@ const Orders = ({ sectionName, dialogProps }: iOrderSection) => {
                   ? product.name
                   : product.name + "-" + product.colors
               ),
-            paymentMethod: "Cashon delevery!",
+            paymentMethod: "Cash On delivery!",
             image: order.data().products.map((product: any) => product.urlList),
             totalAmount: order.data().total,
           };
