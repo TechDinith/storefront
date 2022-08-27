@@ -4,8 +4,24 @@ import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import { iHeader } from "./header.interfaces";
 import Search from "../../sections/search/search.section";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getAnnouncementById } from "../../../auth/firebase/firebase.announcement.functions";
+import { status } from "../../../auth/auth.interface";
 
 const Header = ({ products }: iHeader) => {
+  const [announcement, setAnnouncement] = useState<string>("");
+
+  const location = useLocation();
+
+  useEffect(() => {
+    getAnnouncementById().then((res) => {
+      if (res.status === status.success) {
+        setAnnouncement(res.data.data().announcement);
+      }
+    });
+  }, [location]);
+
   return (
     <Grid
       container
@@ -24,7 +40,7 @@ const Header = ({ products }: iHeader) => {
           textTransform="uppercase"
           sx={{ mt: "1%" }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          {announcement}
         </Typography>
       </Grid>
 
