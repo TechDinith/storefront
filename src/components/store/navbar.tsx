@@ -24,6 +24,10 @@ export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    if (!auth) {
+      setUser(null);
+      return;
+    }
     const unsub = onAuthStateChanged(auth, (u) => setUser(u));
     return () => unsub();
   }, []);

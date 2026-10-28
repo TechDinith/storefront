@@ -11,6 +11,10 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
   const [allowed, setAllowed] = useState<boolean | null>(null);
 
   useEffect(() => {
+    if (!auth) {
+      setAllowed(true);
+      return;
+    }
     const unsub = onAuthStateChanged(auth, async (u) => {
       if (!u) {
         // demo mode: allow if no firebase config
